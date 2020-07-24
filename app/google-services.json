@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "955181082866",
+    "firebase_url": "https://buybye-7ddd9.firebaseio.com",
+    "project_id": "buybye-7ddd9",
+    "storage_bucket": "buybye-7ddd9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955181082866:android:e570ada90a2d42ad01086b",
+        "android_client_info": {
+          "package_name": "com.example.buybye"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955181082866-f4o09lak40d4q6u7h9r02o0lq42mvvju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBGAy1xpopDSMflx6TGN3hpo1xhciO5oQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955181082866-f4o09lak40d4q6u7h9r02o0lq42mvvju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

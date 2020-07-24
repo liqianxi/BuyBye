@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BuyBye</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_password_title">Password</string>
+    <string name="login_user_title">User</string>
+    <string name="login_warning">Please fill in both text fields</string>
+
+</resources>
