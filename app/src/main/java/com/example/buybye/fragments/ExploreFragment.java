@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.buybye.R;
 import com.example.buybye.activities.PostItemListAdapter;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 
 public class ExploreFragment extends Fragment {
 
-
+    private TextView test;
 
 
     public ExploreFragment() {
@@ -37,10 +38,9 @@ public class ExploreFragment extends Fragment {
         items.add(new Item("steam2",null,132.8,null,null));//Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime)
         items.add(new Item("steam3",null,12.8,null,null));//Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime)
 
-        Log.v("in fragment","666");
         GridView itemList = (GridView) view.findViewById(R.id.itemList);
         PostItemListAdapter postItemListAdapter = new PostItemListAdapter(getContext(),items);
         itemList.setAdapter(postItemListAdapter);
-        return inflater.inflate(R.layout.fragment_explore, container, false);
+        return view;
     }
 }

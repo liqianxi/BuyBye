@@ -72,7 +72,6 @@ public class HomePageActivity extends AppCompatActivity {
             case R.layout.fragment_explore:
                 t.beginTransaction().replace(R.id.frame, new ExploreFragment())
                         .commit();
-                Log.v("in fragment","6664");
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
         }

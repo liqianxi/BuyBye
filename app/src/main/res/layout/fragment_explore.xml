@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.ExploreFragment">
+
     <GridView
         android:id="@+id/itemList"
-        android:layout_width="403dp"
-        android:layout_height="665dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="0dp"
         android:columnWidth="180dp"
         android:gravity="center"
         android:numColumns="2"
-        android:stretchMode="spacingWidthUniform">
+        android:stretchMode="spacingWidthUniform"></GridView>
 
-        <TextView
-            android:id="@+id/testText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-    </GridView>
 
-</FrameLayout>
+
+</LinearLayout>
