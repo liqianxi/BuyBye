@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class PostItemListAdapter extends ArrayAdapter<Item> {
     private ArrayList<Item> items;
     private Context context;
-    PostItemListAdapter(Context context, ArrayList<Item> items){
+    public PostItemListAdapter(Context context, ArrayList<Item> items){
         super(context,0,items);
         this.items = items;
         this.context = context;
