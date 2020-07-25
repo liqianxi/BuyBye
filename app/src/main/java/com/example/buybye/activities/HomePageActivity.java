@@ -46,25 +46,23 @@ public class HomePageActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.home_page:
-                                switchFragment(R.layout.fragment_explore);
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.home_page:
+                            switchFragment(R.layout.fragment_explore);
 
-                                return true;
-                            case R.id.add_new_post:
-                                //openFragment(SmsFragment.newInstance("", ""));
-                                return true;
-                            case R.id.my_account:
-                                //openFragment(NotificationFragment.newInstance("", ""));
-                                return true;
-                        }
-                        return false;
+                            return true;
+                        case R.id.add_new_post:
+
+                            return true;
+                        case R.id.my_account:
+                            Log.v("1321321","2313213");
+                            switchFragment(R.layout.fragment_account);
+                            return true;
                     }
-
+                    return false;
                 };
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
     public void switchFragment(int caseId){
         androidx.fragment.app.FragmentManager t = getSupportFragmentManager();
