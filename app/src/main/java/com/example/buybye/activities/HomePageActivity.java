@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.GridView;
 
 import com.example.buybye.R;
 import com.example.buybye.entities.Item;
+import com.example.buybye.fragments.AccountFragment;
 import com.example.buybye.fragments.ExploreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -52,8 +54,8 @@ public class HomePageActivity extends AppCompatActivity {
                             switchFragment(R.layout.fragment_explore);
 
                             return true;
-                        case R.id.add_new_post:
-
+                        case R.id.check_buy_demand:
+                            switchFragment(R.layout.fragment_wish_to_get);
                             return true;
                         case R.id.my_account:
                             Log.v("1321321","2313213");
@@ -68,9 +70,14 @@ public class HomePageActivity extends AppCompatActivity {
         androidx.fragment.app.FragmentManager t = getSupportFragmentManager();
         switch(caseId){
             case R.layout.fragment_explore:
-                t.beginTransaction().replace(R.id.frame, new ExploreFragment())
-                        .commit();
+                t.beginTransaction().replace(R.id.frame, new ExploreFragment()).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.layout.fragment_account:
+                t.beginTransaction().replace(R.id.frame, new AccountFragment()).commit();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case -1:
                 break;
         }
 

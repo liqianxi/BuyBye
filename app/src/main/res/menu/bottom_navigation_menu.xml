@@ -6,10 +6,10 @@
         android:icon="@drawable/front_page"
         android:title="Front Page"/>
     <item
-        android:id="@+id/add_new_post"
+        android:id="@+id/check_buy_demand"
         android:enabled="true"
-        android:icon="@drawable/add_new_post"
-        android:title="Add New Post"/>
+        android:icon="@drawable/wishtobuy"
+        android:title="People Wish to Get"/>
     <item
         android:id="@+id/my_account"
         android:enabled="true"
