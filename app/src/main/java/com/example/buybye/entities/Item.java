@@ -3,10 +3,11 @@ package com.example.buybye.entities;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Item {
+public class Item implements Serializable {
     private String itemName;
     private ArrayList<Uri> pictureArray;
     private double price;

@@ -55,6 +55,9 @@ public class NewSalePostActivity extends AppCompatActivity {
             tempList.add(bitmap);
 
         }
+        ImageAdapter adapter = new ImageAdapter(getApplicationContext(),tempList);
+        itemsGrid.setAdapter(adapter);
+
     }
 
     @Override

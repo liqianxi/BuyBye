@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -52,7 +53,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
         gridView = findViewById(R.id.GridPictureView);
         // get pictures from local storage
         Button AddItemButton = findViewById(R.id.addImageButton);
-        Button ConfirmButton = findViewById(R.id.confirmButton);
+        Button ConfirmButton = findViewById(R.id.confirmItemButton);
         AddItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,32 +72,29 @@ public class AddSingleItemActivity extends AppCompatActivity {
 
             }
         });
-        ConfirmButton.setOnClickListener(new View.OnClickListener() {
-            //    public Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime){
-            @Override
-            public void onClick(View view) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                Date dob_var = new Date(2000, 1, 10) ;
-                try {
-                    dob_var = sdf.parse(enterPickUpDate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), dob_var);
+        //    public Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime){
+        ConfirmButton.setOnClickListener(view -> {
+           /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date dob_var = new Date(2000, 1, 10) ;
+            try {
+                dob_var = sdf.parse(enterPickUpDate.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }*/
+            Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), null);
 
-                Intent returnIntent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("item", (Serializable) item);
-                returnIntent.putExtras(bundle);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+            Intent returnIntent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("item", item);
+            returnIntent.putExtras(bundle);
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
 
-                //send back item
+            //send back item
 
 
 
 
-            }
         });
 
 
@@ -135,6 +133,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
             }
 
             ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(),pictureList);
+            Log.v("size", String.valueOf(pictureList.size()));
             gridView.setAdapter(imageAdapter);
         }
 
