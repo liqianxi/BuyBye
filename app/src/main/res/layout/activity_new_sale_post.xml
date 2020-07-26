@@ -44,20 +44,29 @@
             android:gravity="start|top"
             android:inputType="textMultiLine" />
 
-        <Button
-            android:id="@+id/addItemButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Item" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <GridView
-            android:id="@+id/itemsImageGrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnWidth="60dp"
-            android:gravity="center"
-            android:numColumns="3"
-            android:stretchMode="spacingWidthUniform" />
+            <Button
+                android:id="@+id/addItemButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Item" />
+
+            <Button
+                android:id="@+id/postOutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/itemListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

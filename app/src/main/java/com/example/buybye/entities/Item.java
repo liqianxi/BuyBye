@@ -2,12 +2,14 @@ package com.example.buybye.entities;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Item implements Serializable {
+public class Item implements Parcelable {
     private String itemName;
     private ArrayList<Uri> pictureArray;
     private double price;
@@ -22,6 +24,26 @@ public class Item implements Serializable {
         this.pickUpTime = pickUpTime;
         this.pictureArray = pictureArray;
     }
+
+    protected Item(Parcel in) {
+        itemName = in.readString();
+        pictureArray = in.createTypedArrayList(Uri.CREATOR);
+        price = in.readDouble();
+        description = in.readString();
+        isSoldOut = in.readByte() != 0;
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public boolean isSoldOut() {
         return isSoldOut;
@@ -86,5 +108,19 @@ public class Item implements Serializable {
 
     public void setPickUpTime(Date pickUpTime) {
         this.pickUpTime = pickUpTime;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(itemName);
+        parcel.writeTypedList(pictureArray);
+        parcel.writeDouble(price);
+        parcel.writeString(description);
+        parcel.writeByte((byte) (isSoldOut ? 1 : 0));
     }
 }

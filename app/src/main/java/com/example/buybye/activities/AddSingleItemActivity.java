@@ -23,6 +23,7 @@ import android.widget.ImageView;
 
 import com.example.buybye.R;
 import com.example.buybye.entities.Item;
+import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -81,14 +82,16 @@ public class AddSingleItemActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-            Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), null);
+            //Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), null);
+            Item item = new Item("1",pictureUriList,123,"123",null);
+            Log.v("test",pictureUriList.get(0).toString());
+            Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
 
-            Intent returnIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("item", item);
-            returnIntent.putExtras(bundle);
+
+            returnIntent.putExtra("item",item);
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
+
 
             //send back item
 
