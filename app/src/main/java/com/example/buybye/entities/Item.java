@@ -1,5 +1,6 @@
 package com.example.buybye.entities;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.util.ArrayList;
