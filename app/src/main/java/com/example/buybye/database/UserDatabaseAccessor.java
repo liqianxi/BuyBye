@@ -217,8 +217,42 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
                         Log.v(TAG, "Get User Failed!");
                         listener.onProfileRetrieveFailure();
                     }));
-        } else {    // the driver is not logged in
+        } else {
             Log.v(TAG, "User is not logged in!");
+        }
+    }
+    public void isValidated(final UserProfileStatusListener listener){
+        this.currentUser = firebaseAuth.getCurrentUser();
+        if (this.currentUser != null) {
+            boolean emailVerified = currentUser.isEmailVerified();
+            if(emailVerified){
+                Log.v(TAG,"Validate success");
+                listener.onValidateSuccess();
+
+            }else{
+                Log.v(TAG,"Validate failed");
+                listener.onValidateFailure();
+            }
+        } else {
+            Log.v(TAG, "User is not logged in!");
+        }
+    }
+    public void deleteUser(final UserProfileStatusListener listener){
+        this.currentUser = firebaseAuth.getCurrentUser();
+        if (this.currentUser != null && !this.currentUser.isEmailVerified()) {
+            this.currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "User account deleted.");
+                        listener.onDeleteSuccess();
+                    }
+                    else{
+                        Log.d(TAG, "User account not deleted.");
+                        listener.onDeleteFailure();
+                    }
+                }
+            });
         }
     }
 }

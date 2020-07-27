@@ -1,11 +1,13 @@
 package com.example.buybye.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,13 +18,17 @@ import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.LoginStatusListener;
+import com.example.buybye.listeners.SignUpStatusListener;
 import com.example.buybye.listeners.UserProfileStatusListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginContainerActivity extends AppCompatActivity implements UserProfileStatusListener, LoginStatusListener {
+public class LoginContainerActivity extends AppCompatActivity implements UserProfileStatusListener, LoginStatusListener, SignUpStatusListener {
 
     private UserDatabaseAccessor userDatabaseAccessor;
 
@@ -46,6 +52,8 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     private Button VerifyButton;
     private Button NextPageButton;
     private CardView page2;
+    private ProgressDialog VerifyWaitingDialog;
+    private Button MoveForward;
     //widgets for page3
     private EditText SignUpEnterPhone;
     private TextView SignUpPhoneNumber;
@@ -59,9 +67,11 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     private Button FinishSignUpButton;
     private CardView page4;
 
-    Map<Integer,CardView> pageMap = new HashMap<>();
-
-
+    private Map<Integer,CardView> pageMap = new HashMap<>();
+    private String phoneNum;
+    private String password1;
+    private String password2;
+    private User tempUser;
 
 
     @Override
@@ -92,6 +102,9 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         VerifyButton = findViewById(R.id.VerifyButton);
         NextPageButton = findViewById(R.id.NextPageButton);
         SignUpWarning = findViewById(R.id.SignUpWarning);
+        VerifyWaitingDialog = new ProgressDialog(LoginContainerActivity.this);
+        VerifyWaitingDialog.setContentView(R.layout.verify_email_dialog);
+        MoveForward = findViewById(R.id.MoveForward);
         page2 = findViewById(R.id.page2);
 
         SignUpEnterPassword = findViewById(R.id.SignUpEnterPassword);
@@ -150,8 +163,34 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
                 } else {
                     SignUpWarning.setVisibility(View.INVISIBLE);
                 }
+                VerifyWaitingDialog.show();
+                tempUser = new User();
+                tempUser.setEmail(signUpEmail);
+                tempUser.setPassword(signUpName);
+                userDatabaseAccessor.registerUser(tempUser, LoginContainerActivity.this);
+            }});
+        MoveForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userDatabaseAccessor.isValidated(LoginContainerActivity.this);
             }
         });
+        password1 = SignUpEnterPassword.getText().toString();
+        password2 = SignUpEnterPasswordAgain.getText().toString();
+
+        FinishSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (password1.compareTo(password2) == 0) {
+                    tempUser.setPhoneNumber(phoneNum);
+                    tempUser.setPassword(password1);
+                    userDatabaseAccessor.updateUserProfile(tempUser,LoginContainerActivity.this);
+                }else{
+                    return;
+                }
+            }
+        });
+
 
 
 
@@ -168,6 +207,13 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        userDatabaseAccessor.deleteUser(LoginContainerActivity.this);
+    }
+
     private boolean verifyFields(String data) {
 
         return data.compareTo("") != 0;
@@ -234,11 +280,88 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onProfileUpdateSuccess(User user) {
-
+        //the user has been successful updated
+        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+        Bundle bundle = new Bundle();
+        // put the user object into the bundle, Profile activity can access directly:
+        bundle.putSerializable("UserObject", tempUser);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        finish();
+        // show success message here:
+        Toast.makeText(getApplicationContext(),
+                "logged in successfully!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+        //the account has been validated
+        Log.v("move forward", "Now move to the third page");
+        Toast.makeText(getApplicationContext(),"Validate success", Toast.LENGTH_SHORT).show();
+        VerifyWaitingDialog.dismiss();
+        display_page(3);
+        phoneNum = SignUpEnterPhone.getText().toString();
+        NextPageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                display_page(4);
+            }
+        });
+    }
+
+    @Override
+    public void onValidateFailure() {
+        Toast.makeText(getApplicationContext(),"Validate failed", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        Log.v("Delete","Delete Success");
+    }
+
+    @Override
+    public void onDeleteFailure() {
+        Log.v("Delete","Delete Failure");
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+        FirebaseUser user = userDatabaseAccessor.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("send", "Email sent.");
+                            Toast.makeText(getApplicationContext(),"Please check your email", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onRegisterFailure() {
+
+    }
+
+    @Override
+    public void onWeakPassword() {
+
+    }
+
+    @Override
+    public void onUserAlreadyExist() {
+
+    }
+
+    @Override
+    public void onInvalidEmail() {
 
     }
 }

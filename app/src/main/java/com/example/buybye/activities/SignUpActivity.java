@@ -217,4 +217,24 @@ public class SignUpActivity extends AppCompatActivity implements LoginStatusList
     public void onProfileUpdateFailure() {
         this.progressDialog.dismiss();
     }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
+
+    }
 }

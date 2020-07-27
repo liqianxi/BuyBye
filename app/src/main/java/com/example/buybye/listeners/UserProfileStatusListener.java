@@ -37,4 +37,10 @@ public interface UserProfileStatusListener {
      * Called when profile update fails:
      */
     void onProfileUpdateFailure();
+
+    void onValidateSuccess();
+
+    void onValidateFailure();
+    void onDeleteSuccess();
+    void onDeleteFailure();
 }
