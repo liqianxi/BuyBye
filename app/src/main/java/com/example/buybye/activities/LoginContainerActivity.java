@@ -266,7 +266,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
         Bundle bundle = new Bundle();
         // put the user object into the bundle, Profile activity can access directly:
-        bundle.putSerializable("UserObject", tempUser);
+        bundle.putParcelable("UserObject", tempUser);
         intent.putExtras(bundle);
         startActivity(intent);
         finish();

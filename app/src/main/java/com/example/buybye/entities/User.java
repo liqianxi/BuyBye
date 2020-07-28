@@ -1,10 +1,13 @@
 package com.example.buybye.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class User implements Serializable {
+public class User implements Parcelable {
     private String email;
     private String userName;
     private String phoneNumber;
@@ -37,6 +40,28 @@ public class User implements Serializable {
         this.sellerPostArray = sellerPostArray;
     }
     public User(){}
+
+    protected User(Parcel in) {
+        email = in.readString();
+        userName = in.readString();
+        phoneNumber = in.readString();
+        userRegion = in.readString();
+        password = in.readString();
+        Gender = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
     public String getEmail() {
         return email;
     }
@@ -101,4 +126,18 @@ public class User implements Serializable {
         this.userRegion = userRegion;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(email);
+        parcel.writeString(userName);
+        parcel.writeString(phoneNumber);
+        parcel.writeString(userRegion);
+        parcel.writeString(password);
+        parcel.writeString(Gender);
+    }
 }

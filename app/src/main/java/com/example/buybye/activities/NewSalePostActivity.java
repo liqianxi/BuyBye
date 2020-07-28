@@ -19,7 +19,9 @@ import android.widget.ListView;
 
 import com.example.buybye.R;
 import com.example.buybye.database.ItemDatabaseAccessor;
+import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.Item;
+import com.example.buybye.entities.User;
 import com.example.buybye.listeners.ItemAddDeleteListener;
 import com.google.gson.Gson;
 
@@ -32,17 +34,22 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private ListView itemsList;
     private PostItemListAdapter adapter;
     private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
+    private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
+    private int counter = -1;
+    private User CurrentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_sale_post);
+        CurrentUser = getIntent().getParcelableExtra("currentUser");
         EditText postName = findViewById(R.id.PostName);
         EditText postDesc = findViewById(R.id.PostDescription);
         EditText postPhoneNum = findViewById(R.id.PostPhoneNumber);
         Button newItemButton = findViewById(R.id.addItemButton);
         Button postButton = findViewById(R.id.postOutButton);
         itemsList = findViewById(R.id.itemListView);
-
+        adapter = new PostItemListAdapter(getApplicationContext(),Items);
+        itemsList.setAdapter(adapter);
         newItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,10 +68,15 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
             }
         });
+        if(counter!=-1 && counter == (Items.size()-1)){
+            //all items has been added
+            
+            Intent intent = new Intent(NewSalePostActivity.this, NotifyPostSuccessActivity.class);
+            startActivity(intent);
+        }
 
 
-        adapter = new PostItemListAdapter(getApplicationContext(),Items);
-        itemsList.setAdapter(adapter);
+
 
     }
 
@@ -88,6 +100,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
     @Override
     public void onItemAddedSuccess() {
+        counter++;
 
     }
 

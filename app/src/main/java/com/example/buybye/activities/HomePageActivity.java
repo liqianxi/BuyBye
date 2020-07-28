@@ -36,7 +36,7 @@ public class HomePageActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
         setContentView(R.layout.activity_home_page);
-        currentUser = (User) getIntent().getSerializableExtra("UserObject");
+        currentUser = (User) getIntent().getParcelableExtra("UserObject");
 
         switchFragment(R.layout.fragment_explore);
         // Hide both the navigation bar and the status bar.
@@ -69,13 +69,18 @@ public class HomePageActivity extends AppCompatActivity {
     }
     public void switchFragment(int caseId){
         androidx.fragment.app.FragmentManager t = getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("User",currentUser);
         switch(caseId){
             case R.layout.fragment_explore:
-                t.beginTransaction().replace(R.id.frame, new ExploreFragment()).commit();
+                Fragment exploreFragment = new ExploreFragment();
+                exploreFragment.setArguments(bundle);
+                t.beginTransaction().replace(R.id.frame, exploreFragment).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.layout.fragment_account:
-                t.beginTransaction().replace(R.id.frame, new AccountFragment()).commit();
+                Fragment accountFragment = new AccountFragment();
+                t.beginTransaction().replace(R.id.frame, accountFragment).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case -1:
