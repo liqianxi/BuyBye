@@ -159,6 +159,12 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
             }
         });
+        ForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         VerifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,13 +311,15 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         Toast.makeText(getApplicationContext(),"Validate success", Toast.LENGTH_SHORT).show();
         VerifyWaitingDialog.dismiss();
         display_page(3);
-        phoneNum = SignUpEnterPhone.getText().toString();
-        Log.v("Test","3");
+
+
 
 
         FinishSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                phoneNum = SignUpEnterPhone.getText().toString();
+                Log.v("Test",phoneNum);
                 tempUser.setPhoneNumber(phoneNum);
                 userDatabaseAccessor.updateUserProfile(tempUser,LoginContainerActivity.this);
 

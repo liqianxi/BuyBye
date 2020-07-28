@@ -15,6 +15,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -169,29 +170,35 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
         // should not let any one see the password!
         user.setPassword(null);
         // check if logged in:
-        this.currentUser = firebaseAuth.getCurrentUser();
-        if (this.currentUser != null) {
-            // the user is logged in successfully
-            Log.v(TAG, "User is logged in!");
-            Log.v(TAG, "Ready to store user information!");
-            Map<String, Object> map = new HashMap<>();
+        FirebaseFirestore firestore = getFirestore();
+        Objects.requireNonNull(firebaseAuth.getCurrentUser()).reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    // the user is logged in successfully
+                    Log.v(TAG, "User is logged in!");
+                    Log.v(TAG, "Ready to store user information!");
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("phoneNumber", user.getPhoneNumber());
+                    firestore
+                            .collection(referenceName)
+                            .document(currentUser.getUid())
+                            .update(map)
+                            .addOnSuccessListener(e -> {
+                                Log.v(TAG, "User info updated!");
+                                listener.onProfileUpdateSuccess(user);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.v(TAG, "User info did not update successfully!");
+                                listener.onProfileUpdateFailure();
+                            });
+                } else {    // the user is not logged in
+                    Log.v(TAG, "User is not logged in!");
+                }
+            }
+        });
 
-            map.put("phoneNumber", user.getPhoneNumber());
-            this.firestore
-                    .collection(referenceName)
-                    .document(this.currentUser.getUid())
-                    .update(map)
-                    .addOnSuccessListener(aVoid -> {
-                        Log.v(TAG, "User info updated!");
-                        listener.onProfileUpdateSuccess(user);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.v(TAG, "User info did not update successfully!");
-                        listener.onProfileUpdateFailure();
-                    });
-        } else {    // the user is not logged in
-            Log.v(TAG, "User is not logged in!");
-        }
     }
     /**
      * Get the whole set of user information from the collection "Users". Password is null due to

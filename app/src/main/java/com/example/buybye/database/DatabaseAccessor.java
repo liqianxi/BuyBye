@@ -23,4 +23,7 @@ public class DatabaseAccessor {
         return firebaseAuth;
     }
 
+    public FirebaseFirestore getFirestore() {
+        return firestore;
+    }
 }
