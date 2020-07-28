@@ -18,6 +18,7 @@ public class Item implements Parcelable {
     private String description;
     private Date pickUpTime;
     private boolean isSoldOut;
+    private String itemId;
 
     public Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime){
         this.description = description;
@@ -46,6 +47,14 @@ public class Item implements Parcelable {
             return new Item[size];
         }
     };
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
 
     public String getCity() {
         return City;

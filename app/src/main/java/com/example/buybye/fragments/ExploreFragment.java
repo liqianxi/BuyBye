@@ -17,15 +17,19 @@ import android.widget.TextView;
 import com.example.buybye.R;
 import com.example.buybye.activities.PostItemListAdapter;
 import com.example.buybye.activities.SearchActivity;
+import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.entities.Item;
+import com.example.buybye.listeners.ItemListRequestListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends Fragment implements ItemListRequestListener{
 
     private TextView test;
-
+    private ItemDatabaseAccessor itemDatabaseAccessor;
+    private ArrayList<Item> items = new ArrayList<Item>();
 
     public ExploreFragment() {
         // Required empty public constructor
@@ -35,12 +39,6 @@ public class ExploreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
-
-        // Inflate the layout for this fragment
-        ArrayList<Item> items = new ArrayList<Item>();
-        items.add(new Item("steam",null,12.8,null,null));//Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime)
-        items.add(new Item("steam2",null,132.8,null,null));//Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime)
-        items.add(new Item("steam3",null,12.8,null,null));//Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime)
         ImageView searchBar = view.findViewById(R.id.searchSaleItem);
         searchBar.setImageResource(R.drawable.searchbar);
         searchBar.setOnClickListener(new View.OnClickListener() {
@@ -50,10 +48,24 @@ public class ExploreFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        itemDatabaseAccessor = new ItemDatabaseAccessor();
+        itemDatabaseAccessor.getAllItems(ExploreFragment.this);
 
-        GridView itemList = (GridView) view.findViewById(R.id.itemList);
+        return view;
+    }
+
+    @Override
+    public void onGetItemSuccess(ArrayList<Item> items) {
+        if(items != null){
+            this.items = items;
+        }
+        GridView itemList = (GridView) Objects.requireNonNull(getView()).findViewById(R.id.itemList);
         PostItemListAdapter postItemListAdapter = new PostItemListAdapter(getContext(),items);
         itemList.setAdapter(postItemListAdapter);
-        return view;
+    }
+
+    @Override
+    public void onGetItemFailure() {
+
     }
 }
