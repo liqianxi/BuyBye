@@ -18,17 +18,20 @@ import android.widget.GridView;
 import android.widget.ListView;
 
 import com.example.buybye.R;
+import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.entities.Item;
+import com.example.buybye.listeners.ItemAddDeleteListener;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class NewSalePostActivity extends AppCompatActivity {
+public class NewSalePostActivity extends AppCompatActivity implements ItemAddDeleteListener {
     private ArrayList<Item> Items = new ArrayList<>();
     private ListView itemsList;
     private PostItemListAdapter adapter;
+    private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,10 @@ public class NewSalePostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //save post data to the database
+                for(int i=0;i<Items.size();i++){
+                    itemDatabaseAccessor.addItem(Items.get(i),NewSalePostActivity.this);
+                }
+
             }
         });
 
@@ -76,6 +83,26 @@ public class NewSalePostActivity extends AppCompatActivity {
         }
 
 
+
+    }
+
+    @Override
+    public void onItemAddedSuccess() {
+
+    }
+
+    @Override
+    public void onItemAddedFailure() {
+
+    }
+
+    @Override
+    public void onItemDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onItemDeleteFailure() {
 
     }
 }
