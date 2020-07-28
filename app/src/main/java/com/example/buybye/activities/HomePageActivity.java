@@ -17,6 +17,7 @@ import android.widget.GridView;
 
 import com.example.buybye.R;
 import com.example.buybye.entities.Item;
+import com.example.buybye.entities.User;
 import com.example.buybye.fragments.AccountFragment;
 import com.example.buybye.fragments.ExploreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
@@ -26,15 +27,16 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class HomePageActivity extends AppCompatActivity {
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
+    private User currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
-
         setContentView(R.layout.activity_home_page);
+        currentUser = (User) getIntent().getSerializableExtra("UserObject");
 
         switchFragment(R.layout.fragment_explore);
         // Hide both the navigation bar and the status bar.
@@ -58,7 +60,6 @@ public class HomePageActivity extends AppCompatActivity {
                             switchFragment(R.layout.fragment_wish_to_get);
                             return true;
                         case R.id.my_account:
-                            Log.v("1321321","2313213");
                             switchFragment(R.layout.fragment_account);
                             return true;
                     }

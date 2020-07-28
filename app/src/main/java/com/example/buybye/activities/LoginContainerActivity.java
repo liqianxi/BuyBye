@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.awt.font.TextAttribute;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,7 +64,6 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     private TextView SignUpNameTitle;
     private EditText SignUpEnterName;
     private Button VerifyButton;
-    private Button NextPageButton;
     private CardView page2;
     private ProgressDialog VerifyWaitingDialog;
     //widgets for page3
@@ -88,11 +98,11 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         this.userDatabaseAccessor = new UserDatabaseAccessor();
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);
         this.progressDialog.setContentView(R.layout.custom_progress_bar);
-        /*
+
         if (this.userDatabaseAccessor.isLoggedin()) {
             progressDialog.show();
             userDatabaseAccessor.getUserProfile(this);
-        }*/
+        }
 
         this.loginWarn = findViewById(R.id.loginWarning);
         EmailTitle = findViewById(R.id.EmailTitle);
@@ -196,14 +206,8 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
             }});
 
 
-
-
-
-
-
-
-
     }
+
 
     @Override
     protected void onStart() {
@@ -258,7 +262,17 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onProfileStoreSuccess() {
-
+        //the user has been successful updated
+        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+        Bundle bundle = new Bundle();
+        // put the user object into the bundle, Profile activity can access directly:
+        bundle.putSerializable("UserObject", tempUser);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        finish();
+        // show success message here:
+        Toast.makeText(getApplicationContext(),
+                "logged in successfully!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -286,17 +300,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onProfileUpdateSuccess(User user) {
-        //the user has been successful updated
-        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
-        Bundle bundle = new Bundle();
-        // put the user object into the bundle, Profile activity can access directly:
-        bundle.putSerializable("UserObject", tempUser);
-        intent.putExtras(bundle);
-        startActivity(intent);
-        finish();
-        // show success message here:
-        Toast.makeText(getApplicationContext(),
-                "logged in successfully!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -321,7 +325,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
                 phoneNum = SignUpEnterPhone.getText().toString();
                 Log.v("Test",phoneNum);
                 tempUser.setPhoneNumber(phoneNum);
-                userDatabaseAccessor.updateUserProfile(tempUser,LoginContainerActivity.this);
+                userDatabaseAccessor.createUserProfile(tempUser,LoginContainerActivity.this);
 
 
 

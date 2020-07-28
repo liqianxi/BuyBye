@@ -1,0 +1,247 @@
+Alberta(Calgary
+Alberta(Edmonton
+Alberta(Red Deer
+Alberta(Lethbridge
+Alberta(Medicine Hat
+Alberta(Grande Prairie
+Alberta(Fort McMurray
+Alberta(Camrose
+Alberta(Brooks
+Alberta(Wetaskiwin
+Alberta(Hinton
+Alberta(Banff
+Alberta(Vegreville
+Alberta(Stettler
+Alberta(Peace River
+Alberta(Jasper
+Alberta(Fort Chipewyan
+Alberta(Lac La Biche
+Alberta(Athabasca
+Alberta(Lake Louise
+British Columbia(Vancouver
+British Columbia(Victoria
+British Columbia(Abbotsford
+British Columbia(Kelowna
+British Columbia(Nanaimo
+British Columbia(Kamloops
+British Columbia(Prince George
+British Columbia(Chilliwack
+British Columbia(Penticton
+British Columbia(Campbell River
+British Columbia(Courtenay
+British Columbia(Terrace
+British Columbia(Fort Saint John
+British Columbia(Cranbrook
+British Columbia(Prince Rupert
+British Columbia(Williams Lake
+British Columbia(Quesnel
+British Columbia(Powell River
+British Columbia(Nelson
+British Columbia(Dawson Creek
+British Columbia(Revelstoke
+British Columbia(Fort Nelson
+British Columbia(Smithers
+British Columbia(Creston
+British Columbia(Lillooet
+British Columbia(Burns Lake
+British Columbia(Port Hardy
+British Columbia(Tofino
+British Columbia(New Bella Bella
+British Columbia(Sandspit
+British Columbia(Dease Lake
+Manitoba(Winnipeg
+Manitoba(Brandon
+Manitoba(Thompson
+Manitoba(Selkirk
+Manitoba(Steinbach
+Manitoba(Dauphin
+Manitoba(Flin Flon
+Manitoba(The Pas
+Manitoba(Norway House
+Manitoba(Gimli
+Manitoba(Nelson House
+Manitoba(Gillam
+Manitoba(Churchill
+Manitoba(Berens River
+Manitoba(Shamattawa
+Manitoba(Lynn Lake
+Manitoba(Pukatawagan
+Manitoba(Brochet
+Manitoba(Oxford House
+Manitoba(Island Lake
+New Brunswick(Moncton
+New Brunswick(Saint John
+New Brunswick(Fredericton
+New Brunswick(Edmundston
+New Brunswick(Bathurst
+Newfoundland and Labrador(Saint John’s
+Newfoundland and Labrador(Corner Brook
+Newfoundland and Labrador(Happy Valley
+Newfoundland and Labrador(Stephenville
+Newfoundland and Labrador(Channel-Port aux Basques
+Newfoundland and Labrador(Deer Lake
+Newfoundland and Labrador(Gander
+Newfoundland and Labrador(Nain
+Newfoundland and Labrador(Argentia
+Newfoundland and Labrador(La Scie
+Newfoundland and Labrador(Buchans
+Newfoundland and Labrador(Cartwright
+Newfoundland and Labrador(Trout River
+Newfoundland and Labrador(Forteau Bay
+Newfoundland and Labrador(Hopedale
+Newfoundland and Labrador(Trepassey
+Newfoundland and Labrador(Saint Anthony
+Newfoundland and Labrador(Port Hope Simpson
+Newfoundland and Labrador(Rigolet
+Northwest Territories(Yellowknife
+Northwest Territories(Hay River
+Northwest Territories(Inuvik
+Northwest Territories(Fort McPherson
+Northwest Territories(Norman Wells
+Northwest Territories(Tuktoyaktuk
+Northwest Territories(Fort Good Hope
+Northwest Territories(Délįne
+Northwest Territories(Fort Smith
+Northwest Territories(Holman
+Northwest Territories(Fort Resolution
+Northwest Territories(Paulatuk
+Northwest Territories(Fort Simpson
+Northwest Territories(Tsiigehtchic
+Northwest Territories(Łutselk’e
+Nova Scotia(Halifax
+Nova Scotia(Sydney
+Nova Scotia(New Glasgow
+Nova Scotia(Amherst
+Nova Scotia(Yarmouth
+Nova Scotia(Antigonish
+Nova Scotia(Liverpool
+Nova Scotia(Digby
+Nova Scotia(Windsor
+Nova Scotia(Shelburne
+Nova Scotia(Baddeck
+Nunavut(Iqaluit
+Nunavut(Rankin Inlet
+Nunavut(Arviat
+Nunavut(Igloolik
+Nunavut(Baker Lake
+Nunavut(Pond Inlet
+Nunavut(Cambridge Bay
+Nunavut(Cape Dorset
+Nunavut(Pangnirtung
+Nunavut(Kugluktuk
+Nunavut(Gjoa Haven
+Nunavut(Repulse Bay
+Nunavut(Coral Harbour
+Nunavut(Taloyoak
+Nunavut(Hall Beach
+Nunavut(Arctic Bay
+Nunavut(Kimmirut
+Nunavut(Chesterfield Inlet
+Nunavut(Resolute
+Nunavut(Alert
+Nunavut(Grise Fiord
+Nunavut(Ennadai
+Ontario(Toronto
+Ontario(Ottawa
+Ontario(Hamilton
+Ontario(Oshawa
+Ontario(Kitchener
+Ontario(London
+Ontario(Windsor
+Ontario(Barrie
+Ontario(Sudbury
+Ontario(Sarnia
+Ontario(Kingston
+Ontario(Thunder Bay
+Ontario(Peterborough
+Ontario(North Bay
+Ontario(Cornwall
+Ontario(Belleville
+Ontario(Orillia
+Ontario(Timmins
+Ontario(Orangeville
+Ontario(Brockville
+Ontario(Owen Sound
+Ontario(Pembroke
+Ontario(Kenora
+Ontario(Kapuskasing
+Ontario(Dryden
+Ontario(Parry Sound
+Ontario(New Liskeard
+Ontario(Hearst
+Ontario(Marathon
+Ontario(Cochrane
+Ontario(Deer Lake
+Ontario(Atikokan
+Ontario(Chapleau
+Ontario(Wiarton
+Ontario(Wawa
+Ontario(Attawapiskat
+Ontario(Red Lake
+Ontario(Moosonee
+Ontario(Little Current
+Ontario(Thessalon
+Ontario(Cobalt
+Ontario(Geraldton
+Ontario(Nipigon
+Ontario(Cat Lake
+Ontario(Fort Severn
+Ontario(Lansdowne House
+Ontario(Big Beaverhouse
+Prince Edward Island(Charlottetown
+Québec(Montréal
+Québec(Québec
+Québec(Sherbrooke
+Québec(Trois-Rivières
+Québec(Saint-Jérôme
+Québec(Drummondville
+Québec(Chicoutimi
+Québec(Shawinigan-Sud
+Québec(Joliette
+Québec(Victoriaville
+Québec(Rimouski
+Québec(Saint-Georges
+Québec(Sept-Îles
+Québec(Rouyn-Noranda
+Québec(Val-d’Or
+Québec(Rivière-du-Loup
+Québec(Dolbeau
+Québec(Mont-Laurier
+Québec(Amos
+Québec(Baie-Comeau
+Québec(La Sarre
+Québec(Saint-Augustin
+Québec(Gaspé
+Québec(Matagami
+Québec(Inukjuak
+Québec(Cap-Chat
+Québec(Kuujjuaq
+Québec(Natashquan
+Québec(Mingan
+Québec(Kangirsuk
+Québec(Schefferville
+Québec(Eastmain
+Québec(Radisson
+Québec(Port-Menier
+Québec(Ivujivik
+Québec(Salluit
+Saskatchewan(Saskatoon
+Saskatchewan(Regina
+Saskatchewan(Prince Albert
+Saskatchewan(Moose Jaw
+Saskatchewan(North Battleford
+Saskatchewan(Yorkton
+Saskatchewan(Swift Current
+Saskatchewan(Weyburn
+Saskatchewan(Meadow Lake
+Saskatchewan(Kindersley
+Saskatchewan(Melville
+Saskatchewan(La Ronge
+Saskatchewan(Biggar
+Saskatchewan(Hudson Bay
+Saskatchewan(Stony Rapids
+Saskatchewan(Uranium City
+Yukon(Whitehorse
+Yukon(West Dawson
+Yukon(Watson Lake
+Yukon(Burwash Landing

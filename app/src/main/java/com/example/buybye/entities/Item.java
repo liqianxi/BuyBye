@@ -11,6 +11,8 @@ import java.util.Date;
 
 public class Item implements Parcelable {
     private String itemName;
+    private String City;
+    private User owner;
     private ArrayList<Uri> pictureArray;
     private double price;
     private String description;
@@ -44,6 +46,22 @@ public class Item implements Parcelable {
             return new Item[size];
         }
     };
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
 
     public boolean isSoldOut() {
         return isSoldOut;
