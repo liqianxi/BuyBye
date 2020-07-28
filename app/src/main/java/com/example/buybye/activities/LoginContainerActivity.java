@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class LoginContainerActivity extends AppCompatActivity implements UserProfileStatusListener, LoginStatusListener, SignUpStatusListener {
 
@@ -53,11 +56,10 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     private Button NextPageButton;
     private CardView page2;
     private ProgressDialog VerifyWaitingDialog;
-    private Button MoveForward;
     //widgets for page3
     private EditText SignUpEnterPhone;
     private TextView SignUpPhoneNumber;
-    private Button NextPageButton2;
+
     private CardView page3;
     //widgets for page4
     private EditText SignUpEnterPassword;
@@ -65,7 +67,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     private EditText SignUpEnterPasswordAgain;
     private TextView SignUpPasswordTitleAgain;
     private Button FinishSignUpButton;
-    private CardView page4;
+
 
     private Map<Integer,CardView> pageMap = new HashMap<>();
     private String phoneNum;
@@ -77,14 +79,21 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
+
         setContentView(R.layout.activity_login_container);
+        Log.v("Test","1");
         this.userDatabaseAccessor = new UserDatabaseAccessor();
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);
         this.progressDialog.setContentView(R.layout.custom_progress_bar);
+        /*
         if (this.userDatabaseAccessor.isLoggedin()) {
             progressDialog.show();
             userDatabaseAccessor.getUserProfile(this);
-        }
+        }*/
+
         this.loginWarn = findViewById(R.id.loginWarning);
         EmailTitle = findViewById(R.id.EmailTitle);
         PasswordTitle = findViewById(R.id.PasswordTitle);
@@ -100,11 +109,9 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         SignUpEnterEmail = findViewById(R.id.SignUpEnterEmail);
         SignUpNameTitle = findViewById(R.id.SignUpNameTitle);
         VerifyButton = findViewById(R.id.VerifyButton);
-        NextPageButton = findViewById(R.id.NextPageButton);
         SignUpWarning = findViewById(R.id.SignUpWarning);
         VerifyWaitingDialog = new ProgressDialog(LoginContainerActivity.this);
         VerifyWaitingDialog.setContentView(R.layout.verify_email_dialog);
-        MoveForward = findViewById(R.id.MoveForward);
         page2 = findViewById(R.id.page2);
 
         SignUpEnterPassword = findViewById(R.id.SignUpEnterPassword);
@@ -114,15 +121,15 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         SignUpEnterPhone = findViewById(R.id.SignUpEnterPhone);
         SignUpPhoneNumber = findViewById(R.id.SignUpPhoneNumber);
         FinishSignUpButton = findViewById(R.id.FinishSignUpButton);
-        NextPageButton2 = findViewById(R.id.NextPageButton2);
+
         page3 = findViewById(R.id.page3);
-        page4 = findViewById(R.id.page4);
+
 
         populateHashMap(pageMap);
 
         loginWarn.setVisibility(View.INVISIBLE);
         SignUpWarning.setVisibility(View.INVISIBLE);
-
+        Log.v("Test","2");
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +146,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
                 User user = new User();
                 user.setEmail(emailData);
+
                 user.setPassword(passwordData);
                 userDatabaseAccessor.loginUser(user, LoginContainerActivity.this);
             }
@@ -157,39 +165,31 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
             public void onClick(View view) {
                 String signUpEmail = SignUpEnterEmail.getText().toString();
                 String signUpName = SignUpEnterName.getText().toString();
+                password1 = SignUpEnterPassword.getText().toString();
+                password2 = SignUpEnterPasswordAgain.getText().toString();
                 if (!verifyFields(signUpEmail) && !verifyFields(signUpName)) {
                     SignUpWarning.setVisibility(View.VISIBLE);
                     return;
                 } else {
                     SignUpWarning.setVisibility(View.INVISIBLE);
                 }
-                VerifyWaitingDialog.show();
+                Log.v("test","4");
                 tempUser = new User();
                 tempUser.setEmail(signUpEmail);
-                tempUser.setPassword(signUpName);
-                userDatabaseAccessor.registerUser(tempUser, LoginContainerActivity.this);
-            }});
-        MoveForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userDatabaseAccessor.isValidated(LoginContainerActivity.this);
-            }
-        });
-        password1 = SignUpEnterPassword.getText().toString();
-        password2 = SignUpEnterPasswordAgain.getText().toString();
-
-        FinishSignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                tempUser.setUserName(signUpName);
                 if (password1.compareTo(password2) == 0) {
-                    tempUser.setPhoneNumber(phoneNum);
                     tempUser.setPassword(password1);
-                    userDatabaseAccessor.updateUserProfile(tempUser,LoginContainerActivity.this);
-                }else{
-                    return;
+                    userDatabaseAccessor.registerUser(tempUser, LoginContainerActivity.this);
                 }
-            }
-        });
+                else{
+                    Toast.makeText(getApplicationContext(),"Passwords don't match",Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }});
+
+
 
 
 
@@ -222,15 +222,15 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         pageMap.put(1,page1);
         pageMap.put(2,page2);
         pageMap.put(3,page3);
-        pageMap.put(4,page4);
+
 
     }
     private void display_page(int num){
-        for (int i=1;i<5;i++){
+        for (int i=1;i<4;i++){
             if(i!=num){
-                pageMap.get(i).setVisibility(View.INVISIBLE);
+                Objects.requireNonNull(pageMap.get(i)).setVisibility(View.INVISIBLE);
             }else{
-                pageMap.get(i).setVisibility(View.VISIBLE);
+                Objects.requireNonNull(pageMap.get(i)).setVisibility(View.VISIBLE);
             }
         }
     }
@@ -306,10 +306,17 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         VerifyWaitingDialog.dismiss();
         display_page(3);
         phoneNum = SignUpEnterPhone.getText().toString();
-        NextPageButton2.setOnClickListener(new View.OnClickListener() {
+        Log.v("Test","3");
+
+
+        FinishSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                display_page(4);
+                tempUser.setPhoneNumber(phoneNum);
+                userDatabaseAccessor.updateUserProfile(tempUser,LoginContainerActivity.this);
+
+
+
             }
         });
     }
@@ -332,17 +339,38 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onRegisterSuccess() {
-        FirebaseUser user = userDatabaseAccessor.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("send", "Email sent.");
-                            Toast.makeText(getApplicationContext(),"Please check your email", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        Log.v("test","5");
+        FirebaseUser user = userDatabaseAccessor.getFirebaseAuth().getCurrentUser();
+        userDatabaseAccessor.getFirebaseAuth().signInWithEmailAndPassword(tempUser.getEmail(),tempUser.getPassword())
+                .addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.v("test","6");
+                                if (task.isSuccessful()) {
+                                    Log.d("send", "Email sent.");
+                                    Toast.makeText(getApplicationContext(),"Please check your email", Toast.LENGTH_SHORT).show();
+                                    VerifyWaitingDialog.setCancelable(false);
+                                    VerifyWaitingDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Move Forward", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            userDatabaseAccessor.isValidated(LoginContainerActivity.this);
+                                        }
+                                    });
+                                    VerifyWaitingDialog.show();
+
+
+                                }
+                            }
+                        });
+            } else {
+                Log.v("test", "Login failed!");
+
+            }
+        });
+
     }
 
     @Override

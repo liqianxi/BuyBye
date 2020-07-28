@@ -145,7 +145,7 @@
                 android:background="@drawable/round_corner_edittext"
                 android:ems="10"
                 android:hint="Enter Your Email"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:padding="6dp" />
 
             <TextView
@@ -166,6 +166,43 @@
                 android:hint="Enter Your Name"
                 android:inputType="textPersonName"
                 android:padding="6dp" />
+            <TextView
+                android:id="@+id/SignUpPasswordTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/SignUpEnterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_corner_edittext"
+                android:ems="10"
+                android:hint="Enter Your Password"
+                android:inputType="textPassword"
+                android:padding="6dp" />
+
+            <TextView
+                android:id="@+id/SignUpPasswordTitleAgain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/SignUpEnterPasswordAgain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_corner_edittext"
+                android:ems="10"
+                android:hint="Enter Your Password Again"
+                android:inputType="textPassword"
+                android:padding="6dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -179,15 +216,6 @@
                     android:layout_alignParentRight="true"
                     android:text="Verify Email" />
 
-                <Button
-                    android:id="@+id/NextPageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="204dp"
-                    android:text="Next"
-                    android:visibility="invisible" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -234,77 +262,6 @@
 
 
                 <Button
-                    android:id="@+id/NextPageButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="204dp"
-                    android:text="Next" />
-            </RelativeLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/page4"
-        android:layout_width="349dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="invisible"
-        app:cardCornerRadius="8dp"
-        tools:layout_editor_absoluteY="250dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="25dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/SignUpPasswordTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/SignUpEnterPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/round_corner_edittext"
-                android:ems="10"
-                android:hint="Enter Your Password"
-                android:inputType="textPassword"
-                android:padding="6dp" />
-
-            <TextView
-                android:id="@+id/SignUpPasswordTitleAgain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Confirm Password"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/SignUpEnterPasswordAgain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/round_corner_edittext"
-                android:ems="10"
-                android:hint="Enter Your Password Again"
-                android:inputType="textPassword"
-                android:padding="6dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <Button
                     android:id="@+id/FinishSignUpButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -317,4 +274,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-</>
+
+
+</RelativeLayout>

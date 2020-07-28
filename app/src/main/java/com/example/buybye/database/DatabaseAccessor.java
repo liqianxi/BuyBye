@@ -19,8 +19,8 @@ public class DatabaseAccessor {
         this.firestore = FirebaseFirestore.getInstance();
         this.firebaseAuth = FirebaseAuth.getInstance();
     }
-
-    public FirebaseUser getCurrentUser() {
-        return currentUser;
+    public FirebaseAuth getFirebaseAuth(){
+        return firebaseAuth;
     }
+
 }

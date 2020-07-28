@@ -9,6 +9,7 @@ import com.example.buybye.listeners.LoginStatusListener;
 import com.example.buybye.listeners.SignUpStatusListener;
 import com.example.buybye.listeners.UserProfileStatusListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -174,7 +175,7 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
             Log.v(TAG, "User is logged in!");
             Log.v(TAG, "Ready to store user information!");
             Map<String, Object> map = new HashMap<>();
-            map.put("name", user.getUserName());
+
             map.put("phoneNumber", user.getPhoneNumber());
             this.firestore
                     .collection(referenceName)
@@ -222,20 +223,28 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
         }
     }
     public void isValidated(final UserProfileStatusListener listener){
-        this.currentUser = firebaseAuth.getCurrentUser();
-        if (this.currentUser != null) {
-            boolean emailVerified = currentUser.isEmailVerified();
-            if(emailVerified){
-                Log.v(TAG,"Validate success");
-                listener.onValidateSuccess();
+        //FirebaseAuth.getInstance().getCurrentUser()
 
-            }else{
-                Log.v(TAG,"Validate failed");
-                listener.onValidateFailure();
+        firebaseAuth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    boolean emailVerified = currentUser.isEmailVerified();
+                    if(emailVerified){
+                        Log.v(TAG,"Validate success");
+                        listener.onValidateSuccess();
+
+                    }else{
+                        Log.v(TAG,"Validate failed");
+                        listener.onValidateFailure();
+                    }
+                } else {
+                    Log.v(TAG, "User is not logged in!");
+                }
             }
-        } else {
-            Log.v(TAG, "User is not logged in!");
-        }
+        });
+
     }
     public void deleteUser(final UserProfileStatusListener listener){
         this.currentUser = firebaseAuth.getCurrentUser();
