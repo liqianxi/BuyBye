@@ -37,7 +37,8 @@ public class HomePageActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home_page);
         currentUser = (User) getIntent().getParcelableExtra("UserObject");
-
+        Log.v("test",currentUser.getUserName()); // here correct
+        Log.v("test","123213");
         switchFragment(R.layout.fragment_explore);
         // Hide both the navigation bar and the status bar.
         // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -69,6 +70,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
     public void switchFragment(int caseId){
         androidx.fragment.app.FragmentManager t = getSupportFragmentManager();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("User",currentUser);
         switch(caseId){

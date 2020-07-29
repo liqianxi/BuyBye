@@ -3,14 +3,14 @@ package com.example.buybye.entities;
 import java.util.Date;
 
 public abstract class Post {
-    private String userName;
+    private String postName;
     private String descriptions;
     private Date postDate;
     private String phoneNumber;
 
     Post(){}
-    Post(String userName, String descriptions, Date postDate, String phoneNumber){
-        this.userName = userName;
+    Post(String postName, String descriptions, Date postDate, String phoneNumber){
+        this.postName = postName;
         this.descriptions = descriptions;
         this.postDate = postDate;
         this.phoneNumber = phoneNumber;
@@ -34,12 +34,12 @@ public abstract class Post {
         }
     }
 
-    public String getUserName() {
-        if (userName == null){
+    public String getPostName() {
+        if (postName == null){
             throw new NullPointerException();
         }
         else{
-            return userName;
+            return postName;
         }
     }
 
@@ -65,8 +65,8 @@ public abstract class Post {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setPostName(String postName) {
+        this.postName = postName;
     }
 }
 

@@ -82,13 +82,13 @@ public class AddSingleItemActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-            //Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), null);
-            Item item = new Item("1",pictureUriList,123,"123",null);
-            Log.v("test",pictureUriList.get(0).toString());
+            Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), null);
+            //Log.v("test",pictureUriList.get(0).toString());
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("item",item);
+            returnIntent.putExtras(bundle);
 
-
-            returnIntent.putExtra("item",item);
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
 

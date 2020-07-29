@@ -7,18 +7,18 @@ import androidx.annotation.NonNull;
 import com.example.buybye.entities.Item;
 import com.example.buybye.listeners.ItemAddDeleteListener;
 import com.example.buybye.listeners.ItemListRequestListener;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Objects.requireNonNull;
 
@@ -42,25 +42,35 @@ public class ItemDatabaseAccessor extends DatabaseAccessor {
     // keep a unique item id in the item, then use this id as document id.
     // we will know which item is being selected so that we can get relevant info by searching this uid.
 
-    public void addItem(Item item, final ItemAddDeleteListener itemAddDeleteListener){
-        String uid = generateRandomString();
-        String name = "peps0";
-        if(item.getItemName()!=null){
-            name = item.getItemName();
-        }
-        uid=name+uid;
-        item.setItemId(uid);
-
-        this.firestore.collection(referenceName)
-                .document(uid).set(item)
-                .addOnSuccessListener(aVoid -> {
-                    Log.v(TAG, "Item added");
-                    itemAddDeleteListener.onItemAddedSuccess();
+    public void addItem(ArrayList<Item> items, final ItemAddDeleteListener itemAddDeleteListener){
+        ArrayList<Task<Void>> taskList = new ArrayList<Task<Void>>();
+        for(int i=0;i<items.size();i++){
+            Item item = items.get(i);
+            String uid = generateRandomString();
+            Log.v("test","in23dwadwa21321");
+            String name = "peps0";
+            if(item.getItemName()!=null){
+                name = item.getItemName();
+            }
+            uid=name+uid;
+            item.setItemId(uid);
+            taskList.add(this.firestore.collection(referenceName)
+                    .document(uid).set(item));
+        }//new
+        Tasks.whenAll(taskList)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        itemAddDeleteListener.onItemsAddedSuccess();
+                    }
                 })
-                .addOnFailureListener(e -> {
-                    Log.v(TAG, "Item add failed");
-                    itemAddDeleteListener.onItemAddedFailure();
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        itemAddDeleteListener.onItemsAddedFailure();
+                    }
                 });
+
     }
 
     public void deleteItem(String uid, final ItemAddDeleteListener listener){

@@ -1,15 +1,12 @@
 package com.example.buybye.listeners;
 
 public interface ItemAddDeleteListener {
-    /**
-     * Called when a new Item added:
-     */
-    void onItemAddedSuccess();
 
+    void onItemsAddedSuccess();
     /**
      * when a new Item fails to add:
      */
-    void onItemAddedFailure();
+    void onItemsAddedFailure();
 
     /**
      * Called when a Item deleted successfully:

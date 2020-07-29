@@ -98,11 +98,12 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         this.userDatabaseAccessor = new UserDatabaseAccessor();
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);
         this.progressDialog.setContentView(R.layout.custom_progress_bar);
-
+/*
         if (this.userDatabaseAccessor.isLoggedin()) {
+            Log.v("test","is login");
             progressDialog.show();
             userDatabaseAccessor.getUserProfile(this);
-        }
+        }*/
 
         this.loginWarn = findViewById(R.id.loginWarning);
         EmailTitle = findViewById(R.id.EmailTitle);
@@ -266,6 +267,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
         Bundle bundle = new Bundle();
         // put the user object into the bundle, Profile activity can access directly:
+        Log.v("test0",tempUser.getUserName());
         bundle.putParcelable("UserObject", tempUser);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -282,14 +284,19 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onProfileRetrieveSuccess(User user) {
-        Intent intent;
+        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+        Bundle bundle = new Bundle();
+        // put the user object into the bundle, Profile activity can access directly:
 
-        intent = new Intent(getApplicationContext(), HomePageActivity.class);
+        bundle.putParcelable("UserObject", user);
+        intent.putExtras(bundle);
+
 
         startActivity(intent);
         if (!LoginContainerActivity.this.isFinishing() && progressDialog!=null) {
             this.progressDialog.dismiss();
         }
+
         finish();
     }
 

@@ -165,7 +165,7 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
      * @param listener
      *      if the user is updated successfully, call the onSuccess method, otherwise, onFailure.
      */
-    public void updateUserProfile(final User user, final UserProfileStatusListener listener) {
+    public void updateUserProfile(final User user, HashMap<String,Object> hashmap, final UserProfileStatusListener listener) {
         Log.v(TAG, "Ready to create user profile.");
         // should not let any one see the password!
         user.setPassword(null);
@@ -179,8 +179,8 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
                     // the user is logged in successfully
                     Log.v(TAG, "User is logged in!");
                     Log.v(TAG, "Ready to store user information!");
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("phoneNumber", user.getPhoneNumber());
+                    Map<String, Object> map = hashmap;
+
                     firestore
                             .collection(referenceName)
                             .document(currentUser.getUid())
@@ -271,4 +271,5 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
             });
         }
     }
+
 }

@@ -22,29 +22,36 @@ import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
+import com.example.buybye.entities.sellerPost;
 import com.example.buybye.listeners.ItemAddDeleteListener;
+import com.example.buybye.listeners.UserProfileStatusListener;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class NewSalePostActivity extends AppCompatActivity implements ItemAddDeleteListener {
+public class NewSalePostActivity extends AppCompatActivity implements ItemAddDeleteListener, UserProfileStatusListener {
     private ArrayList<Item> Items = new ArrayList<>();
     private ListView itemsList;
     private PostItemListAdapter adapter;
     private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
     private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
-    private int counter = -1;
     private User CurrentUser;
+    private ArrayList<sellerPost> currentPosts;
+    private EditText postName;
+    private EditText postDesc;
+    private EditText postPhoneNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_sale_post);
         CurrentUser = getIntent().getParcelableExtra("currentUser");
-        EditText postName = findViewById(R.id.PostName);
-        EditText postDesc = findViewById(R.id.PostDescription);
-        EditText postPhoneNum = findViewById(R.id.PostPhoneNumber);
+        postName = findViewById(R.id.PostName);
+        postDesc = findViewById(R.id.PostDescription);
+        postPhoneNum = findViewById(R.id.PostPhoneNumber);
         Button newItemButton = findViewById(R.id.addItemButton);
         Button postButton = findViewById(R.id.postOutButton);
         itemsList = findViewById(R.id.itemListView);
@@ -62,18 +69,21 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
             @Override
             public void onClick(View view) {
                 //save post data to the database
+                ArrayList<Item> tempList = new ArrayList<>();
                 for(int i=0;i<Items.size();i++){
-                    itemDatabaseAccessor.addItem(Items.get(i),NewSalePostActivity.this);
+                    Item item = Items.get(i);
+                    item.setOwner(CurrentUser);
+                    tempList.add(item);
                 }
+                itemDatabaseAccessor.addItem(tempList,NewSalePostActivity.this);
 
             }
         });
-        if(counter!=-1 && counter == (Items.size()-1)){
-            //all items has been added
-            
-            Intent intent = new Intent(NewSalePostActivity.this, NotifyPostSuccessActivity.class);
-            startActivity(intent);
-        }
+        Log.v("test","in2");
+
+
+
+
 
 
 
@@ -98,14 +108,33 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
     }
 
-    @Override
-    public void onItemAddedSuccess() {
-        counter++;
 
+    @Override
+    public void onItemsAddedSuccess() {
+        //all items has been added
+        currentPosts = CurrentUser.getSellerPostArray();
+        if (currentPosts == null){
+            currentPosts = new ArrayList<>();
+        }
+        sellerPost sellerPostInstance = new sellerPost();
+        String postNameString = postName.getText().toString();
+        String postDescriptionString = postDesc.getText().toString();
+        String phoneNum = postPhoneNum.getText().toString();
+        Log.v("test","in5");
+        sellerPostInstance.setPhoneNumber(phoneNum);
+        sellerPostInstance.setDescriptions(postDescriptionString);
+        sellerPostInstance.setPostName(postNameString);
+        sellerPostInstance.setItemList(Items);
+        currentPosts.add(sellerPostInstance);
+        Log.v("test","in3");
+        //CurrentUser.setSellerPostArray(currentPosts);
+        HashMap<String,Object> updateHash = new HashMap<>();
+        updateHash.put("sellerPostArray",currentPosts);
+        userDatabaseAccessor.updateUserProfile(CurrentUser,updateHash,NewSalePostActivity.this );
     }
 
     @Override
-    public void onItemAddedFailure() {
+    public void onItemsAddedFailure() {
 
     }
 
@@ -116,6 +145,59 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
     @Override
     public void onItemDeleteFailure() {
+
+    }
+
+    @Override
+    public void onProfileStoreSuccess() {
+
+    }
+
+    @Override
+    public void onProfileStoreFailure() {
+
+    }
+
+    @Override
+    public void onProfileRetrieveSuccess(User user) {
+
+    }
+
+    @Override
+    public void onProfileRetrieveFailure() {
+
+    }
+
+    @Override
+    public void onProfileUpdateSuccess(User user) {
+        CurrentUser.setSellerPostArray(currentPosts);
+        Log.v("test","here");
+        Intent intent = new Intent(NewSalePostActivity.this, NotifyPostSuccessActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
 
     }
 }

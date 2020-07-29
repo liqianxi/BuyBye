@@ -43,7 +43,11 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
-        currentUser = savedInstanceState.getParcelable("User");
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            currentUser = bundle.getParcelable("User");
+        }
+
         addNewPost = view.findViewById(R.id.addPost);
         ImageView searchBar = view.findViewById(R.id.searchSaleItem);
         searchBar.setImageResource(R.drawable.searchbar);
@@ -65,16 +69,25 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
             }
         });
         itemDatabaseAccessor = new ItemDatabaseAccessor();
-        itemDatabaseAccessor.getAllItems(ExploreFragment.this);
+
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        itemDatabaseAccessor.getAllItems(ExploreFragment.this);
     }
 
     @Override
     public void onGetItemSuccess(ArrayList<Item> items) {
         if(items != null){
             this.items = items;
+
         }
+        Log.v("test", String.valueOf(items.size()));
+
         GridView itemList = (GridView) Objects.requireNonNull(getView()).findViewById(R.id.itemList);
         PostItemListAdapter postItemListAdapter = new PostItemListAdapter(getContext(),items);
         itemList.setAdapter(postItemListAdapter);
