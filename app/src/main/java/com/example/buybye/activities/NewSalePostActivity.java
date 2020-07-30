@@ -84,6 +84,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
                     ArrayList<Uri> singleItemUriList = new ArrayList<>();
                     for(int j=0;j<Items.get(i).getPictureArray().size();j++){
                         singleItemUriList.add(Uri.parse(Items.get(i).getPictureArray().get(j)));
+                        Log.v("item",Items.get(i).getPictureArray().get(j));
                     }
                     allUri.add(singleItemUriList);
                     resultUri.add(new ArrayList<>());
@@ -152,6 +153,8 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     public ArrayList<String> ArrayToString(ArrayList<Uri> uris){
         ArrayList<String> stringUris = new ArrayList<>();
         for(int i=0;i<uris.size();i++){
+            getBaseContext().getContentResolver().takePersistableUriPermission(uris.get(i), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
             stringUris.add(uris.get(i).toString());
         }
         return stringUris;

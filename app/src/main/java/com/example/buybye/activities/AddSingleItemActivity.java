@@ -124,6 +124,8 @@ public class AddSingleItemActivity extends AppCompatActivity {
             if(clipData != null){
                 for(int i=0;i<clipData.getItemCount();i++){
                     Uri imageUri = clipData.getItemAt(i).getUri();
+
+                    getBaseContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     try {
                         pictureStringList.add(imageUri.toString());
                         InputStream is = getContentResolver().openInputStream(imageUri);

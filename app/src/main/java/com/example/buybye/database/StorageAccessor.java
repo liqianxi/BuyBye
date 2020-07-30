@@ -1,5 +1,6 @@
 package com.example.buybye.database;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -58,6 +59,7 @@ public class StorageAccessor{
     }
     public void getImagesUri(ArrayList<Uri> uri, int index, ArrayList<Uri> realUri){
 
+        Log.v("test","index "+index);
         Uri file = uri.get(index);
         StorageReference imagesRef = storageRef.child("images/"+getAlphaNumericString(10));
         UploadTask uploadTask = imagesRef.putFile(file);
