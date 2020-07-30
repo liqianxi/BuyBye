@@ -45,7 +45,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
     private EditText enterItemPrice;
     private GridView gridView;
     private ArrayList<Bitmap> pictureList = new ArrayList<>();
-    private ArrayList<Uri> pictureUriList = new ArrayList<>();
+    private ArrayList<String> pictureStringList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -89,10 +89,8 @@ public class AddSingleItemActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-            Log.v("test12313213","212112");
-            Log.v("test",pictureUriList.get(0).toString());
-            Log.v("test12313213213","212112");
-            Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
+
+            Item item = new Item(enterItemName.getText().toString(),pictureStringList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
             //Log.v("test",pictureUriList.get(0).toString());
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
             Bundle bundle = new Bundle();
@@ -118,13 +116,16 @@ public class AddSingleItemActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+// Check for the freshest data.
+
         if (requestCode == 1 && resultCode == RESULT_OK) {
             ClipData clipData = data.getClipData();
             if(clipData != null){
                 for(int i=0;i<clipData.getItemCount();i++){
                     Uri imageUri = clipData.getItemAt(i).getUri();
                     try {
-                        pictureUriList.add(imageUri);
+                        pictureStringList.add(imageUri.toString());
                         InputStream is = getContentResolver().openInputStream(imageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(is);
                         pictureList.add(bitmap);
@@ -136,7 +137,8 @@ public class AddSingleItemActivity extends AppCompatActivity {
             }else{
                 Uri imageUri = data.getData();
                 try {
-                    pictureUriList.add(imageUri);
+                    assert imageUri != null;
+                    pictureStringList.add(imageUri.toString());
                     InputStream is = getContentResolver().openInputStream(imageUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
                     pictureList.add(bitmap);

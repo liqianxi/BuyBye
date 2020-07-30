@@ -13,7 +13,7 @@ public class Item implements Parcelable {
     private String itemName;
     private String City;
     private String OwnerId;
-    private ArrayList<Uri> pictureArray;
+    private ArrayList<String> pictureArray;
     private double price;
     private String description;
     private Date pickUpTime;
@@ -22,7 +22,7 @@ public class Item implements Parcelable {
 
     public Item(){};
 
-    public Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime){
+    public Item(String itemName, ArrayList<String> pictureArray, double price, String description, Date pickUpTime){
         this.description = description;
         this.itemName = itemName;
         this.price = price;
@@ -30,12 +30,16 @@ public class Item implements Parcelable {
         this.pictureArray = pictureArray;
     }
 
+
     protected Item(Parcel in) {
         itemName = in.readString();
-        pictureArray = in.createTypedArrayList(Uri.CREATOR);
+        City = in.readString();
+        OwnerId = in.readString();
+        pictureArray = in.createStringArrayList();
         price = in.readDouble();
         description = in.readString();
         isSoldOut = in.readByte() != 0;
+        itemId = in.readString();
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -90,7 +94,7 @@ public class Item implements Parcelable {
         return price;
     }
 
-    public ArrayList<Uri> getPictureArray() {
+    public ArrayList<String> getPictureArray() {
         if (pictureArray == null){
             throw new NullPointerException();
         }
@@ -127,7 +131,7 @@ public class Item implements Parcelable {
         this.itemName = itemName;
     }
 
-    public void setPictureArray(ArrayList<Uri> pictureArray) {
+    public void setPictureArray(ArrayList<String> pictureArray) {
         this.pictureArray = pictureArray;
     }
 
@@ -146,10 +150,16 @@ public class Item implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+
         parcel.writeString(itemName);
-        parcel.writeTypedList(pictureArray);
+        parcel.writeString(City);
+        parcel.writeString(OwnerId);
+        parcel.writeStringList(pictureArray);
         parcel.writeDouble(price);
         parcel.writeString(description);
         parcel.writeByte((byte) (isSoldOut ? 1 : 0));
+        parcel.writeString(itemId);
     }
+
+
 }

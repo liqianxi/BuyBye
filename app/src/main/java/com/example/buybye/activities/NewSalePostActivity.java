@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 import com.example.buybye.R;
 import com.example.buybye.database.ItemDatabaseAccessor;
+import com.example.buybye.database.StorageAccessor;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
@@ -48,6 +49,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private EditText postName;
     private EditText postDesc;
     private EditText postPhoneNum;
+    private StorageAccessor storageAccessor = new StorageAccessor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +78,21 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
             @Override
             public void onClick(View view) {
                 //save post data to the database
+                ArrayList<ArrayList<Uri>> allUri = new ArrayList<>();
+                ArrayList<ArrayList<Uri>> resultUri = new ArrayList<>();
+                for(int i=0;i<Items.size();i++){
+                    ArrayList<Uri> singleItemUriList = new ArrayList<>();
+                    for(int j=0;j<Items.get(i).getPictureArray().size();j++){
+                        singleItemUriList.add(Uri.parse(Items.get(i).getPictureArray().get(j)));
+                    }
+                    allUri.add(singleItemUriList);
+                    resultUri.add(new ArrayList<>());
+                }
                 ArrayList<Item> tempList = new ArrayList<>();
                 for(int i=0;i<Items.size();i++){
+                    storageAccessor.getImagesUri(allUri.get(i),0,resultUri.get(i));
                     Item item = Items.get(i);
+                    item.setPictureArray(ArrayToString(resultUri.get(i)));
                     item.setOwner(CurrentUser.getEmail());//use email as owner id
                     tempList.add(item);
                 }
@@ -87,13 +101,6 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
             }
         });
         Log.v("test","in2");
-
-
-
-
-
-
-
 
     }
 
@@ -120,6 +127,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     @Override
     public void onItemsAddedSuccess() {
         //all items has been added
+        Log.v("test123da213","212112");
         currentPosts = CurrentUser.getSellerPostArray();
         if (currentPosts == null){
             currentPosts = new ArrayList<>();
@@ -141,10 +149,17 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         updateHash.put("sellerPostArray",currentPosts);
         userDatabaseAccessor.updateUserProfile(CurrentUser,updateHash,NewSalePostActivity.this );
     }
+    public ArrayList<String> ArrayToString(ArrayList<Uri> uris){
+        ArrayList<String> stringUris = new ArrayList<>();
+        for(int i=0;i<uris.size();i++){
+            stringUris.add(uris.get(i).toString());
+        }
+        return stringUris;
+    }
 
     @Override
     public void onItemsAddedFailure() {
-
+        Log.v("test123da213","failed");
     }
 
     @Override
