@@ -29,8 +29,6 @@ public class ImageAdapter extends ArrayAdapter<Bitmap> {
         ImageView imageView = new ImageView(context);
         imageView.setImageBitmap(images.get(position));
 
-
-
         return imageView;
     }
 }

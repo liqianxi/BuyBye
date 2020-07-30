@@ -140,9 +140,10 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
             // the user is logged in successfully
             Log.v(TAG, "User is logged in!");
             Log.v(TAG, "Ready to store user information!");
+            String Id = setUserId(user);
             this.firestore
                     .collection(referenceName)
-                    .document(this.currentUser.getUid())
+                    .document(Objects.requireNonNull(this.currentUser.getEmail()))
                     .set(user)
                     .addOnSuccessListener(aVoid -> {
                         Log.v(TAG, "User info saved!");
@@ -156,7 +157,39 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
             Log.v(TAG, "User is not logged in!");
         }
     }
+    public String getAlphaNumericString(int n)
+    {
 
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                    = (int)(AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
+    public String setUserId(User currentUser){
+        String Id = getAlphaNumericString(8);
+        if(currentUser.getEmail() != null){
+            Id = currentUser.getEmail();
+        }
+        return Id;
+    }
     /**
      * Update the user profile according to the User object past in. The key used is the Uid
      * assigned by firestore automatically
@@ -181,9 +214,11 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
                     Log.v(TAG, "Ready to store user information!");
                     Map<String, Object> map = hashmap;
 
+
+
                     firestore
                             .collection(referenceName)
-                            .document(currentUser.getUid())
+                            .document(Objects.requireNonNull(currentUser.getEmail()))
                             .update(map)
                             .addOnSuccessListener(e -> {
                                 Log.v(TAG, "User info updated!");
@@ -213,7 +248,7 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
         if (this.currentUser != null) {
             Objects.requireNonNull(this.firestore
                     .collection(this.referenceName)
-                    .document(this.currentUser.getUid())
+                    .document(Objects.requireNonNull(currentUser.getEmail()))
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         Log.v(TAG, "Get User Successfully!");

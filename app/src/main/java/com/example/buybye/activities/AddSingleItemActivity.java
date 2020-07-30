@@ -89,6 +89,9 @@ public class AddSingleItemActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
+            Log.v("test12313213","212112");
+            Log.v("test",pictureUriList.get(0).toString());
+            Log.v("test12313213213","212112");
             Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
             //Log.v("test",pictureUriList.get(0).toString());
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);

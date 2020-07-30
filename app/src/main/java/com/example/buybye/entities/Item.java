@@ -12,7 +12,7 @@ import java.util.Date;
 public class Item implements Parcelable {
     private String itemName;
     private String City;
-    private User owner;
+    private String OwnerId;
     private ArrayList<Uri> pictureArray;
     private double price;
     private String description;
@@ -66,12 +66,12 @@ public class Item implements Parcelable {
         City = city;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwner(String OwnerId) {
+        this.OwnerId = OwnerId;
     }
 
-    public User getOwner() {
-        return owner;
+    public String getOwner() {
+        return OwnerId;
     }
 
     public boolean isSoldOut() {

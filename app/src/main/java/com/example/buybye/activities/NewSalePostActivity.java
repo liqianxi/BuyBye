@@ -79,7 +79,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
                 ArrayList<Item> tempList = new ArrayList<>();
                 for(int i=0;i<Items.size();i++){
                     Item item = Items.get(i);
-                    item.setOwner(CurrentUser);
+                    item.setOwner(CurrentUser.getEmail());//use email as owner id
                     tempList.add(item);
                 }
                 itemDatabaseAccessor.addItem(tempList,NewSalePostActivity.this);
