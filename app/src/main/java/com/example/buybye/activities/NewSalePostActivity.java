@@ -1,6 +1,7 @@
 package com.example.buybye.activities;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
@@ -8,9 +9,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,8 +32,10 @@ import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class NewSalePostActivity extends AppCompatActivity implements ItemAddDeleteListener, UserProfileStatusListener {
     private ArrayList<Item> Items = new ArrayList<>();
@@ -47,6 +52,8 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_new_sale_post);
         CurrentUser = getIntent().getParcelableExtra("currentUser");
         postName = findViewById(R.id.PostName);
@@ -109,6 +116,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemsAddedSuccess() {
         //all items has been added
@@ -125,6 +133,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         sellerPostInstance.setDescriptions(postDescriptionString);
         sellerPostInstance.setPostName(postNameString);
         sellerPostInstance.setItemList(Items);
+        sellerPostInstance.setPostDate(java.util.Date.from( Instant.now() ));
         currentPosts.add(sellerPostInstance);
         Log.v("test","in3");
         //CurrentUser.setSellerPostArray(currentPosts);

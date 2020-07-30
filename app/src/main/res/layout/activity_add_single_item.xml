@@ -67,9 +67,9 @@
         <GridView
             android:id="@+id/GridPictureView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnWidth="120dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="0dp"
+            android:columnWidth="120dp"
             android:fitsSystemWindows="true"
             android:numColumns="auto_fit"
             android:stretchMode="spacingWidthUniform" />

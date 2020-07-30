@@ -1,6 +1,7 @@
 package com.example.buybye.activities;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -12,9 +13,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class AddSingleItemActivity extends AppCompatActivity {
     private EditText enterPickUpDate;
@@ -43,9 +47,12 @@ public class AddSingleItemActivity extends AppCompatActivity {
     private ArrayList<Bitmap> pictureList = new ArrayList<>();
     private ArrayList<Uri> pictureUriList = new ArrayList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_add_single_item);
         enterItemName = findViewById(R.id.enterItemName);
         enterItemDescription = findViewById(R.id.enterItemDescription);
@@ -82,7 +89,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-            Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), null);
+            Item item = new Item(enterItemName.getText().toString(),pictureUriList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
             //Log.v("test",pictureUriList.get(0).toString());
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
             Bundle bundle = new Bundle();

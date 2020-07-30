@@ -31,10 +31,31 @@ public class ItemDatabaseAccessor extends DatabaseAccessor {
         this.currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public String generateRandomString(){
-        byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
-        return new String(array, StandardCharsets.UTF_8);
+    public String getAlphaNumericString(int n)
+    {
+
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                    = (int)(AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
     }
 
 
@@ -46,8 +67,7 @@ public class ItemDatabaseAccessor extends DatabaseAccessor {
         ArrayList<Task<Void>> taskList = new ArrayList<Task<Void>>();
         for(int i=0;i<items.size();i++){
             Item item = items.get(i);
-            String uid = generateRandomString();
-            Log.v("test","in23dwadwa21321");
+            String uid = getAlphaNumericString(8);
             String name = "peps0";
             if(item.getItemName()!=null){
                 name = item.getItemName();

@@ -98,12 +98,12 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         this.userDatabaseAccessor = new UserDatabaseAccessor();
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);
         this.progressDialog.setContentView(R.layout.custom_progress_bar);
-/*
+
         if (this.userDatabaseAccessor.isLoggedin()) {
             Log.v("test","is login");
             progressDialog.show();
             userDatabaseAccessor.getUserProfile(this);
-        }*/
+        }
 
         this.loginWarn = findViewById(R.id.loginWarning);
         EmailTitle = findViewById(R.id.EmailTitle);

@@ -20,6 +20,8 @@ public class Item implements Parcelable {
     private boolean isSoldOut;
     private String itemId;
 
+    public Item(){};
+
     public Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime){
         this.description = description;
         this.itemName = itemName;

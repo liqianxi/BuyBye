@@ -26,7 +26,9 @@
         <activity
             android:name=".activities.SearchActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activities.HomePageActivity" />
+        <activity android:name=".activities.HomePageActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".activities.FrontPageActivity" />
     </application>
 
