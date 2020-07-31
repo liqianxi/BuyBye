@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 
 import com.example.buybye.R;
 import com.example.buybye.entities.Item;
+import com.example.buybye.fragments.DatePickerFragment;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
@@ -51,17 +53,21 @@ public class AddSingleItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
+
         setContentView(R.layout.activity_add_single_item);
         enterItemName = findViewById(R.id.enterItemName);
         enterItemDescription = findViewById(R.id.enterItemDescription);
         enterItemPrice = findViewById(R.id.enterItemPrice);
         enterPickUpDate = findViewById(R.id.enterPickUpDate);
         gridView = findViewById(R.id.GridPictureView);
+
         // get pictures from local storage
         Button AddItemButton = findViewById(R.id.addImageButton);
         Button ConfirmButton = findViewById(R.id.confirmItemButton);
+
         AddItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,5 +163,18 @@ public class AddSingleItemActivity extends AppCompatActivity {
             gridView.setAdapter(imageAdapter);
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        View decorView = getWindow().getDecorView();
+        // Hide both the navigation bar and the status bar.
+        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+        // a general rule, you should design your app to hide the status bar whenever you
+        // hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 }

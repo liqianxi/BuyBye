@@ -35,6 +35,7 @@ public class HomePageActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
+
         setContentView(R.layout.activity_home_page);
         currentUser = (User) getIntent().getParcelableExtra("UserObject");
         Log.v("test",currentUser.getUserName()); // here correct
@@ -68,6 +69,20 @@ public class HomePageActivity extends AppCompatActivity {
                 };
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        View decorView = getWindow().getDecorView();
+        // Hide both the navigation bar and the status bar.
+        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+        // a general rule, you should design your app to hide the status bar whenever you
+        // hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
     public void switchFragment(int caseId){
         androidx.fragment.app.FragmentManager t = getSupportFragmentManager();
 
