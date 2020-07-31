@@ -50,6 +50,7 @@ public class PostItemListAdapter extends ArrayAdapter<Item> {
             view = LayoutInflater.from(context).inflate(R.layout.each_post,parent,false);
         }
         Item item = items.get(position);
+        if (item!=null && item.getPictureArray() != null){
         TextView price = view.findViewById(R.id.itemPrice);
         TextView sellerName = view.findViewById(R.id.sellerName);
         TextView itemName = view.findViewById(R.id.ItemName);
@@ -68,7 +69,7 @@ public class PostItemListAdapter extends ArrayAdapter<Item> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }}
 
         return view;
     }

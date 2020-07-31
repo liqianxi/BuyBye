@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.buybye.entities.Item;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,7 +33,14 @@ public class StorageAccessor{
     public StorageReference getStorageRef() {
         return storageRef;
     }
-
+    public interface CustomListener{
+        public void onSingleReady(ArrayList<Uri> uris, int curIndex);
+        public void onAllReady(ArrayList<Uri> uris);
+    }
+    private CustomListener listener;
+    public void setListener(CustomListener listener){
+        this.listener = listener;
+    }
     public String getAlphaNumericString(int n)
     {
 
@@ -59,66 +67,59 @@ public class StorageAccessor{
 
         return sb.toString();
     }
-    public ArrayList<Uri> getImagesUri(ArrayList<Uri> uri, int index, ArrayList<Uri> realUri) {
-        final ArrayList<Uri> result = realUri;
-        Log.v("test0", String.valueOf(uri.size()));
-        Log.v("test", "index " + index);
 
-        Uri file = uri.get(index);
-        String name = "images/" + getAlphaNumericString(10);
-        StorageReference imagesRef = storageRef.child(name);
-        UploadTask uploadTask = imagesRef.putFile(file);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-                Log.v("test", "number" + index + "item upload failed");
+    public void getImagesUri(ArrayList<Uri> uri0, int index, ArrayList<Uri> realUri) {
+        if(index >= uri0.size()){
+            listener.onAllReady(realUri);
+        }
+        else{
+            Uri uri = uri0.get(index);
+            final ArrayList<Uri> result = realUri;
+            String name = "images/" + getAlphaNumericString(10);
+            StorageReference imagesRef = storageRef.child(name);
+            UploadTask uploadTask = imagesRef.putFile(uri);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-                int i = index;
-                i++;
-                result.add(null);
-                if (i < uri.size()) {
-                    getImagesUri(uri, i, result);
+                    Log.v("test", "number" + index + "item upload failed");
+                    result.add(null);
+
                 }
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-
-                        // Continue with the task to get the download URL
-                        return imagesRef.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-
-                            int i = index;
-                            i++;
-                            Uri downloadUri = task.getResult();
-                            Log.v("result:", downloadUri.toString());
-                            result.add(downloadUri);
-                            if (i < uri.size()) {
-                                Log.v("resultvalue", String.valueOf(result.size()));
-                                getImagesUri(uri, i, result);
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
                             }
 
-                        } else {
-                            Log.v("test", "failed get real uri");
-                            // Handle failures
-                            // ...
+                            // Continue with the task to get the download URL
+                            return imagesRef.getDownloadUrl();
                         }
-                    }
-                });
-            }
-        });
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
 
-        return result;
-    }
+                                Uri downloadUri = task.getResult();
+                                result.add(downloadUri);
+                                if(listener !=null && index < uri0.size()){
+                                    listener.onSingleReady(result, index);
+                                }
+                            } else {
+                                Log.v("test", "failed get real uri");
+                                // Handle failures
+                                // ...
+                            }
+                        }
+                    });
+                }
+            });
+
+    }}
+
 }
