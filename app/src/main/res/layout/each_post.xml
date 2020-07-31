@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/each_trip_record"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="3dp"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="12dp"
@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView

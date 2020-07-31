@@ -94,7 +94,6 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
                 }
 
-                Log.v("Big array size", String.valueOf(allUriSingle.size()));
                 ArrayList<Uri> resultList = new ArrayList<>();
 
                 storageAccessor.getImagesUri(allUriSingle,0,resultList);
@@ -162,7 +161,6 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     @Override
     public void onItemsAddedSuccess() {
         //all items has been added
-        Log.v("test123da213","212112");
         currentPosts = CurrentUser.getSellerPostArray();
         if (currentPosts == null){
             currentPosts = new ArrayList<>();
@@ -171,14 +169,13 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         String postNameString = postName.getText().toString();
         String postDescriptionString = postDesc.getText().toString();
         String phoneNum = postPhoneNum.getText().toString();
-        Log.v("test","in5");
         sellerPostInstance.setPhoneNumber(phoneNum);
         sellerPostInstance.setDescriptions(postDescriptionString);
         sellerPostInstance.setPostName(postNameString);
         sellerPostInstance.setItemList(Items);
         sellerPostInstance.setPostDate(java.util.Date.from( Instant.now() ));
         currentPosts.add(sellerPostInstance);
-        Log.v("test","in3");
+
         //CurrentUser.setSellerPostArray(currentPosts);
         HashMap<String,Object> updateHash = new HashMap<>();
         updateHash.put("sellerPostArray",currentPosts);
@@ -187,8 +184,6 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     public ArrayList<String> ArrayToString(ArrayList<Uri> uris){
         ArrayList<String> stringUris = new ArrayList<>();
         for(int i=0;i<uris.size();i++){
-            //getBaseContext().getContentResolver().takePersistableUriPermission(uris.get(i), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
             stringUris.add(uris.get(i).toString());
         }
         return stringUris;
@@ -232,7 +227,6 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     @Override
     public void onProfileUpdateSuccess(User user) {
         CurrentUser.setSellerPostArray(currentPosts);
-        Log.v("test","here");
         Intent intent = new Intent(NewSalePostActivity.this, NotifyPostSuccessActivity.class);
         startActivity(intent);
     }
