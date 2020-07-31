@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/yourPost"
+        android:enabled="true"
+        android:icon="@drawable/posts"
+        android:title="Your Post"/>
+    <item
+        android:id="@+id/ItemsOnSale"
+        android:enabled="true"
+        android:icon="@drawable/item_onsale"
+        android:title="Your Items for sale"/>
+    <item
+        android:id="@+id/soldItemHistory"
+        android:enabled="true"
+        android:icon="@drawable/item_history"
+        android:title="Sold Items"/>
+</menu>
