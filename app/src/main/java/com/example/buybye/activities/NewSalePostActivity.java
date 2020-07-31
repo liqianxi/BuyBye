@@ -70,6 +70,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewSalePostActivity.this,AddSingleItemActivity.class);
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 startActivityForResult(intent,100);
             }
         });
@@ -87,13 +88,15 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
                         Log.v("item",Items.get(i).getPictureArray().get(j));
                     }
                     allUri.add(singleItemUriList);
-                    resultUri.add(new ArrayList<>());
+                    //resultUri.add(new ArrayList<>());
                 }
                 ArrayList<Item> tempList = new ArrayList<>();
                 for(int i=0;i<Items.size();i++){
-                    storageAccessor.getImagesUri(allUri.get(i),0,resultUri.get(i));
+                    ArrayList<Uri> temp2 = new ArrayList<>();
+                    temp2 = storageAccessor.getImagesUri(allUri.get(i),0,temp2);
                     Item item = Items.get(i);
-                    item.setPictureArray(ArrayToString(resultUri.get(i)));
+                    Log.v("out", String.valueOf(temp2.size()));
+                    item.setPictureArray(ArrayToString(temp2));
                     item.setOwner(CurrentUser.getEmail());//use email as owner id
                     tempList.add(item);
                 }
@@ -101,7 +104,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
             }
         });
-        Log.v("test","in2");
+
 
     }
 
@@ -153,7 +156,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     public ArrayList<String> ArrayToString(ArrayList<Uri> uris){
         ArrayList<String> stringUris = new ArrayList<>();
         for(int i=0;i<uris.size();i++){
-            getBaseContext().getContentResolver().takePersistableUriPermission(uris.get(i), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            //getBaseContext().getContentResolver().takePersistableUriPermission(uris.get(i), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
             stringUris.add(uris.get(i).toString());
         }

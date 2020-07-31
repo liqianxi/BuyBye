@@ -74,6 +74,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
 
                 }
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
                 intent.setType("image/*");
                 startActivityForResult(intent,1);
@@ -124,9 +125,9 @@ public class AddSingleItemActivity extends AppCompatActivity {
             if(clipData != null){
                 for(int i=0;i<clipData.getItemCount();i++){
                     Uri imageUri = clipData.getItemAt(i).getUri();
-
-                    getBaseContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     try {
+                        getApplicationContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
                         pictureStringList.add(imageUri.toString());
                         InputStream is = getContentResolver().openInputStream(imageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(is);
@@ -138,8 +139,10 @@ public class AddSingleItemActivity extends AppCompatActivity {
                 }
             }else{
                 Uri imageUri = data.getData();
+
                 try {
-                    assert imageUri != null;
+                    getApplicationContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
                     pictureStringList.add(imageUri.toString());
                     InputStream is = getContentResolver().openInputStream(imageUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
