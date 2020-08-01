@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,17 +17,22 @@ import android.widget.TextView;
 
 import com.example.buybye.R;
 import com.example.buybye.activities.PostsDisplayActivity;
+import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.User;
+import com.example.buybye.listeners.UserProfileStatusListener;
 import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ramotion.foldingcell.FoldingCell;
 
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements UserProfileStatusListener {
     private TextView userNameProfile;
     private TextView RegionProfile;
     private ImageView settingImage;
     private ImageView userPhoto;
     private RatingBar ratingBar;
+    private User currentUser;
+    private UserDatabaseAccessor userDatabaseAccessor;
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -36,12 +42,14 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+        userDatabaseAccessor = new UserDatabaseAccessor();
         userNameProfile = view.findViewById(R.id.userNameProfile);
         RegionProfile = view.findViewById(R.id.RegionProfile);
         settingImage = view.findViewById(R.id.settingImage);
         ratingBar = view.findViewById(R.id.ratingBar);
         userPhoto = view.findViewById(R.id.userPhoto);
         BottomNavigationView menu = view.findViewById(R.id.profileFirstMenu);
+
         menu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -49,6 +57,9 @@ public class AccountFragment extends Fragment {
                     case R.id.yourPost:
                         //switchFragment(R.layout.fragment_explore);
                         Intent intent = new Intent(getActivity(), PostsDisplayActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("User",currentUser);
+                        intent.putExtras(bundle);
                         startActivity(intent);
 
                         return true;
@@ -64,34 +75,66 @@ public class AccountFragment extends Fragment {
 
         });
 
-/*
-*         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-                item -> {
-                    switch (item.getItemId()) {
-                        case R.id.home_page:
-                            switchFragment(R.layout.fragment_explore);
-
-                            return true;
-                        case R.id.check_buy_demand:
-                            switchFragment(R.layout.fragment_wish_to_get);
-                            return true;
-                        case R.id.my_account:
-                            switchFragment(R.layout.fragment_account);
-                            return true;
-                    }
-                    return false;
-                };
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-*
-*
-* */
-
-
-
 
         return view;
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        userDatabaseAccessor.getUserProfile(this);
+    }
+
+    @Override
+    public void onProfileStoreSuccess() {
+
+    }
+
+    @Override
+    public void onProfileStoreFailure() {
+
+    }
+
+    @Override
+    public void onProfileRetrieveSuccess(User user) {
+        this.currentUser = user;
+        Log.v("array", String.valueOf(currentUser.getSellerPostArray().size()));
+    }
+
+    @Override
+    public void onProfileRetrieveFailure() {
+
+    }
+
+    @Override
+    public void onProfileUpdateSuccess(User user) {
+
+    }
+
+    @Override
+    public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
 
     }
 }

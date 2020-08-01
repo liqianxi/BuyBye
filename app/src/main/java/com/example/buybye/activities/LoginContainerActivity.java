@@ -297,7 +297,8 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
         bundle.putParcelable("UserObject", user);
         intent.putExtras(bundle);
-
+        Log.v("email0",user.getEmail());
+        Log.v("array0", String.valueOf(user.getSellerPostArray().size()));
 
         startActivity(intent);
         if (!LoginContainerActivity.this.isFinishing() && progressDialog!=null) {

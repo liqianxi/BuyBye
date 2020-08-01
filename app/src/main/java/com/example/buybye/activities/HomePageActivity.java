@@ -16,30 +16,32 @@ import android.view.WindowManager;
 import android.widget.GridView;
 
 import com.example.buybye.R;
+import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.fragments.AccountFragment;
 import com.example.buybye.fragments.ExploreFragment;
+import com.example.buybye.listeners.UserProfileStatusListener;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity implements UserProfileStatusListener {
     private BottomNavigationView bottomNavigationView;
     private User currentUser;
+    private UserDatabaseAccessor userDatabaseAccessor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
-
+        userDatabaseAccessor = new UserDatabaseAccessor();
 
         setContentView(R.layout.activity_home_page);
         currentUser = (User) getIntent().getParcelableExtra("UserObject");
-        Log.v("test",currentUser.getUserName()); // here correct
-        Log.v("test","123213");
+
         switchFragment(R.layout.fragment_explore);
         // Hide both the navigation bar and the status bar.
         // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -81,6 +83,7 @@ public class HomePageActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+        userDatabaseAccessor.getUserProfile(this);
     }
 
     public void switchFragment(int caseId){
@@ -107,4 +110,53 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onProfileStoreSuccess() {
+
+    }
+
+    @Override
+    public void onProfileStoreFailure() {
+
+    }
+
+    @Override
+    public void onProfileRetrieveSuccess(User user) {
+        this.currentUser = user;
+    }
+
+    @Override
+    public void onProfileRetrieveFailure() {
+
+    }
+
+    @Override
+    public void onProfileUpdateSuccess(User user) {
+
+    }
+
+    @Override
+    public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
+
+    }
 }

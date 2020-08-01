@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -85,6 +86,7 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
         itemRecyclerView.setAdapter(adapter);
         // Set layout manager to position the items
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(holder.postTitleInList.getContext()));
+        itemRecyclerView.addItemDecoration(new DividerItemDecoration(itemRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         FoldingCell fc = holder.fc;
         fc.setOnClickListener(new View.OnClickListener() {

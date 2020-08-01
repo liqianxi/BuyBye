@@ -19,18 +19,21 @@ import com.example.buybye.activities.NewSalePostActivity;
 import com.example.buybye.activities.PostItemListAdapter;
 import com.example.buybye.activities.SearchActivity;
 import com.example.buybye.database.ItemDatabaseAccessor;
+import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.ItemListRequestListener;
+import com.example.buybye.listeners.UserProfileStatusListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class ExploreFragment extends Fragment implements ItemListRequestListener{
+public class ExploreFragment extends Fragment implements ItemListRequestListener, UserProfileStatusListener {
 
     private TextView test;
     private ItemDatabaseAccessor itemDatabaseAccessor;
+    private UserDatabaseAccessor userDatabaseAccessor;
     private ArrayList<Item> items = new ArrayList<Item>();
     private User currentUser;
     private TextView addNewPost;
@@ -47,7 +50,7 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
         if(bundle != null){
             currentUser = bundle.getParcelable("User");
         }
-
+        userDatabaseAccessor = new UserDatabaseAccessor();
         addNewPost = view.findViewById(R.id.addPost);
         ImageView searchBar = view.findViewById(R.id.searchSaleItem);
         searchBar.setImageResource(R.drawable.searchbar);
@@ -91,10 +94,61 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
         GridView itemList = (GridView) Objects.requireNonNull(getView()).findViewById(R.id.itemList);
         PostItemListAdapter postItemListAdapter = new PostItemListAdapter(getContext(),items);
         itemList.setAdapter(postItemListAdapter);
+        userDatabaseAccessor.getUserProfile(this);
     }
 
     @Override
     public void onGetItemFailure() {
+
+    }
+
+    @Override
+    public void onProfileStoreSuccess() {
+
+    }
+
+    @Override
+    public void onProfileStoreFailure() {
+
+    }
+
+    @Override
+    public void onProfileRetrieveSuccess(User user) {
+        this.currentUser = user;
+    }
+
+    @Override
+    public void onProfileRetrieveFailure() {
+
+    }
+
+    @Override
+    public void onProfileUpdateSuccess(User user) {
+
+    }
+
+    @Override
+    public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
 
     }
 }
