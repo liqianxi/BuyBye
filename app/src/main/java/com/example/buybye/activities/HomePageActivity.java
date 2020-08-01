@@ -97,6 +97,7 @@ public class HomePageActivity extends AppCompatActivity {
                 break;
             case R.layout.fragment_account:
                 Fragment accountFragment = new AccountFragment();
+                accountFragment.setArguments(bundle);
                 t.beginTransaction().replace(R.id.frame, accountFragment).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;

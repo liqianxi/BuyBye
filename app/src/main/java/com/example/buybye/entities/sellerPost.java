@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class sellerPost extends Post {
     public ArrayList<Item> itemList;
     public sellerPost() {
-
+        super();
     }
 
     public ArrayList<Item> getItemList() {
