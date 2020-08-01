@@ -108,7 +108,6 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
     @Override
     public void onProfileRetrieveSuccess(User user) {
         this.currentUser = user;
-        Log.v("array", String.valueOf(currentUser.getSellerPostArray().size()));
     }
 
     @Override
