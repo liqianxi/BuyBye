@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.PostsDisplayActivity"></activity>
+        <activity android:name=".activities.SettingActivity"></activity>
+        <activity android:name=".activities.PostsDisplayActivity" />
         <activity android:name=".activities.NotifyPostSuccessActivity" />
         <activity android:name=".activities.LoginContainerActivity">
             <intent-filter>

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.buybye.R;
 import com.example.buybye.activities.PostsDisplayActivity;
+import com.example.buybye.activities.SettingActivity;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.UserProfileStatusListener;
@@ -49,7 +50,14 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
         ratingBar = view.findViewById(R.id.ratingBar);
         userPhoto = view.findViewById(R.id.userPhoto);
         BottomNavigationView menu = view.findViewById(R.id.profileFirstMenu);
-
+        userPhoto.setImageResource(R.drawable.ic_launcher_foreground);
+        settingImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
         menu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
