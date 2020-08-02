@@ -17,6 +17,7 @@ import android.widget.GridView;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.fragments.AccountFragment;
@@ -38,7 +39,7 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         userDatabaseAccessor = new UserDatabaseAccessor();
-
+        ActivityCollector.addActivity(this);
         setContentView(R.layout.activity_home_page);
         currentUser = (User) getIntent().getParcelableExtra("UserObject");
 
@@ -84,6 +85,12 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         userDatabaseAccessor.getUserProfile(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     public void switchFragment(int caseId){

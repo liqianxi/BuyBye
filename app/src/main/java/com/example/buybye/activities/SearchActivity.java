@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.example.buybye.R;
+import com.example.buybye.entities.ActivityCollector;
 
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public class SearchActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_search);
         TextView cancel = findViewById(R.id.CancelText);
+        ActivityCollector.addActivity(this);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,5 +43,11 @@ public class SearchActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

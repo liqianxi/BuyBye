@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.LoginStatusListener;
 import com.example.buybye.listeners.SignUpStatusListener;
@@ -94,11 +95,10 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
         setContentView(R.layout.activity_login_container);
-        Log.v("Test","1");
         this.userDatabaseAccessor = new UserDatabaseAccessor();
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);
         this.progressDialog.setContentView(R.layout.custom_progress_bar);
-
+        ActivityCollector.addActivity(this);
         if (this.userDatabaseAccessor.isLoggedin()) {
             progressDialog.show();
             userDatabaseAccessor.getUserProfile(this);
@@ -230,6 +230,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     protected void onDestroy() {
         super.onDestroy();
         userDatabaseAccessor.deleteUser(LoginContainerActivity.this);
+
     }
 
     private boolean verifyFields(String data) {
@@ -356,11 +357,13 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onDeleteSuccess() {
+        ActivityCollector.removeActivity(this);
         Log.v("Delete","Delete Success");
     }
 
     @Override
     public void onDeleteFailure() {
+        ActivityCollector.removeActivity(this);
         Log.v("Delete","Delete Failure");
     }
 

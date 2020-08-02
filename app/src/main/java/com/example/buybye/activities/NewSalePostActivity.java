@@ -24,6 +24,7 @@ import com.example.buybye.R;
 import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.database.StorageAccessor;
 import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.entities.sellerPost;
@@ -67,6 +68,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         itemsList = findViewById(R.id.itemListView);
         adapter = new PostItemListAdapter(getApplicationContext(),Items);
         itemsList.setAdapter(adapter);
+        ActivityCollector.addActivity(this);
         newItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,6 +171,11 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override

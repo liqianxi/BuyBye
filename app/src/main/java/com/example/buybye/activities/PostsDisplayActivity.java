@@ -8,15 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.User;
 import com.example.buybye.entities.sellerPost;
 import com.example.buybye.listeners.UserProfileStatusListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class PostsDisplayActivity extends AppCompatActivity implements UserProfileStatusListener {
     private RecyclerView recyclerView;
@@ -27,6 +30,8 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         View decorView = getWindow().getDecorView();
         // Hide both the navigation bar and the status bar.
         // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -36,6 +41,7 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_posts_display);
+        ActivityCollector.addActivity(this);
         userDatabaseAccessor = new UserDatabaseAccessor();
         recyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
         currentUser = new User();
@@ -59,6 +65,12 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
     protected void onStart() {
         super.onStart();
         userDatabaseAccessor.getUserProfile(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.buybye.R;
+import com.example.buybye.entities.ActivityCollector;
 
 import java.util.Objects;
 
@@ -24,6 +25,7 @@ public class NotifyPostSuccessActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_notify_post_success);
+        ActivityCollector.addActivity(this);
         TextView title = findViewById(R.id.PostSuccessTitle);
         Button backToFrontPageButton = findViewById(R.id.BackToFrontPageButton);
         backToFrontPageButton.setOnClickListener(new View.OnClickListener() {
@@ -47,5 +49,11 @@ public class NotifyPostSuccessActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

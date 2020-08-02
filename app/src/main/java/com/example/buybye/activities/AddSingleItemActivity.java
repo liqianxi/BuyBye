@@ -26,6 +26,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.example.buybye.R;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.Item;
 import com.example.buybye.fragments.DatePickerFragment;
 import com.google.gson.Gson;
@@ -58,6 +59,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
         setContentView(R.layout.activity_add_single_item);
+        ActivityCollector.addActivity(this);
         enterItemName = findViewById(R.id.enterItemName);
         enterItemDescription = findViewById(R.id.enterItemDescription);
         enterItemPrice = findViewById(R.id.enterItemPrice);
@@ -176,5 +178,11 @@ public class AddSingleItemActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }
