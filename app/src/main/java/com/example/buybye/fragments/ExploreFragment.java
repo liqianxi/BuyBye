@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.buybye.R;
+import com.example.buybye.activities.CatogoryDisplayAdapter;
 import com.example.buybye.activities.NewSalePostActivity;
 import com.example.buybye.activities.PostItemListAdapter;
 import com.example.buybye.activities.SearchActivity;
@@ -37,6 +40,9 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
     private ArrayList<Item> items = new ArrayList<Item>();
     private User currentUser;
     private TextView addNewPost;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     public ExploreFragment() {
         // Required empty public constructor
@@ -53,7 +59,27 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
         userDatabaseAccessor = new UserDatabaseAccessor();
         addNewPost = view.findViewById(R.id.addPost);
         ImageView searchBar = view.findViewById(R.id.searchSaleItem);
-        searchBar.setImageResource(R.drawable.searchbar);
+        searchBar.setImageResource(R.drawable.search_icon);
+
+        // Lookup the recyclerview in activity layout
+        RecyclerView cardDisplayRecyclerView = view.findViewById(R.id.cardViewDisplayCatagory);
+
+        ArrayList<String> strs = new ArrayList<>();
+        strs.add("shoes");
+        strs.add("socks");
+        strs.add("shoes2");
+
+        // Create adapter passing in the sample user data
+        CatogoryDisplayAdapter adapter = new CatogoryDisplayAdapter(strs);
+        // Attach the adapter to the recyclerview to populate items
+        cardDisplayRecyclerView.setAdapter(adapter);
+        // Set layout manager to position the items
+        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        cardDisplayRecyclerView.setLayoutManager(horizontalLayoutManagaer);
+
+
+
+
         addNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

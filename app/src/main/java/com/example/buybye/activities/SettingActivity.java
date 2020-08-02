@@ -40,20 +40,17 @@ public class SettingActivity extends AppCompatActivity {
         settingsTitle = findViewById(R.id.settingsTitle);
         UserInfoButton = findViewById(R.id.UserInfoButton);
         SignOutButton = findViewById(R.id.signOutButton);
-        SignOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //sign out
-                userDatabaseAccessor.logoutUser();
-                // go to the login activity again:
-                Toast.makeText(getApplicationContext(),
-                        "You are Logged out!", Toast.LENGTH_LONG).show();
-                ActivityCollector.finishAll();
-                Intent intent = new Intent(getApplicationContext(), LoginContainerActivity.class);
-                startActivity(intent);
-                finish();
+        SignOutButton.setOnClickListener(view -> {
+            //sign out
+            userDatabaseAccessor.logoutUser();
+            // go to the login activity again:
+            Toast.makeText(getApplicationContext(),
+                    "You are Logged out!", Toast.LENGTH_LONG).show();
+            ActivityCollector.finishAll();
+            Intent intent = new Intent(getApplicationContext(), LoginContainerActivity.class);
+            startActivity(intent);
+            finish();
 
-            }
         });
     }
 

@@ -13,28 +13,58 @@
         android:id="@+id/searchSaleItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/searchbar" />
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/searchbar"
+        android:visibility="visible"
+        app:srcCompat="@drawable/search_icon" />
 
-    <TextView
-        android:id="@+id/addPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Add A Post"
-        android:textSize="22sp" />
-
-    <GridView
-        android:id="@+id/itemList"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cardViewDisplayCatagory"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="0dp"
-        android:columnWidth="180dp"
-        android:gravity="center"
-        android:numColumns="2"
-        android:stretchMode="spacingWidthUniform"></GridView>
+        android:orientation="horizontal" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/addPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Add A Post"
+            android:textSize="22sp" />
+
+        <GridView
+            android:id="@+id/itemList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="0dp"
+            android:columnWidth="180dp"
+            android:gravity="center"
+            android:numColumns="2"
+            android:stretchMode="spacingWidthUniform">
+
+        </GridView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#E4E4E4" />
+
+        <TextView
+            android:id="@+id/toTheEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Gallery to the End" />
+    </LinearLayout>
 
 
 </LinearLayout>
