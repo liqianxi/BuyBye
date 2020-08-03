@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="left"
         android:orientation="vertical">
 
 
@@ -28,27 +28,32 @@
             android:id="@+id/ItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ItemName" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="ItemName"
+            android:textColor="#000000"
+            android:textSize="22sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/itemPrice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="0.5"
+            android:text="$350"
+            android:textColor="#FF0000"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/itemPrice"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="$350"
-                android:textSize="30dp" />
+        <TextView
+            android:id="@+id/sellerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="0.5"
+            android:text="Leon" />
 
-            <TextView
-                android:id="@+id/sellerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="Leon" />
-        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

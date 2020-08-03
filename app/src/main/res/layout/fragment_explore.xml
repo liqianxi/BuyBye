@@ -1,70 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.ExploreFragment"
-    >
+    android:background="#F4F4F4"
+    tools:context=".fragments.ExploreFragment">
 
-    <ImageView
-        android:id="@+id/searchSaleItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|left"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/searchbar"
-        android:visibility="visible"
-        app:srcCompat="@drawable/search_icon" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardViewDisplayCatagory"
+    <ScrollView
+        android:id="@+id/scrollViewId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" />
+        android:layout_marginTop="60dp"
+
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+
+                android:fontFamily="sans-serif-black"
+                android:text="Category"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/addPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Add A Post"
+                android:textSize="22sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cardViewDisplayCatagory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="horizontal">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemsRecyclerExplorePage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="#E4E4E4" />
+
+            <TextView
+                android:id="@+id/toTheEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Gallery to the End" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/SearchBarId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/searchSaleItem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/searchbar"
+            android:visibility="visible"
+            app:srcCompat="@drawable/search_icon" />
 
         <TextView
-            android:id="@+id/addPost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Add A Post"
-            android:textSize="22sp" />
-
-        <GridView
-            android:id="@+id/itemList"
-            android:layout_width="wrap_content"
+            android:id="@+id/searchTitle"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="0dp"
-            android:columnWidth="180dp"
-            android:gravity="center"
-            android:numColumns="2"
-            android:stretchMode="spacingWidthUniform">
-
-        </GridView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="#E4E4E4" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="left|center_vertical"
+            android:shadowColor="#FFFFFF"
+            android:text="Search for what you want"
+            android:textColor="#CCCCCC" />
 
-        <TextView
-            android:id="@+id/toTheEnd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Gallery to the End" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/backToTheTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:text="Top" />
 
-</LinearLayout>
+
+</FrameLayout>

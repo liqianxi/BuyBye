@@ -23,6 +23,7 @@ import com.example.buybye.entities.User;
 import com.example.buybye.fragments.AccountFragment;
 import com.example.buybye.fragments.ExploreFragment;
 import com.example.buybye.listeners.UserProfileStatusListener;
+import com.example.buybye.listeners.fOnFocusListenable;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +34,7 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
     private BottomNavigationView bottomNavigationView;
     private User currentUser;
     private UserDatabaseAccessor userDatabaseAccessor;
+    private Fragment exploreFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +76,15 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Log.v("new","new");
+        if(exploreFragment instanceof fOnFocusListenable) {
+            ((fOnFocusListenable) exploreFragment).onWindowFocusChanged(hasFocus);
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         View decorView = getWindow().getDecorView();
@@ -85,6 +96,11 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         userDatabaseAccessor.getUserProfile(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -100,7 +116,7 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
         bundle.putParcelable("User",currentUser);
         switch(caseId){
             case R.layout.fragment_explore:
-                Fragment exploreFragment = new ExploreFragment();
+                exploreFragment = new ExploreFragment();
                 exploreFragment.setArguments(bundle);
                 t.beginTransaction().replace(R.id.frame, exploreFragment).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

@@ -1,5 +1,6 @@
 package com.example.buybye.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.Image;
 import android.view.LayoutInflater;
@@ -12,12 +13,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buybye.R;
+import com.example.buybye.entities.Catagory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CatogoryDisplayAdapter extends RecyclerView.Adapter<CatogoryDisplayAdapter.MyViewHolder> {
 
-    private ArrayList<String> catagories;
+    private ArrayList<Catagory> catagories;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -34,7 +37,7 @@ public class CatogoryDisplayAdapter extends RecyclerView.Adapter<CatogoryDisplay
 
 
     }
-    public CatogoryDisplayAdapter(ArrayList<String> catagories){
+    public CatogoryDisplayAdapter(ArrayList<Catagory> catagories){
         this.catagories = catagories;
 
     }
@@ -53,12 +56,14 @@ public class CatogoryDisplayAdapter extends RecyclerView.Adapter<CatogoryDisplay
         return myViewHolder;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull CatogoryDisplayAdapter.MyViewHolder holder, int position) {
         TextView CatagoryName = holder.CatagoryName;
         CardView cardView = holder.cardView;
-        CatagoryName.setText(catagories.get(position));
-        cardView.setBackgroundResource(R.drawable.shoes_catagory);
+        CatagoryName.setText(catagories.get(position).getName());
+        cardView.setBackgroundResource(catagories.get(position).getImage());
+        CatagoryName.setTextColor(R.color.ColorDarkGray);
 
     }
 
