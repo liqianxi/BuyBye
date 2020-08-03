@@ -1,40 +1,29 @@
 package com.example.buybye.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.GridView;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.ActivityCollector;
-import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.fragments.AccountFragment;
 import com.example.buybye.fragments.ExploreFragment;
 import com.example.buybye.listeners.UserProfileStatusListener;
-import com.example.buybye.listeners.fOnFocusListenable;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class HomePageActivity extends AppCompatActivity implements UserProfileStatusListener {
     private BottomNavigationView bottomNavigationView;
     private User currentUser;
     private UserDatabaseAccessor userDatabaseAccessor;
-    private Fragment exploreFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,14 +64,7 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        Log.v("new","new");
-        if(exploreFragment instanceof fOnFocusListenable) {
-            ((fOnFocusListenable) exploreFragment).onWindowFocusChanged(hasFocus);
-        }
-    }
+
 
     @Override
     protected void onStart() {
@@ -106,7 +88,7 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActivityCollector.removeActivity(this);
+
     }
 
     public void switchFragment(int caseId){
@@ -116,7 +98,7 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
         bundle.putParcelable("User",currentUser);
         switch(caseId){
             case R.layout.fragment_explore:
-                exploreFragment = new ExploreFragment();
+                Fragment exploreFragment = new ExploreFragment();
                 exploreFragment.setArguments(bundle);
                 t.beginTransaction().replace(R.id.frame, exploreFragment).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

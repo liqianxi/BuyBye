@@ -30,7 +30,7 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView postTitleInList;
-
+        public TextView postItemAmount;
 
         public TextView postDateInView;
         public TextView itemListTitle;
@@ -42,6 +42,7 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
             postTitleInList = view.findViewById(R.id.postTitleInList);
             postDateInView = view.findViewById(R.id.postDateInView);
             itemListTitle = view.findViewById(R.id.itemListTitle);
+            postItemAmount = view.findViewById(R.id.ItemAmountText);
             fc = view.findViewById(R.id.folding_cell);
             itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
 
@@ -76,7 +77,8 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
         postDateInView.setText(post.getPostDate().toString());
         TextView itemListTitle = holder.itemListTitle;
         itemListTitle.setText("title");
-
+        TextView amount = holder.postItemAmount;
+        amount.setText("Total Items Amount"+post.getItemList().size());
         RecyclerView itemRecyclerView = holder.itemRecyclerView;
 
         ArrayList<Item> items = post.getItemList();

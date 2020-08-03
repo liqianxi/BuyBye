@@ -1,21 +1,28 @@
 package com.example.buybye.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
+
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.User;
 import com.example.buybye.entities.sellerPost;
+import com.example.buybye.fragments.AccountFragment;
 import com.example.buybye.listeners.UserProfileStatusListener;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,7 +59,15 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
-
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCollector.removeActivity(PostsDisplayActivity.this);
+                Intent intent = new Intent(PostsDisplayActivity.this,HomePageActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -60,6 +75,7 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
 
 
     }
+
 
     @Override
     protected void onStart() {

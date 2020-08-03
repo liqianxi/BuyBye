@@ -52,6 +52,8 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private EditText postDesc;
     private EditText postPhoneNum;
     private StorageAccessor storageAccessor = new StorageAccessor();
+    private Button newItemButton;
+    private Button postButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,83 +61,18 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_new_sale_post);
-        CurrentUser = getIntent().getParcelableExtra("currentUser");
+
         postName = findViewById(R.id.PostName);
         postDesc = findViewById(R.id.PostDescription);
         postPhoneNum = findViewById(R.id.PostPhoneNumber);
-        Button newItemButton = findViewById(R.id.addItemButton);
-        Button postButton = findViewById(R.id.postOutButton);
+        newItemButton = findViewById(R.id.addItemButton);
+        postButton = findViewById(R.id.postOutButton);
         itemsList = findViewById(R.id.itemListView);
         adapter = new PostItemListAdapter(getApplicationContext(),Items);
         itemsList.setAdapter(adapter);
+        userDatabaseAccessor.getUserProfile(this);
         ActivityCollector.addActivity(this);
-        newItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(NewSalePostActivity.this,AddSingleItemActivity.class);
-                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                startActivityForResult(intent,100);
-            }
-        });
 
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //save post data to the database
-                ArrayList<Integer> allUriSize = new ArrayList<>();
-                ArrayList<Uri> allUriSingle = new ArrayList<>();
-                ArrayList<ArrayList<Uri>> resultUri = new ArrayList<>();
-                for(int i=0;i<Items.size();i++){
-                    ArrayList<Uri> singleItemUriList = new ArrayList<>();
-                    for(int j=0;j<Items.get(i).getPictureArray().size();j++){
-                        allUriSingle.add(Uri.parse(Items.get(i).getPictureArray().get(j)));
-                        singleItemUriList.add(Uri.parse(Items.get(i).getPictureArray().get(j)));
-
-                    }
-                    allUriSize.add(singleItemUriList.size());
-
-                }
-
-                ArrayList<Uri> resultList = new ArrayList<>();
-
-                storageAccessor.getImagesUri(allUriSingle,0,resultList);
-                storageAccessor.setListener(new StorageAccessor.CustomListener(){
-                    @Override
-                    public void onSingleReady(ArrayList<Uri> uris, int curIndex) {
-                        int curIndexTemp = curIndex +1;
-                        storageAccessor.getImagesUri(allUriSingle,curIndexTemp,uris);
-
-                    }
-
-                    @Override
-                    public void onAllReady(ArrayList<Uri> uris) {
-                        ArrayList<Uri> tempList0 = uris;
-
-                        for(int i=0;i<allUriSize.size();i++){
-                            ArrayList<Uri> tempList = new ArrayList<>();
-                            for(int j=0;j<allUriSize.get(i);j++){
-                                tempList.add(uris.get(0));
-                                tempList0.remove(0);
-                            }
-                            resultUri.add(tempList);
-                        }
-                        ArrayList<Item> tempList = new ArrayList<>();
-                        for(int i=0;i<Items.size();i++){
-                            Item item = Items.get(i);
-                            ArrayList<Uri> tempList2 = resultUri.get(i);
-                            item.setPictureArray(ArrayToString(tempList2));
-                            item.setOwner(CurrentUser.getEmail());
-                            tempList.add(item);
-                        }
-                        itemDatabaseAccessor.addItem(tempList,NewSalePostActivity.this);
-
-                        }
-
-                });
-
-
-            }
-        });
 
 
     }
@@ -236,7 +173,74 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
     @Override
     public void onProfileRetrieveSuccess(User user) {
+        this.CurrentUser = user;
+        newItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewSalePostActivity.this,AddSingleItemActivity.class);
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                startActivityForResult(intent,100);
+            }
+        });
 
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //save post data to the database
+                ArrayList<Integer> allUriSize = new ArrayList<>();
+                ArrayList<Uri> allUriSingle = new ArrayList<>();
+                ArrayList<ArrayList<Uri>> resultUri = new ArrayList<>();
+                for(int i=0;i<Items.size();i++){
+                    ArrayList<Uri> singleItemUriList = new ArrayList<>();
+                    for(int j=0;j<Items.get(i).getPictureArray().size();j++){
+                        allUriSingle.add(Uri.parse(Items.get(i).getPictureArray().get(j)));
+                        singleItemUriList.add(Uri.parse(Items.get(i).getPictureArray().get(j)));
+
+                    }
+                    allUriSize.add(singleItemUriList.size());
+
+                }
+
+                ArrayList<Uri> resultList = new ArrayList<>();
+
+                storageAccessor.getImagesUri(allUriSingle,0,resultList);
+                storageAccessor.setListener(new StorageAccessor.CustomListener(){
+                    @Override
+                    public void onSingleReady(ArrayList<Uri> uris, int curIndex) {
+                        int curIndexTemp = curIndex +1;
+                        storageAccessor.getImagesUri(allUriSingle,curIndexTemp,uris);
+
+                    }
+
+                    @Override
+                    public void onAllReady(ArrayList<Uri> uris) {
+                        ArrayList<Uri> tempList0 = uris;
+
+                        for(int i=0;i<allUriSize.size();i++){
+                            ArrayList<Uri> tempList = new ArrayList<>();
+                            for(int j=0;j<allUriSize.get(i);j++){
+                                tempList.add(uris.get(0));
+                                tempList0.remove(0);
+                            }
+                            resultUri.add(tempList);
+                        }
+                        ArrayList<Item> tempList = new ArrayList<>();
+                        for(int i=0;i<Items.size();i++){
+                            Item item = Items.get(i);
+                            ArrayList<Uri> tempList2 = resultUri.get(i);
+                            item.setPictureArray(ArrayToString(tempList2));
+                            item.setOwner(CurrentUser.getEmail());
+                            tempList.add(item);
+                        }
+                        itemDatabaseAccessor.addItem(tempList,NewSalePostActivity.this);
+
+                    }
+
+                });
+
+
+            }
+        });
     }
 
     @Override

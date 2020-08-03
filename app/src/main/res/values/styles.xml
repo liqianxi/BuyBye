@@ -13,5 +13,7 @@
         <item name="colorControlActivated">@android:color/darker_gray</item>
         <item name="colorControlHighlight">@android:color/darker_gray</item>
     </style>
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
 
 </resources>

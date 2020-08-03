@@ -101,6 +101,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
 
             Item item = new Item(enterItemName.getText().toString(),pictureStringList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
             //Log.v("test",pictureUriList.get(0).toString());
+            item.setSoldOut(false);
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable("item",item);
