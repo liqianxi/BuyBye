@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import com.example.buybye.R;
 import com.example.buybye.activities.CatogoryDisplayAdapter;
 import com.example.buybye.activities.ExplorePageWaterfallAdapter;
+import com.example.buybye.activities.ItemDetailDisplayActivity;
 import com.example.buybye.activities.NewSalePostActivity;
 import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.database.UserDatabaseAccessor;
@@ -171,13 +175,23 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
         // Create adapter passing in the sample user data
         gridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         //gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        adapter2 = new ExplorePageWaterfallAdapter(items);
-        // Attach the adapter to the recyclerview to populate items
+        adapter2 = new ExplorePageWaterfallAdapter(items, new ExplorePageWaterfallAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                String itemId = items.get(position).getItemId();
+                Log.v("test",itemId);
+                Intent intent = new Intent(getActivity(), ItemDetailDisplayActivity.class);
+                intent.putExtra("itemId",itemId);
+                startActivity(intent);
+            }
+        });
+
         itemsRecyclerExplorePage.setAdapter(adapter2);
         // Set layout manager to position the items
         itemsRecyclerExplorePage.setLayoutManager(gridLayoutManager);
         //itemsRecyclerExplorePage.setItemAnimator(null);
         userDatabaseAccessor.getUserProfile(this);
+
     }
 
     @Override

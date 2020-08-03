@@ -140,7 +140,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
         loginWarn.setVisibility(View.INVISIBLE);
         SignUpWarning.setVisibility(View.INVISIBLE);
-        Log.v("Test","2");
+
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,7 +190,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
                 } else {
                     SignUpWarning.setVisibility(View.INVISIBLE);
                 }
-                Log.v("test","4");
+
                 tempUser = new User();
                 tempUser.setEmail(signUpEmail);
                 tempUser.setUserName(signUpName);
@@ -276,7 +276,6 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
         Bundle bundle = new Bundle();
         // put the user object into the bundle, Profile activity can access directly:
-        Log.v("test0",tempUser.getUserName());
         bundle.putParcelable("UserObject", tempUser);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -299,8 +298,6 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
         bundle.putParcelable("UserObject", user);
         intent.putExtras(bundle);
-        Log.v("email0",user.getEmail());
-        Log.v("array0", String.valueOf(user.getSellerPostArray().size()));
 
         startActivity(intent);
         if (!LoginContainerActivity.this.isFinishing() && progressDialog!=null) {
@@ -340,7 +337,6 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
             @Override
             public void onClick(View view) {
                 phoneNum = SignUpEnterPhone.getText().toString();
-                Log.v("Test",phoneNum);
                 tempUser.setPhoneNumber(phoneNum);
                 userDatabaseAccessor.createUserProfile(tempUser,LoginContainerActivity.this);
 
@@ -359,18 +355,15 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
     @Override
     public void onDeleteSuccess() {
         ActivityCollector.removeActivity(this);
-        Log.v("Delete","Delete Success");
     }
 
     @Override
     public void onDeleteFailure() {
         ActivityCollector.removeActivity(this);
-        Log.v("Delete","Delete Failure");
     }
 
     @Override
     public void onRegisterSuccess() {
-        Log.v("test","5");
         FirebaseUser user = userDatabaseAccessor.getFirebaseAuth().getCurrentUser();
         userDatabaseAccessor.getFirebaseAuth().signInWithEmailAndPassword(tempUser.getEmail(),tempUser.getPassword())
                 .addOnCompleteListener(task -> {
@@ -379,7 +372,6 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Log.v("test","6");
                                 if (task.isSuccessful()) {
                                     Log.d("send", "Email sent.");
                                     Toast.makeText(getApplicationContext(),"Please check your email", Toast.LENGTH_SHORT).show();

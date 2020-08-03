@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
+import com.example.buybye.listeners.GetSingleUserListener;
 import com.example.buybye.listeners.ItemQueryListener;
 import com.example.buybye.listeners.LoginStatusListener;
 import com.example.buybye.listeners.SignUpStatusListener;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -330,5 +332,24 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
         }
 
     }
+    public void getSingleUser(String userId, GetSingleUserListener listener){
+        this.firestore
+                .collection(referenceName)
+                .document(userId)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.v(TAG,"get user successful");
+                User user = documentSnapshot.toObject(User.class);
 
+                listener.onGetUserSuccess(user);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.v(TAG,"get user failed");
+                listener.onGetUserFailure();
+            }
+        });
+    }
 }

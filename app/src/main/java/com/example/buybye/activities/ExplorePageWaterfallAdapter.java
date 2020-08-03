@@ -1,6 +1,7 @@
 package com.example.buybye.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buybye.R;
@@ -18,35 +20,51 @@ import java.util.ArrayList;
 
 public class ExplorePageWaterfallAdapter extends RecyclerView.Adapter<ExplorePageWaterfallAdapter.MyViewHolder> {
     private ArrayList<Item> items;
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    private RecyclerViewClickListener mListener;
+
+
+
+    public interface RecyclerViewClickListener {
+
+        void onClick(View view, int position);
+    }
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView ItemName;
         private ImageView itemImage;
         private TextView itemPrice;
         private TextView sellerName;
-        public MyViewHolder(View view){
+        private RecyclerViewClickListener mListener;
+        public MyViewHolder(View view, RecyclerViewClickListener listener){
             super(view);
             ItemName = view.findViewById(R.id.ItemName);
             itemImage = view.findViewById(R.id.itemImage);
             itemPrice = view.findViewById(R.id.itemPrice);
             sellerName = view.findViewById(R.id.sellerName);
-
-
-
-
+            mListener = listener;
+            view.setOnClickListener(this);
         }
 
+
+        @Override
+        public void onClick(View view) {
+            mListener.onClick(view, getAdapterPosition());
+        }
     }
-    public ExplorePageWaterfallAdapter(ArrayList<Item> items){
+
+
+    public ExplorePageWaterfallAdapter(ArrayList<Item> items,RecyclerViewClickListener listener){
         this.items = items;
+        this.mListener = listener;
     }
     @NonNull
     @Override
     public ExplorePageWaterfallAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.each_post,parent,false);
 
-        ExplorePageWaterfallAdapter.MyViewHolder myViewHolder = new ExplorePageWaterfallAdapter.MyViewHolder(view);
+        View view = inflater.inflate(R.layout.each_post,parent,false);
+        ExplorePageWaterfallAdapter.MyViewHolder myViewHolder = new ExplorePageWaterfallAdapter.MyViewHolder(view,mListener);
+
         return myViewHolder;
     }
 
@@ -60,6 +78,7 @@ public class ExplorePageWaterfallAdapter extends RecyclerView.Adapter<ExplorePag
         ItemName.setText(item.getItemName());
         itemPrice.setText(String.format("%s", item.getPrice()));
         sellerName.setText(item.getOwner());
+
         if (item!=null && item.getPictureArray() != null){
             String uri = item.getPictureArray().get(0);
             if (uri == null){

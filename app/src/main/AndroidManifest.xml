@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.UserSoldOutItemsDisplayActivity"></activity>
-        <activity android:name=".activities.UserSellingItemsDisplayActivity"></activity>
+        <activity android:name=".activities.ItemDetailDisplayActivity"></activity>
+        <activity android:name=".activities.UserSoldOutItemsDisplayActivity" />
+        <activity android:name=".activities.UserSellingItemsDisplayActivity" />
         <activity android:name=".activities.SettingActivity" />
         <activity android:name=".activities.PostsDisplayActivity" />
         <activity android:name=".activities.NotifyPostSuccessActivity" />

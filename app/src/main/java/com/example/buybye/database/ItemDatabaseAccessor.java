@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.buybye.entities.Item;
+import com.example.buybye.listeners.GetSingleItemListener;
 import com.example.buybye.listeners.ItemAddDeleteListener;
 import com.example.buybye.listeners.ItemListRequestListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,6 +13,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.nio.charset.StandardCharsets;
@@ -127,5 +129,23 @@ public class ItemDatabaseAccessor extends DatabaseAccessor {
                     }
                 });
     }
+    public void getSingleItem(String itemId, GetSingleItemListener listener){
+        this.firestore.collection(referenceName)
+                .document(itemId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Item item = documentSnapshot.toObject(Item.class);
+                        listener.onGetItemSuccess(item);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onGetItemFailure();
 
+                    }
+                });
+    }
 }
