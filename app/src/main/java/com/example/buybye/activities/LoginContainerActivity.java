@@ -94,6 +94,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
+
         setContentView(R.layout.activity_login_container);
         this.userDatabaseAccessor = new UserDatabaseAccessor();
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);

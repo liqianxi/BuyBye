@@ -4,11 +4,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
+import com.example.buybye.listeners.ItemQueryListener;
 import com.example.buybye.listeners.LoginStatusListener;
 import com.example.buybye.listeners.SignUpStatusListener;
 import com.example.buybye.listeners.UserProfileStatusListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -16,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -305,6 +309,26 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
                 }
             });
         }
+    }
+    public void getUserPostItemsWithQuery(final ItemQueryListener listener,boolean isSoldOut){
+        this.currentUser = firebaseAuth.getCurrentUser();
+
+        if (this.currentUser != null) {
+            String email = this.currentUser.getEmail();
+            this.firestore
+                    .collection("Items")
+                    .whereEqualTo("owner",email)
+                    .whereEqualTo("soldOut",isSoldOut).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.v(TAG,"get query result success");
+                        listener.onQueryFinish(queryDocumentSnapshots.toObjects(Item.class));
+                    }).addOnFailureListener(e -> {
+                        Log.v(TAG,"get query result failure");
+                        listener.onQueryFailure();
+                    });
+
+        }
+
     }
 
 }

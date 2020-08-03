@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.example.buybye.R;
 import com.example.buybye.activities.PostsDisplayActivity;
 import com.example.buybye.activities.SettingActivity;
+import com.example.buybye.activities.UserSellingItemsDisplayActivity;
+import com.example.buybye.activities.UserSoldOutItemsDisplayActivity;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.UserProfileStatusListener;
@@ -63,7 +65,6 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.yourPost:
-                        //switchFragment(R.layout.fragment_explore);
                         Intent intent = new Intent(getActivity(), PostsDisplayActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("User",currentUser);
@@ -72,10 +73,12 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
 
                         return true;
                     case R.id.ItemsOnSale:
-                        //switchFragment(R.layout.fragment_wish_to_get);
+                        Intent intent2 = new Intent(getActivity(), UserSellingItemsDisplayActivity.class);
+                        startActivity(intent2);
                         return true;
                     case R.id.soldItemHistory:
-                        //switchFragment(R.layout.fragment_account);
+                        Intent intent3 = new Intent(getActivity(), UserSoldOutItemsDisplayActivity.class);
+                        startActivity(intent3);
                         return true;
                 }
                 return false;
