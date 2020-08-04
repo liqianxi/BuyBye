@@ -114,7 +114,7 @@ public class AddSingleItemActivity extends AppCompatActivity{
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-
+            pictureStringList.remove(addUri);
             Item item = new Item(enterItemName.getText().toString(),pictureStringList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
             //Log.v("test",pictureUriList.get(0).toString());
             item.setSoldOut(false);

@@ -41,7 +41,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         setContentView(R.layout.activity_item_detail_display);
         itemId = getIntent().getExtras().getString("itemId");
         itemImageDisplayRecyclerView = findViewById(R.id.itemImageDisplayRecyclerView);
-        backButton2 = findViewById(R.id.backButton3);
+        backButton2 = findViewById(R.id.backButton);
         singleItemDescription = findViewById(R.id.singleItemDescription);
         singleItemTitle = findViewById(R.id.singleItemTitle);
         singleItemPrice = findViewById(R.id.singleItemPrice);

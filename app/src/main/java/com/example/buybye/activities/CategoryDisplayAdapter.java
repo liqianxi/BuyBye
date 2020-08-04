@@ -2,7 +2,6 @@ package com.example.buybye.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,30 +15,43 @@ import com.example.buybye.R;
 import com.example.buybye.entities.Catagory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class CatogoryDisplayAdapter extends RecyclerView.Adapter<CatogoryDisplayAdapter.MyViewHolder> {
+public class CategoryDisplayAdapter extends RecyclerView.Adapter<CategoryDisplayAdapter.MyViewHolder> {
 
     private ArrayList<Catagory> catagories;
+    private CategoryDisplayAdapter.RecyclerViewClickListener mListener;
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+
+    public interface RecyclerViewClickListener {
+
+        void onClick(View view, int position);
+
+
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public CardView cardView;
         public TextView CatagoryName;
-        public MyViewHolder(View view){
+        public MyViewHolder(View view, CategoryDisplayAdapter.RecyclerViewClickListener listener){
             super(view);
             cardView = view.findViewById(R.id.cardForCatagory);
             CatagoryName = view.findViewById(R.id.CatagoryName);
+            mListener = listener;
+            view.setOnClickListener(this);
 
 
         }
 
 
-
+        @Override
+        public void onClick(View view) {
+            mListener.onClick(view, getAdapterPosition());
+        }
     }
-    public CatogoryDisplayAdapter(ArrayList<Catagory> catagories){
+    public CategoryDisplayAdapter(ArrayList<Catagory> catagories, CategoryDisplayAdapter.RecyclerViewClickListener listener){
         this.catagories = catagories;
-
+        this.mListener = listener;
     }
 
 
@@ -47,18 +59,18 @@ public class CatogoryDisplayAdapter extends RecyclerView.Adapter<CatogoryDisplay
 
     @NonNull
     @Override
-    public CatogoryDisplayAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoryDisplayAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.each_catagory_display_card,parent,false);
+        View view = inflater.inflate(R.layout.each_category_display_card,parent,false);
 
-        CatogoryDisplayAdapter.MyViewHolder myViewHolder = new CatogoryDisplayAdapter.MyViewHolder(view);
+        CategoryDisplayAdapter.MyViewHolder myViewHolder = new CategoryDisplayAdapter.MyViewHolder(view,mListener);
         return myViewHolder;
     }
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(@NonNull CatogoryDisplayAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryDisplayAdapter.MyViewHolder holder, int position) {
         TextView CatagoryName = holder.CatagoryName;
         CardView cardView = holder.cardView;
         CatagoryName.setText(catagories.get(position).getName());

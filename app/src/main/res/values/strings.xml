@@ -7,7 +7,25 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string-array name="Clothing_Shoes">
-        <item></item>
+    <string-array name="Categories">
+        <item>Automotive</item>
+        <item>Baby &amp; Toddler</item>
+        <item>Clothing &amp; Shoes</item>
+        <item>Computers</item>
+        <item>Electronics</item>
+        <item>Entertainment &amp; Arts</item>
+        <item>Food &amp; Gifts</item>
+        <item>Health &amp; Beauty</item>
+        <item>Home &amp; Garden</item>
+        <item>Office &amp; Professional Services</item>
+        <item>Personal &amp; Home Services</item>
+        <item>Restaurants &amp; Dining</item>
+        <item>Software</item>
+        <item>Sports &amp; Outdoors</item>
+        <item>Travel</item>
+
+
+
+
     </string-array>
 </resources>

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -24,7 +22,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.buybye.R;
-import com.example.buybye.activities.CatogoryDisplayAdapter;
+import com.example.buybye.activities.AllCategoriesDisplayActivity;
+import com.example.buybye.activities.CategoryDisplayAdapter;
 import com.example.buybye.activities.ExplorePageWaterfallAdapter;
 import com.example.buybye.activities.ItemDetailDisplayActivity;
 import com.example.buybye.activities.NewSalePostActivity;
@@ -103,7 +102,15 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
 
 
         // Create adapter passing in the sample user data
-        CatogoryDisplayAdapter adapter = new CatogoryDisplayAdapter(categories);
+        CategoryDisplayAdapter adapter = new CategoryDisplayAdapter(categories, new CategoryDisplayAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if(position == categories.size()-1){
+                    Intent intent = new Intent(getContext(), AllCategoriesDisplayActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
         // Attach the adapter to the recyclerview to populate items
         cardDisplayRecyclerView.setAdapter(adapter);
         // Set layout manager to position the items

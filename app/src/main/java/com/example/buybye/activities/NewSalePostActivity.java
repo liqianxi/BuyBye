@@ -3,11 +3,13 @@ package com.example.buybye.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +26,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.buybye.R;
 import com.example.buybye.database.ItemDatabaseAccessor;
@@ -60,6 +64,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private StorageAccessor storageAccessor = new StorageAccessor();
     private Button newItemButton;
     private Button postButton;
+    private ImageView backButton;
     private ExplorePageWaterfallAdapter explorePageWaterfallAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
@@ -69,7 +74,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_new_sale_post);
-
+        backButton = findViewById(R.id.backButton);
         postName = findViewById(R.id.PostName);
         postDesc = findViewById(R.id.PostDescription);
         postPhoneNum = findViewById(R.id.PostPhoneNumber);
@@ -77,6 +82,28 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         postButton = findViewById(R.id.postOutButton);
         itemsList = findViewById(R.id.itemListView);
         registerForContextMenu(itemsList);
+        backButton.setImageResource(R.drawable.back_icon);
+        backButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(NewSalePostActivity.this);
+            builder.setMessage("Back to the Explore Page?\nYour Post will not be saved").setCancelable(true).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                    Toast.makeText(NewSalePostActivity.this,"Back to the Explore Page",Toast.LENGTH_SHORT).show();
+                    ActivityCollector.removeActivity(NewSalePostActivity.this);
+                    Intent intent = new Intent(NewSalePostActivity.this,HomePageActivity.class);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alert11 = builder.create();
+            alert11.show();
+
+        });
         explorePageWaterfallAdapter = new ExplorePageWaterfallAdapter(Items, new ExplorePageWaterfallAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
