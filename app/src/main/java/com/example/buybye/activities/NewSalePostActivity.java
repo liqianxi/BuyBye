@@ -1,8 +1,11 @@
 package com.example.buybye.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.ClipData;
 import android.content.Intent;
@@ -12,8 +15,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,10 +46,10 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Queue;
 
-public class NewSalePostActivity extends AppCompatActivity implements ItemAddDeleteListener, UserProfileStatusListener {
+public class NewSalePostActivity extends AppCompatActivity implements ItemAddDeleteListener, UserProfileStatusListener{
     private ArrayList<Item> Items = new ArrayList<>();
-    private ListView itemsList;
-    private PostItemListAdapter adapter;
+    private RecyclerView itemsList;
+
     private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
     private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
     private User CurrentUser;
@@ -54,6 +60,8 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private StorageAccessor storageAccessor = new StorageAccessor();
     private Button newItemButton;
     private Button postButton;
+    private ExplorePageWaterfallAdapter explorePageWaterfallAdapter;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +76,56 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         newItemButton = findViewById(R.id.addItemButton);
         postButton = findViewById(R.id.postOutButton);
         itemsList = findViewById(R.id.itemListView);
-        adapter = new PostItemListAdapter(getApplicationContext(),Items);
-        itemsList.setAdapter(adapter);
+        registerForContextMenu(itemsList);
+        explorePageWaterfallAdapter = new ExplorePageWaterfallAdapter(Items, new ExplorePageWaterfallAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+
+            @Override
+            public boolean onLongClick(View view, int position) {
+                itemsList.showContextMenu();
+                return true;
+            }
+        });
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        itemsList.setAdapter(explorePageWaterfallAdapter);
+        itemsList.setLayoutManager(staggeredGridLayoutManager);
         userDatabaseAccessor.getUserProfile(this);
         ActivityCollector.addActivity(this);
 
 
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, 1, 1, "DELETE");
+        menu.add(0, 2, 2,"EDIT");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int pos = info.position;
+        switch (item.getItemId()) {
+
+            case 1:
+                //delete
+
+                return true;
+
+            case 2:
+                //edit
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
 
     }
 
@@ -99,7 +151,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
                 item = data.getParcelableExtra("item");
             }
             Items.add(item);
-            adapter.notifyDataSetChanged();
+            explorePageWaterfallAdapter.notifyDataSetChanged();
 
 
         }
@@ -279,4 +331,6 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     public void onDeleteFailure() {
 
     }
+
+
 }

@@ -27,8 +27,10 @@ public class ExplorePageWaterfallAdapter extends RecyclerView.Adapter<ExplorePag
     public interface RecyclerViewClickListener {
 
         void onClick(View view, int position);
+        boolean onLongClick(View view, int position);
+
     }
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         private TextView ItemName;
         private ImageView itemImage;
         private TextView itemPrice;
@@ -42,12 +44,19 @@ public class ExplorePageWaterfallAdapter extends RecyclerView.Adapter<ExplorePag
             sellerName = view.findViewById(R.id.sellerName);
             mListener = listener;
             view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
 
         @Override
         public void onClick(View view) {
             mListener.onClick(view, getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mListener.onLongClick(view, getAdapterPosition());
+            return true;
         }
     }
 

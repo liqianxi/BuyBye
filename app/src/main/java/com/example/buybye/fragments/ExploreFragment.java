@@ -184,6 +184,11 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
                 intent.putExtra("itemId",itemId);
                 startActivity(intent);
             }
+
+            @Override
+            public boolean onLongClick(View view, int position) {
+                return true;
+            }
         });
 
         itemsRecyclerExplorePage.setAdapter(adapter2);

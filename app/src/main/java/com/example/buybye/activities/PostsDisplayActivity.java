@@ -52,7 +52,7 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
-        ImageView backButton = findViewById(R.id.backButton2);
+        ImageView backButton = findViewById(R.id.backButton3);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
