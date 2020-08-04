@@ -20,7 +20,7 @@ import com.example.buybye.entities.User;
 import com.example.buybye.listeners.GetSingleItemListener;
 import com.example.buybye.listeners.GetSingleUserListener;
 
-public class ItemDetailDisplayActivity extends AppCompatActivity implements GetSingleItemListener, GetSingleUserListener {
+public class ItemDetailDisplayActivity extends AppCompatActivity implements GetSingleItemListener, GetSingleUserListener, com.example.buybye.activities.ImageRecyclerAdapter.RecyclerViewClickListener {
     private ImageRecyclerAdapter ImageRecyclerAdapter;
     private String itemId;
     private Item item;
@@ -68,7 +68,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     @Override
     public void onGetUserSuccess(User user) {
         this.itemOwner = user;
-        ImageRecyclerAdapter = new ImageRecyclerAdapter(item.getPictureArray());
+        ImageRecyclerAdapter = new ImageRecyclerAdapter(item.getPictureArray(),1,this);
         Log.v("size", String.valueOf(item.getPictureArray().size()));
         itemImageDisplayRecyclerView.setAdapter(ImageRecyclerAdapter);
         itemImageDisplayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,5 +90,15 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     @Override
     public void onGetUserFailure() {
 
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public boolean onLongClick(View view, int position) {
+        return false;
     }
 }

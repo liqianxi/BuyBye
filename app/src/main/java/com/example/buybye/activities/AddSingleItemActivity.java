@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,14 +44,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class AddSingleItemActivity extends AppCompatActivity {
+public class AddSingleItemActivity extends AppCompatActivity{
     private EditText enterPickUpDate;
     private EditText enterItemName;
     private EditText enterItemDescription;
     private EditText enterItemPrice;
-    private GridView gridView;
-    private ArrayList<Bitmap> pictureList = new ArrayList<>();
+    private RecyclerView GridPictureView;
+    private ImageRecyclerAdapter imageRecyclerAdapter;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ArrayList<String> pictureStringList = new ArrayList<>();
+    private String addUri = "android.resource://com.example.buybye/drawable/add_item";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -57,39 +62,50 @@ public class AddSingleItemActivity extends AppCompatActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
-
+        pictureStringList.add(addUri);
         setContentView(R.layout.activity_add_single_item);
         ActivityCollector.addActivity(this);
         enterItemName = findViewById(R.id.enterItemName);
         enterItemDescription = findViewById(R.id.enterItemDescription);
         enterItemPrice = findViewById(R.id.enterItemPrice);
         enterPickUpDate = findViewById(R.id.enterPickUpDate);
-        gridView = findViewById(R.id.GridPictureView);
+        GridPictureView = findViewById(R.id.GridPictureView);
+        imageRecyclerAdapter = new ImageRecyclerAdapter(pictureStringList,2,new ImageRecyclerAdapter.RecyclerViewClickListener(){
 
-        // get pictures from local storage
-        Button AddItemButton = findViewById(R.id.addImageButton);
-        Button ConfirmButton = findViewById(R.id.confirmItemButton);
-
-        AddItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (ActivityCompat.checkSelfPermission(AddSingleItemActivity.this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(AddSingleItemActivity.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},100);
-                    return;
+            public void onClick(View view, int position) {
+                if(position == pictureStringList.size()-1){
+                    if (ActivityCompat.checkSelfPermission(AddSingleItemActivity.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                            PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(AddSingleItemActivity.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},100);
+                        return;
 
+                    }
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                    intent.setType("image/*");
+                    startActivityForResult(intent,1);
                 }
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-                intent.setType("image/*");
-                startActivityForResult(intent,1);
+            }
 
+            @Override
+            public boolean onLongClick(View view, int position) {
+                return false;
             }
         });
-        //    public Item(String itemName, ArrayList<Uri> pictureArray, double price, String description, Date pickUpTime){
+
+        GridPictureView.setAdapter(imageRecyclerAdapter);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+
+        GridPictureView.setLayoutManager(staggeredGridLayoutManager);
+
+        // get pictures from local storage
+
+        Button ConfirmButton = findViewById(R.id.confirmItemButton);
+
         ConfirmButton.setOnClickListener(view -> {
            /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             Date dob_var = new Date(2000, 1, 10) ;
@@ -122,7 +138,22 @@ public class AddSingleItemActivity extends AppCompatActivity {
 
 
     }
-
+    private static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private final int space;
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            outRect.bottom = 2 * space;
+            int pos = parent.getChildAdapterPosition(view);
+            outRect.left = space;
+            outRect.right = space;
+            if (pos < 2)
+                outRect.top = 2 * space;
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -131,6 +162,7 @@ public class AddSingleItemActivity extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             ClipData clipData = data.getClipData();
+            pictureStringList.remove(addUri);
             if(clipData != null){
                 for(int i=0;i<clipData.getItemCount();i++){
                     Uri imageUri = clipData.getItemAt(i).getUri();
@@ -138,9 +170,9 @@ public class AddSingleItemActivity extends AppCompatActivity {
                         getApplicationContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
                         pictureStringList.add(imageUri.toString());
+
                         InputStream is = getContentResolver().openInputStream(imageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        pictureList.add(bitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -153,17 +185,17 @@ public class AddSingleItemActivity extends AppCompatActivity {
                     getApplicationContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
                     pictureStringList.add(imageUri.toString());
+
                     InputStream is = getContentResolver().openInputStream(imageUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    pictureList.add(bitmap);
+
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
+            pictureStringList.add(addUri);
+            imageRecyclerAdapter.notifyDataSetChanged();
 
-            ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(),pictureList);
-            Log.v("size", String.valueOf(pictureList.size()));
-            gridView.setAdapter(imageAdapter);
         }
 
     }
