@@ -2,25 +2,39 @@ package com.example.buybye.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.example.buybye.R;
+import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.ActivityCollector;
+import com.example.buybye.entities.User;
+import com.example.buybye.listeners.UserProfileStatusListener;
 
-public class FrontPageActivity extends AppCompatActivity {
+import java.util.Objects;
 
+public class FrontPageActivity extends AppCompatActivity implements UserProfileStatusListener {
+    private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_front_page);
         ActivityCollector.addActivity(this);
         ImageView FrontPageIcon = findViewById(R.id.FrontPageIcon);
         ImageView FrontPageSlogan = findViewById(R.id.FrontPageSlogan);
         FrontPageIcon.setImageResource(R.drawable.buybyeicon);
-        FrontPageSlogan.setImageResource(R.drawable.Slogan);
+        FrontPageSlogan.setImageResource(R.drawable.slogan);
+        if (this.userDatabaseAccessor.isLoggedin()) {
+            userDatabaseAccessor.getUserProfile(this);
+        }else{
+            Intent intent = new Intent(FrontPageActivity.this,LoginContainerActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -40,5 +54,62 @@ public class FrontPageActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+    }
+
+    @Override
+    public void onProfileStoreSuccess() {
+
+    }
+
+    @Override
+    public void onProfileStoreFailure() {
+
+    }
+
+    @Override
+    public void onProfileRetrieveSuccess(User user) {
+        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+        Bundle bundle = new Bundle();
+        // put the user object into the bundle, Profile activity can access directly:
+        bundle.putParcelable("UserObject", user);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+        finish();
+    }
+
+    @Override
+    public void onProfileRetrieveFailure() {
+
+    }
+
+    @Override
+    public void onProfileUpdateSuccess(User user) {
+
+    }
+
+    @Override
+    public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
+
     }
 }

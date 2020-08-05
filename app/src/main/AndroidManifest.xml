@@ -20,11 +20,7 @@
         <activity android:name=".activities.PostsDisplayActivity" />
         <activity android:name=".activities.NotifyPostSuccessActivity" />
         <activity android:name=".activities.LoginContainerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.AddSingleItemActivity"
@@ -36,7 +32,13 @@
         <activity
             android:name=".activities.HomePageActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activities.FrontPageActivity" />
+        <activity android:name=".activities.FrontPageActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

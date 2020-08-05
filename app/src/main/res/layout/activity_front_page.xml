@@ -28,7 +28,7 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            app:srcCompat="@drawable/Slogan" />
+            app:srcCompat="@drawable/slogan" />
 
     </FrameLayout>
 

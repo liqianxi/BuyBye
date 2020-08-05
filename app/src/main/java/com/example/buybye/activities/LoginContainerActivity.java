@@ -100,10 +100,11 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         this.progressDialog = new ProgressDialog(LoginContainerActivity.this);
         this.progressDialog.setContentView(R.layout.custom_progress_bar);
         ActivityCollector.addActivity(this);
+        /*
         if (this.userDatabaseAccessor.isLoggedin()) {
             progressDialog.show();
             userDatabaseAccessor.getUserProfile(this);
-        }
+        }*/
 
         this.loginWarn = findViewById(R.id.loginWarning);
         EmailTitle = findViewById(R.id.EmailTitle);
@@ -292,6 +293,7 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
 
     @Override
     public void onProfileRetrieveSuccess(User user) {
+        /*
         Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
         Bundle bundle = new Bundle();
         // put the user object into the bundle, Profile activity can access directly:
@@ -305,6 +307,8 @@ public class LoginContainerActivity extends AppCompatActivity implements UserPro
         }
 
         finish();
+
+         */
     }
 
     @Override
