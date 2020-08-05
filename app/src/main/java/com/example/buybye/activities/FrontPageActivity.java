@@ -2,8 +2,10 @@ package com.example.buybye.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.buybye.R;
 import com.example.buybye.entities.ActivityCollector;
@@ -15,6 +17,10 @@ public class FrontPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
         ActivityCollector.addActivity(this);
+        ImageView FrontPageIcon = findViewById(R.id.FrontPageIcon);
+        ImageView FrontPageSlogan = findViewById(R.id.FrontPageSlogan);
+        FrontPageIcon.setImageResource(R.drawable.buybyeicon);
+        FrontPageSlogan.setImageResource(R.drawable.Slogan);
     }
 
     @Override
