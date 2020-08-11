@@ -18,6 +18,7 @@ public class Item implements Parcelable {
     private String description;
     private Date pickUpTime;
     private boolean isSoldOut;
+    private String category;
     private String itemId;
 
     public Item(){};
@@ -53,6 +54,14 @@ public class Item implements Parcelable {
             return new Item[size];
         }
     };
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
 
     public void setItemId(String itemId) {
         this.itemId = itemId;

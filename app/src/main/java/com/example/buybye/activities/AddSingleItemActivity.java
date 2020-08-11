@@ -23,10 +23,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.example.buybye.R;
 import com.example.buybye.entities.ActivityCollector;
@@ -41,6 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
@@ -49,10 +52,13 @@ public class AddSingleItemActivity extends AppCompatActivity{
     private EditText enterItemName;
     private EditText enterItemDescription;
     private EditText enterItemPrice;
+    private Spinner categorySpinner;
+    private ArrayList<String> categories;
     private RecyclerView GridPictureView;
     private ImageRecyclerAdapter imageRecyclerAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ArrayList<String> pictureStringList = new ArrayList<>();
+    private String selectedCategory;
     private String addUri = "android.resource://com.example.buybye/drawable/add_item";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -65,11 +71,7 @@ public class AddSingleItemActivity extends AppCompatActivity{
         pictureStringList.add(addUri);
         setContentView(R.layout.activity_add_single_item);
         ActivityCollector.addActivity(this);
-        enterItemName = findViewById(R.id.enterItemName);
-        enterItemDescription = findViewById(R.id.enterItemDescription);
-        enterItemPrice = findViewById(R.id.enterItemPrice);
-        enterPickUpDate = findViewById(R.id.enterPickUpDate);
-        GridPictureView = findViewById(R.id.GridPictureView);
+        initralizeViews();
         imageRecyclerAdapter = new ImageRecyclerAdapter(pictureStringList,2,new ImageRecyclerAdapter.RecyclerViewClickListener(){
 
             @Override
@@ -96,7 +98,7 @@ public class AddSingleItemActivity extends AppCompatActivity{
                 return false;
             }
         });
-
+        addCategoriesSpinner();
         GridPictureView.setAdapter(imageRecyclerAdapter);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
 
@@ -118,6 +120,7 @@ public class AddSingleItemActivity extends AppCompatActivity{
             Item item = new Item(enterItemName.getText().toString(),pictureStringList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
             //Log.v("test",pictureUriList.get(0).toString());
             item.setSoldOut(false);
+            item.setCategory(selectedCategory);
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable("item",item);
@@ -137,6 +140,33 @@ public class AddSingleItemActivity extends AppCompatActivity{
 
 
 
+    }
+    public void initralizeViews(){
+        enterItemName = findViewById(R.id.enterItemName);
+        enterItemDescription = findViewById(R.id.enterItemDescription);
+        enterItemPrice = findViewById(R.id.enterItemPrice);
+        enterPickUpDate = findViewById(R.id.enterPickUpDate);
+        GridPictureView = findViewById(R.id.GridPictureView);
+        categorySpinner = findViewById(R.id.spinner);
+    }
+    public void addCategoriesSpinner(){
+
+        categories = new ArrayList<>();
+        categories.addAll(Arrays.asList(getResources().getStringArray(R.array.Categories)));
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,categories);
+        categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoriesAdapter);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedCategory = categories.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
     private static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private final int space;
