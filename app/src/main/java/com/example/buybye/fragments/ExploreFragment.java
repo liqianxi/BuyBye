@@ -96,7 +96,6 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
         categories.add(new Catagory("Clothes",R.drawable.clothes_small));
         categories.add(new Catagory("Home",R.drawable.home_small));
         categories.add(new Catagory("All Catagories",R.drawable.all_small));
-        //TODO scrolling view
 
 
 
@@ -186,7 +185,7 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
             @Override
             public void onClick(View view, int position) {
                 String itemId = items.get(position).getItemId();
-                Log.v("test",itemId);
+
                 Intent intent = new Intent(getActivity(), ItemDetailDisplayActivity.class);
                 intent.putExtra("itemId",itemId);
                 startActivity(intent);

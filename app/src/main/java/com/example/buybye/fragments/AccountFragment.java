@@ -111,6 +111,8 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
     @Override
     public void onProfileRetrieveSuccess(User user) {
         this.currentUser = user;
+        RegionProfile.setText(String.format("%s, %s", currentUser.getUserCity(), currentUser.getUserProvince()));
+        userNameProfile.setText(currentUser.getUserName());
     }
 
     @Override

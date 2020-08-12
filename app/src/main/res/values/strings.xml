@@ -24,8 +24,301 @@
         <item>Sports &amp; Outdoors</item>
         <item>Travel</item>
 
-
-
+    </string-array>
+    <string-array name="Canada">
+        <item>Alberta</item>
+        <item>British Columbia</item>
+        <item>Manitoba</item>
+        <item>New Brunswick</item>
+        <item>Newfoundland and Labrador</item>
+        <item>Northwest Territories</item>
+        <item>Nova Scotia</item>
+        <item>Nunavut</item>
+        <item>Ontario</item>
+        <item>Prince Edward Island</item>
+        <item>Quebec</item>
+        <item>Saskatchewan</item>
+        <item>Yukon</item>
+    </string-array>
+    <string-array name="Alberta">
+        <item>Calgary</item>
+        <item>Edmonton</item>
+        <item>Red Deer</item>
+        <item>Lethbridge</item>
+        <item>Medicine Hat</item>
+        <item>Grande Prairie</item>
+        <item>Fort McMurray</item>
+        <item>Camrose</item>
+        <item>Brooks</item>
+        <item>Wetaskiwin</item>
+        <item>Hinton</item>
+        <item>Banff</item>
+        <item>Vegreville</item>
+        <item>Stettler</item>
+        <item>Peace River</item>
+        <item>Jasper</item>
+        <item>Fort Chipewyan</item>
+        <item>Lac La Biche</item>
+        <item>Athabasca</item>
+        <item>Lake Louise</item>
 
     </string-array>
+    <string-array name="British_Columbia">
+        <item>Vancouver</item>
+        <item>Victoria</item>
+        <item>Abbotsford</item>
+        <item>Kelowna</item>
+        <item>Nanaimo</item>
+        <item>Kamloops</item>
+        <item>Prince George</item>
+        <item>Chilliwack</item>
+        <item>Penticton</item>
+        <item>Campbell River</item>
+        <item>Courtenay</item>
+        <item>Terrace</item>
+        <item>Fort Saint John</item>
+        <item>Cranbrook</item>
+        <item>Prince Rupert</item>
+        <item>Williams Lake</item>
+        <item>Quesnel</item>
+        <item>Powell River</item>
+        <item>Nelson</item>
+        <item>Dawson Creek</item>
+        <item>Revelstoke</item>
+        <item>Fort Nelson</item>
+        <item>Smithers</item>
+        <item>Creston</item>
+        <item>Lillooet</item>
+        <item>Burns Lake</item>
+        <item>Port Hardy</item>
+        <item>Tofino</item>
+        <item>New Bella Bella</item>
+        <item>Sandspit</item>
+        <item>Dease Lake</item>
+
+    </string-array>
+    <string-array name="Manitoba">
+        <item>Winnipeg</item>
+        <item>Brandon</item>
+        <item>Thompson</item>
+        <item>Selkirk</item>
+        <item>Steinbach</item>
+        <item>Dauphin</item>
+        <item>Flin Flon</item>
+        <item>The Pas</item>
+        <item>Norway House</item>
+        <item>Gimli</item>
+        <item>Nelson House</item>
+        <item>Gillam</item>
+        <item>Churchill</item>
+        <item>Berens River</item>
+        <item>Shamattawa</item>
+        <item>Lynn Lake</item>
+        <item>Pukatawagan</item>
+        <item>Brochet</item>
+        <item>Oxford House</item>
+        <item>Island Lake</item>
+
+    </string-array>
+    <string-array name="New_Brunswick">
+        <item>Moncton</item>
+        <item>Saint John</item>
+        <item>Fredericton</item>
+        <item>Edmundston</item>
+        <item>Bathurst</item>
+    </string-array>
+    <string-array name="Newfoundland_and_Labrador">
+        <item>Saint John’s</item>
+        <item>Corner Brook</item>
+        <item>Happy Valley</item>
+        <item>Stephenville</item>
+        <item>Channel-Port aux Basques</item>
+        <item>Deer Lake</item>
+        <item>Gander</item>
+        <item>Nain</item>
+        <item>Argentia</item>
+        <item>La Scie</item>
+        <item>Buchans</item>
+        <item>Cartwright</item>
+        <item>Trout River</item>
+        <item>Forteau Bay</item>
+        <item>Hopedale</item>
+        <item>Trepassey</item>
+        <item>Saint Anthony</item>
+        <item>Port Hope Simpson</item>
+        <item>Rigolet</item>
+
+    </string-array>
+    <string-array name="Northwest_Territories">
+        <item>Yellowknife</item>
+        <item>Hay River</item>
+        <item>Inuvik</item>
+        <item>Fort McPherson</item>
+        <item>Norman Wells</item>
+        <item>Tuktoyaktuk</item>
+        <item>Fort Good Hope</item>
+        <item>Délįne</item>
+        <item>Fort Smith</item>
+        <item>Holman</item>
+        <item>Fort Resolution</item>
+        <item>Paulatuk</item>
+        <item>Fort Simpson</item>
+        <item>Tsiigehtchic</item>
+        <item>Łutselk’e</item>
+    </string-array>
+    <string-array name="Nova_Scotia">
+        <item>Halifax</item>
+        <item>Sydney</item>
+        <item>New Glasgow</item>
+        <item>Amherst</item>
+        <item>Yarmouth</item>
+        <item>Antigonish</item>
+        <item>Liverpool</item>
+        <item>Digby</item>
+        <item>Windsor</item>
+        <item>Shelburne</item>
+        <item>Baddeck</item>
+    </string-array>
+    <string-array name="Nunavut">
+        <item>Iqaluit</item>
+        <item>Rankin Inlet</item>
+        <item>Arviat</item>
+        <item>Igloolik</item>
+        <item>Baker Lake</item>
+        <item>Pond Inlet</item>
+        <item>Cambridge Bay</item>
+        <item>Cape Dorset</item>
+        <item>Pangnirtung</item>
+        <item>Kugluktuk</item>
+        <item>Gjoa Haven</item>
+        <item>Repulse Bay</item>
+        <item>Coral Harbour</item>
+        <item>Taloyoak</item>
+        <item>Hall Beach</item>
+        <item>Arctic Bay</item>
+        <item>Kimmirut</item>
+        <item>Chesterfield Inlet</item>
+        <item>Resolute</item>
+        <item>Alert</item>
+        <item>Grise Fiord</item>
+        <item>Ennadai</item>
+    </string-array>
+    <string-array name="Ontario">
+        <item>Toronto</item>
+        <item>Ottawa</item>
+        <item>Hamilton</item>
+        <item>Oshawa</item>
+        <item>Kitchener</item>
+        <item>London</item>
+        <item>Windsor</item>
+        <item>Barrie</item>
+        <item>Sudbury</item>
+        <item>Sarnia</item>
+        <item>Kingston</item>
+        <item>Thunder Bay</item>
+        <item>Peterborough</item>
+        <item>North Bay</item>
+        <item>Cornwall</item>
+        <item>Belleville</item>
+        <item>Orillia</item>
+        <item>Timmins</item>
+        <item>Orangeville</item>
+        <item>Brockville</item>
+        <item>Owen Sound</item>
+        <item>Pembroke</item>
+        <item>Kenora</item>
+        <item>Kapuskasing</item>
+        <item>Dryden</item>
+        <item>Parry Sound</item>
+        <item>New Liskeard</item>
+        <item>Hearst</item>
+        <item>Marathon</item>
+        <item>Cochrane</item>
+        <item>Deer Lake</item>
+        <item>Atikokan</item>
+        <item>Chapleau</item>
+        <item>Wiarton</item>
+        <item>Wawa</item>
+        <item>Attawapiskat</item>
+        <item>Red Lake</item>
+        <item>Moosonee</item>
+        <item>Little Current</item>
+        <item>Thessalon</item>
+        <item>Cobalt</item>
+        <item>Geraldton</item>
+        <item>Nipigon</item>
+        <item>Cat Lake</item>
+        <item>Fort Severn</item>
+        <item>Lansdowne House</item>
+        <item>Big Beaverhouse</item>
+    </string-array>
+    <string-array name="Prince_Edward_Island">
+        <item>Charlottetown</item>
+    </string-array>
+    <string-array name="Quebec">
+        <item>Montréal</item>
+        <item>Québec</item>
+        <item>Sherbrooke</item>
+        <item>Trois-Rivières</item>
+        <item>Saint-Jérôme</item>
+        <item>Drummondville</item>
+        <item>Chicoutimi</item>
+        <item>Shawinigan-Sud</item>
+        <item>Joliette</item>
+        <item>Victoriaville</item>
+        <item>Rimouski</item>
+        <item>Saint-Georges</item>
+        <item>Sept-Îles</item>
+        <item>Rouyn-Noranda</item>
+        <item>Val-d’Or</item>
+        <item>Rivière-du-Loup</item>
+        <item>Dolbeau</item>
+        <item>Mont-Laurier</item>
+        <item>Amos</item>
+        <item>Baie-Comeau</item>
+        <item>La Sarre</item>
+        <item>Saint-Augustin</item>
+        <item>Gaspé</item>
+        <item>Matagami</item>
+        <item>Inukjuak</item>
+        <item>Cap-Chat</item>
+        <item>Kuujjuaq</item>
+        <item>Natashquan</item>
+        <item>Mingan</item>
+        <item>Kangirsuk</item>
+        <item>Schefferville</item>
+        <item>Eastmain</item>
+        <item>Radisson</item>
+        <item>Port-Menier</item>
+        <item>Ivujivik</item>
+        <item>Salluit</item>
+    </string-array>
+    <string-array name="Saskatchewan">
+        <item>Saskatoon</item>
+        <item>Regina</item>
+        <item>Prince Albert</item>
+        <item>Moose Jaw</item>
+        <item>North Battleford</item>
+        <item>Yorkton</item>
+        <item>Swift Current</item>
+        <item>Weyburn</item>
+        <item>Meadow Lake</item>
+        <item>Kindersley</item>
+        <item>Melville</item>
+        <item>La Ronge</item>
+        <item>Biggar</item>
+        <item>Hudson Bay</item>
+        <item>Stony Rapids</item>
+        <item>Uranium City</item>
+
+    </string-array>
+    <string-array name="Yukon">
+        <item>Whitehorse</item>
+        <item>West Dawson</item>
+        <item>Watson Lake</item>
+        <item>Burwash Landing</item>
+    </string-array>
+
+
+
 </resources>

@@ -25,6 +25,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     private String itemId;
     private Item item;
     private User itemOwner;
+
     private RecyclerView itemImageDisplayRecyclerView;
     private TextView singleItemDescription;
     private TextView singleItemTitle;
@@ -69,7 +70,6 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     public void onGetUserSuccess(User user) {
         this.itemOwner = user;
         ImageRecyclerAdapter = new ImageRecyclerAdapter(item.getPictureArray(),1,this);
-        Log.v("size", String.valueOf(item.getPictureArray().size()));
         itemImageDisplayRecyclerView.setAdapter(ImageRecyclerAdapter);
         itemImageDisplayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         singleItemDescription.setText(item.getDescription());
@@ -77,6 +77,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         singleItemPrice.setText(String.format("%s", item.getPrice()));
         singleItemOwnerName.setText(itemOwner.getUserName());
         ownerImage.setImageResource(R.drawable.ic_launcher_foreground);
+
         backButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

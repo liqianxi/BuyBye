@@ -5,24 +5,30 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class User implements Parcelable {
     private String email;
     private String userName;
     private String phoneNumber;
-    private String userRegion;
+    private String userProvince;
+    private String userCity;
     private String password;
     private String Gender;
+    private ArrayList<String> markedItems;
+    private HashMap<Date,ArrayList<String>> browseHistory;
     private ArrayList<buyerPost> buyerPostArray;
     private ArrayList<sellerPost> sellerPostArray;
 
 
-    public User(String userName, String phoneNumber, String password, String Gender, String userRegion){
+    public User(String userName, String phoneNumber, String password, String Gender, String userProvince, String userCity){
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.userRegion = userRegion;
+        this.userProvince = userProvince;
+        this.userCity = userCity;
         this.Gender = Gender;
     }
     public User(String email, String userName, String phoneNumber, String password){
@@ -34,7 +40,7 @@ public class User implements Parcelable {
     }
     public User(String userName, String phoneNumber, String userRegion,ArrayList<buyerPost> buyerPostArray,ArrayList<sellerPost> sellerPostArray){
         this.userName = userName;
-        this.userRegion = userRegion;
+        this.userProvince = userRegion;
         this.phoneNumber = phoneNumber;
         this.buyerPostArray = buyerPostArray;
         this.sellerPostArray = sellerPostArray;
@@ -45,7 +51,8 @@ public class User implements Parcelable {
         email = in.readString();
         userName = in.readString();
         phoneNumber = in.readString();
-        userRegion = in.readString();
+        userProvince = in.readString();
+        userCity = in.readString();
         password = in.readString();
         Gender = in.readString();
     }
@@ -106,8 +113,20 @@ public class User implements Parcelable {
         return password;
     }
 
-    public String getUserRegion() {
-        return userRegion;
+    public ArrayList<String> getMarkedItems() {
+        return markedItems;
+    }
+
+    public void setMarkedItems(ArrayList<String> markedItems) {
+        this.markedItems = markedItems;
+    }
+
+    public HashMap<Date, ArrayList<String>> getBrowseHistory() {
+        return browseHistory;
+    }
+
+    public void setBrowseHistory(HashMap<Date, ArrayList<String>> browseHistory) {
+        this.browseHistory = browseHistory;
     }
 
     public void setPassword(String password) {
@@ -122,8 +141,20 @@ public class User implements Parcelable {
         this.sellerPostArray = sellerPostArray;
     }
 
-    public void setUserRegion(String userRegion) {
-        this.userRegion = userRegion;
+    public String getUserCity() {
+        return userCity;
+    }
+
+    public String getUserProvince() {
+        return userProvince;
+    }
+
+    public void setUserCity(String userCity) {
+        this.userCity = userCity;
+    }
+
+    public void setUserProvince(String userProvince) {
+        this.userProvince = userProvince;
     }
 
     @Override
@@ -136,7 +167,8 @@ public class User implements Parcelable {
         parcel.writeString(email);
         parcel.writeString(userName);
         parcel.writeString(phoneNumber);
-        parcel.writeString(userRegion);
+        parcel.writeString(userCity);
+        parcel.writeString(userProvince);
         parcel.writeString(password);
         parcel.writeString(Gender);
     }
