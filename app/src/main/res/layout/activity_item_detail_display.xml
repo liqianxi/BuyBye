@@ -120,7 +120,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/markIcon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_horizontal"
@@ -130,7 +130,7 @@
                 app:srcCompat="@drawable/unstar" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/markTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -145,7 +145,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/sayHiIcon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_horizontal"
@@ -155,7 +155,7 @@
                 app:srcCompat="@drawable/say_hi" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/sayHiTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.GetSingleUserListener;
+import com.example.buybye.listeners.ItemMarkedListener;
 import com.example.buybye.listeners.ItemQueryListener;
 import com.example.buybye.listeners.LoginStatusListener;
 import com.example.buybye.listeners.SignUpStatusListener;
@@ -268,6 +269,29 @@ public class UserDatabaseAccessor extends DatabaseAccessor {
                     }));
         } else {
             Log.v(TAG, "User is not logged in!");
+        }
+    }
+    public void isItemMarked(String itemid, final ItemMarkedListener listener){
+        if(this.currentUser != null){
+            this.firestore
+                    .collection(this.referenceName)
+                    .whereEqualTo("email",currentUser.getEmail())
+                    .whereArrayContains("markedItems",itemid)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            // the markedItems array does contain that item, means it has already been marked
+                            listener.OnItemMarked();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // it hasn't been marked yet.
+                            listener.OnItemNotMarked();
+                        }
+                    });
         }
     }
     public void isValidated(final UserProfileStatusListener listener){

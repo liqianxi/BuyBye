@@ -19,13 +19,17 @@ import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.GetSingleItemListener;
 import com.example.buybye.listeners.GetSingleUserListener;
+import com.example.buybye.listeners.ItemMarkedListener;
+import com.example.buybye.listeners.UserProfileStatusListener;
 
-public class ItemDetailDisplayActivity extends AppCompatActivity implements GetSingleItemListener, GetSingleUserListener, com.example.buybye.activities.ImageRecyclerAdapter.RecyclerViewClickListener {
+import java.util.HashMap;
+
+public class ItemDetailDisplayActivity extends AppCompatActivity implements GetSingleItemListener, GetSingleUserListener, com.example.buybye.activities.ImageRecyclerAdapter.RecyclerViewClickListener, UserProfileStatusListener {
     private ImageRecyclerAdapter ImageRecyclerAdapter;
     private String itemId;
     private Item item;
     private User itemOwner;
-
+    private User currentUser;
     private RecyclerView itemImageDisplayRecyclerView;
     private TextView singleItemDescription;
     private TextView singleItemTitle;
@@ -33,6 +37,10 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     private TextView singleItemOwnerName;
     private ImageView ownerImage;
     private ImageView backButton2;
+    private ImageView markIcon;
+    private ImageView sayHiIcon;
+    private TextView markTitle;
+    private TextView sayHiTitle;
 
     private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
     private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
@@ -48,10 +56,27 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         singleItemPrice = findViewById(R.id.singleItemPrice);
         singleItemOwnerName = findViewById(R.id.singleItemOwnerName);
         ownerImage = findViewById(R.id.ownerImage);
+        markIcon = findViewById(R.id.markIcon);
+        sayHiIcon = findViewById(R.id.sayHiIcon);
+        markTitle = findViewById(R.id.markTitle);
+        sayHiTitle = findViewById(R.id.sayHiTitle);
+
 
 
         // here goto onGetItemSuccess
         itemDatabaseAccessor.getSingleItem(itemId,this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userDatabaseAccessor.getUserProfile(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -86,6 +111,8 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override
@@ -101,5 +128,132 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     @Override
     public boolean onLongClick(View view, int position) {
         return false;
+    }
+
+    @Override
+    public void onProfileStoreSuccess() {
+
+    }
+
+    @Override
+    public void onProfileStoreFailure() {
+
+    }
+
+    @Override
+    public void onProfileRetrieveSuccess(User user) {
+        this.currentUser = user;
+
+        if(currentUser.getMarkedItems().contains(itemId)){
+            markIcon.setImageResource(R.drawable.unstar);
+
+        }else{
+            markIcon.setImageResource(R.drawable.star);
+
+        }
+        markIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(currentUser.getMarkedItems().contains(itemId)){
+                    markIcon.setImageResource(R.drawable.unstar);
+                    currentUser.getMarkedItems().remove(itemId);
+                }else{
+                    markIcon.setImageResource(R.drawable.star);
+                    currentUser.getMarkedItems().add(itemId);
+                }
+                HashMap<String,Object> updateHash = new HashMap<>();
+                updateHash.put("markedItems",currentUser.getMarkedItems());
+                userDatabaseAccessor.updateUserProfile(currentUser, updateHash, new UserProfileStatusListener() {
+                    @Override
+                    public void onProfileStoreSuccess() {
+
+                    }
+
+                    @Override
+                    public void onProfileStoreFailure() {
+
+                    }
+
+                    @Override
+                    public void onProfileRetrieveSuccess(User user) {
+
+                    }
+
+                    @Override
+                    public void onProfileRetrieveFailure() {
+
+                    }
+
+                    @Override
+                    public void onProfileUpdateSuccess(User user) {
+
+                    }
+
+                    @Override
+                    public void onProfileUpdateFailure() {
+
+                    }
+
+                    @Override
+                    public void onValidateSuccess() {
+
+                    }
+
+                    @Override
+                    public void onValidateFailure() {
+
+                    }
+
+                    @Override
+                    public void onDeleteSuccess() {
+
+                    }
+
+                    @Override
+                    public void onDeleteFailure() {
+
+                    }
+                });
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onProfileRetrieveFailure() {
+
+    }
+
+    @Override
+    public void onProfileUpdateSuccess(User user) {
+
+    }
+
+    @Override
+    public void onProfileUpdateFailure() {
+
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+    }
+
+    @Override
+    public void onValidateFailure() {
+
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+
+    }
+
+    @Override
+    public void onDeleteFailure() {
+
     }
 }
