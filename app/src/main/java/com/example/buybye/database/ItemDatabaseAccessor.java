@@ -4,10 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.buybye.R;
 import com.example.buybye.entities.Item;
+import com.example.buybye.listeners.GetCategoryItemsListener;
 import com.example.buybye.listeners.GetSingleItemListener;
 import com.example.buybye.listeners.ItemAddDeleteListener;
 import com.example.buybye.listeners.ItemListRequestListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -15,9 +18,11 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -147,5 +152,29 @@ public class ItemDatabaseAccessor extends DatabaseAccessor {
 
                     }
                 });
+    }
+    public void getCategoryItems(String category, GetCategoryItemsListener listener){
+        this.firestore.collection(referenceName)
+                .whereEqualTo("category",category)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            ArrayList<Item> items = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : requireNonNull(task.getResult())) {
+                                Item item = document.toObject(Item.class);
+                                items.add(item);
+                            }
+                            listener.OnGetCategoryItemsSuccess(items);
+                        }
+
+                        else{
+                            listener.OnGetCategoryItemsFailure();
+                        }
+                    }
+                });
+
+
     }
 }

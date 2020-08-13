@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.GetSingleItemListener;
 import com.example.buybye.listeners.GetSingleUserListener;
-import com.example.buybye.listeners.ItemMarkedListener;
 import com.example.buybye.listeners.UserProfileStatusListener;
 
 import java.util.HashMap;

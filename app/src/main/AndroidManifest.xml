@@ -12,16 +12,15 @@
         android:roundIcon="@mipmap/buybyeicon2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.AllCategoriesDisplayActivity"></activity>
+        <activity android:name=".activities.ExploreSingleCategoryItemsActivity"></activity>
+        <activity android:name=".activities.AllCategoriesDisplayActivity" />
         <activity android:name=".activities.ItemDetailDisplayActivity" />
         <activity android:name=".activities.UserSoldOutItemsDisplayActivity" />
         <activity android:name=".activities.UserSellingItemsDisplayActivity" />
         <activity android:name=".activities.SettingActivity" />
         <activity android:name=".activities.PostsDisplayActivity" />
         <activity android:name=".activities.NotifyPostSuccessActivity" />
-        <activity android:name=".activities.LoginContainerActivity">
-
-        </activity>
+        <activity android:name=".activities.LoginContainerActivity"></activity>
         <activity
             android:name=".activities.AddSingleItemActivity"
             android:launchMode="singleTask" />
@@ -32,7 +31,7 @@
         <activity
             android:name=".activities.HomePageActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activities.FrontPageActivity" >
+        <activity android:name=".activities.FrontPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

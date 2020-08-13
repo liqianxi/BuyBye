@@ -32,9 +32,14 @@ public class AllCategoriesDisplayActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.CategoryListRecyclerView);
         CategoryListRecyclerAdapter adapter = new CategoryListRecyclerAdapter(categories, (view, position) -> {
             //enter one category
+            String category = categories.get(position);
+            Intent intent = new Intent(this,ExploreSingleCategoryItemsActivity.class);
+            intent.putExtra("Category",category);
+            startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setImageResource(R.drawable.back_icon);
         backButton.setOnClickListener(new View.OnClickListener() {
