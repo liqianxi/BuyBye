@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Date;
 public class Item implements Parcelable {
     private String itemName;
     private String City;
+    private String Province;
     private String OwnerId;
     private ArrayList<String> pictureArray;
     private double price;
@@ -31,17 +33,28 @@ public class Item implements Parcelable {
         this.pickUpTime = pickUpTime;
         this.pictureArray = pictureArray;
     }
+    public Item(String itemName, ArrayList<String> pictureArray, double price, String description, Date pickUpTime,String category){
+        this.description = description;
+        this.itemName = itemName;
+        this.price = price;
+        this.pickUpTime = pickUpTime;
+        this.pictureArray = pictureArray;
+        this.category = category;
+    }
 
 
     protected Item(Parcel in) {
+        //must in the same order as write in parcel
         itemName = in.readString();
-        City = in.readString();
         OwnerId = in.readString();
         pictureArray = in.createStringArrayList();
         price = in.readDouble();
         description = in.readString();
         isSoldOut = in.readByte() != 0;
         itemId = in.readString();
+        category = in.readString();
+        pickUpTime = new Date(in.readLong());
+
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -70,6 +83,14 @@ public class Item implements Parcelable {
 
     public void setPostTime(Date postTime) {
         this.postTime = postTime;
+    }
+
+    public String getProvince() {
+        return Province;
+    }
+
+    public void setProvince(String province) {
+        Province = province;
     }
 
     public void setItemId(String itemId) {
@@ -168,15 +189,16 @@ public class Item implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
         parcel.writeString(itemName);
-        parcel.writeString(City);
         parcel.writeString(OwnerId);
         parcel.writeStringList(pictureArray);
         parcel.writeDouble(price);
         parcel.writeString(description);
         parcel.writeByte((byte) (isSoldOut ? 1 : 0));
         parcel.writeString(itemId);
+        parcel.writeString(category);
+        parcel.writeLong(pickUpTime.getTime());
+
     }
 
 

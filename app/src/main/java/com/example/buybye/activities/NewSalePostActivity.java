@@ -69,6 +69,8 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private Date postDate;
     private ExplorePageWaterfallAdapter explorePageWaterfallAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private String postProvince;
+    private String postCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +181,8 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
             if (data != null) {
                 item = data.getParcelableExtra("item");
             }
+            Log.v("checkItem", String.valueOf(item.getPrice()));
+            Log.v("checkItem", String.valueOf(item.getPictureArray().size()));
             Items.add(item);
             explorePageWaterfallAdapter.notifyDataSetChanged();
 
@@ -269,6 +273,13 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
             @Override
             public void onClick(View view) {
                 //save post data to the database
+                if(postProvince == null){
+                    postProvince = user.getUserProvince();
+
+                }
+                if(postCity == null){
+                    postCity = user.getUserCity();
+                }
                 postDate = java.util.Date.from( Instant.now() );
                 ArrayList<Integer> allUriSize = new ArrayList<>();
                 ArrayList<Uri> allUriSingle = new ArrayList<>();
@@ -309,9 +320,13 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
                             resultUri.add(tempList);
                         }
                         ArrayList<Item> tempList = new ArrayList<>();
+
                         for(int i=0;i<Items.size();i++){
                             Item item = Items.get(i);
+
                             ArrayList<Uri> tempList2 = resultUri.get(i);
+                            item.setCity(postCity);
+                            item.setProvince(postProvince);
                             item.setPictureArray(ArrayToString(tempList2));
                             item.setOwner(CurrentUser.getEmail());
                             item.setPostTime(postDate);

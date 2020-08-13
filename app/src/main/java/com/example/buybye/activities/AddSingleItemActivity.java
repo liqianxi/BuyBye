@@ -117,12 +117,24 @@ public class AddSingleItemActivity extends AppCompatActivity{
                 e.printStackTrace();
             }*/
             pictureStringList.remove(addUri);
-            Item item = new Item(enterItemName.getText().toString(),pictureStringList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), java.util.Date.from( Instant.now() ) );
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            String pickUpDate = enterPickUpDate.getText().toString();
+
+            Date date = java.util.Date.from( Instant.now() ) ;
+            try {
+                date = format.parse(pickUpDate);
+                System.out.println(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Item item = new Item(enterItemName.getText().toString(),pictureStringList,Double.parseDouble(enterItemPrice.getText().toString()),enterItemDescription.getText().toString(), date ,selectedCategory);
             //Log.v("test",pictureUriList.get(0).toString());
             item.setSoldOut(false);
-            item.setCategory(selectedCategory);
             Intent returnIntent = new Intent(AddSingleItemActivity.this, NewSalePostActivity.class);
             Bundle bundle = new Bundle();
+            Log.v("sendItem", String.valueOf(item.getPrice()));
+            Log.v("sendItem2", String.valueOf(item.getPictureArray().size()));
             bundle.putParcelable("item",item);
             returnIntent.putExtras(bundle);
 
@@ -160,6 +172,7 @@ public class AddSingleItemActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedCategory = categories.get(i);
+                Log.v("selectedCategory",selectedCategory);
             }
 
             @Override

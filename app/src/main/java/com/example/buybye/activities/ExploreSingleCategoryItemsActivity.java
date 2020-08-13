@@ -38,6 +38,8 @@ public class ExploreSingleCategoryItemsActivity extends AppCompatActivity implem
     private ExplorePageWaterfallAdapter adapter;
     private StaggeredGridLayoutManager gridLayoutManager;
     private String selectedOrder;
+    private ArrayList<String> sortTypes;
+    private ArrayAdapter<String> sortAdapter;
     private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,57 +58,12 @@ public class ExploreSingleCategoryItemsActivity extends AppCompatActivity implem
     }
     private void addSpinner(String type){
         if(type.equals("sort")){
-            ArrayList<String> sortTypes = new ArrayList<>();
+            sortTypes = new ArrayList<>();
             sortTypes.addAll(Arrays.asList(getResources().getStringArray(R.array.sortOrder)));
-            ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,sortTypes);
+            sortAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,sortTypes);
             sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             sortSpinner.setAdapter(sortAdapter);
-            sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectedOrder = sortTypes.get(i);
-                    switch (selectedOrder){
-                        case "Price Ascent":
-                            Collections.sort(items, new Comparator<Item>() {
-                                @Override
-                                public int compare(Item o1, Item o2) {
-                                    return Double.compare(o2.getPrice(), o1.getPrice());
-                                }
-                            });
-                            adapter.notifyDataSetChanged();
 
-                            break;
-
-                        case "Price Descent":
-                            //TODO
-                            Collections.sort(items, new Comparator<Item>() {
-                                @Override
-                                public int compare(Item o1, Item o2) {
-                                    return Double.compare(o1.getPrice(), o2.getPrice());
-                                }
-                            });
-                            adapter.notifyDataSetChanged();
-
-                            break;
-
-                        case "Recently Post":
-                            Collections.sort(items, new Comparator<Item>() {
-                                @Override
-                                public int compare(Item o1, Item o2) {
-                                    return o1.getPostTime().compareTo(o2.getPostTime());
-                                }
-                            });
-                            adapter.notifyDataSetChanged();
-                            break;
-
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
         }else{
 
         }
@@ -144,6 +101,53 @@ public class ExploreSingleCategoryItemsActivity extends AppCompatActivity implem
         itemsCategoryRecyclerExplorePage.setAdapter(adapter);
         // Set layout manager to position the items
         itemsCategoryRecyclerExplorePage.setLayoutManager(gridLayoutManager);
+
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedOrder = sortTypes.get(i);
+                switch (selectedOrder){
+                    case "Price Ascent":
+                        Collections.sort(items, new Comparator<Item>() {
+                            @Override
+                            public int compare(Item o1, Item o2) {
+                                return Double.compare(o2.getPrice(), o1.getPrice());
+                            }
+                        });
+                        adapter.notifyDataSetChanged();
+
+                        break;
+
+                    case "Price Descent":
+
+                        Collections.sort(items, new Comparator<Item>() {
+                            @Override
+                            public int compare(Item o1, Item o2) {
+                                return Double.compare(o1.getPrice(), o2.getPrice());
+                            }
+                        });
+                        adapter.notifyDataSetChanged();
+
+                        break;
+
+                    case "Recently Post":
+                        Collections.sort(items, new Comparator<Item>() {
+                            @Override
+                            public int compare(Item o1, Item o2) {
+                                return o1.getPostTime().compareTo(o2.getPostTime());
+                            }
+                        });
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
