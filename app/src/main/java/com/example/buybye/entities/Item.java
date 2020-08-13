@@ -20,6 +20,7 @@ public class Item implements Parcelable {
     private boolean isSoldOut;
     private String category;
     private String itemId;
+    private Date postTime;
 
     public Item(){};
 
@@ -61,6 +62,14 @@ public class Item implements Parcelable {
 
     public String getCategory() {
         return category;
+    }
+
+    public Date getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(Date postTime) {
+        this.postTime = postTime;
     }
 
     public void setItemId(String itemId) {

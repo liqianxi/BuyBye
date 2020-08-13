@@ -18,8 +18,13 @@ import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.entities.Item;
 import com.example.buybye.listeners.GetCategoryItemsListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ExploreSingleCategoryItemsActivity extends AppCompatActivity implements GetCategoryItemsListener {
     private TextView filterTitle;
@@ -62,15 +67,36 @@ public class ExploreSingleCategoryItemsActivity extends AppCompatActivity implem
                     selectedOrder = sortTypes.get(i);
                     switch (selectedOrder){
                         case "Price Ascent":
+                            Collections.sort(items, new Comparator<Item>() {
+                                @Override
+                                public int compare(Item o1, Item o2) {
+                                    return Double.compare(o2.getPrice(), o1.getPrice());
+                                }
+                            });
+                            adapter.notifyDataSetChanged();
 
                             break;
 
                         case "Price Descent":
+                            //TODO
+                            Collections.sort(items, new Comparator<Item>() {
+                                @Override
+                                public int compare(Item o1, Item o2) {
+                                    return Double.compare(o1.getPrice(), o2.getPrice());
+                                }
+                            });
+                            adapter.notifyDataSetChanged();
 
                             break;
 
                         case "Recently Post":
-
+                            Collections.sort(items, new Comparator<Item>() {
+                                @Override
+                                public int compare(Item o1, Item o2) {
+                                    return o1.getPostTime().compareTo(o2.getPostTime());
+                                }
+                            });
+                            adapter.notifyDataSetChanged();
                             break;
 
                     }

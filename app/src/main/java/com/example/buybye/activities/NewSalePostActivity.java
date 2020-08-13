@@ -46,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Queue;
@@ -65,6 +66,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
     private Button newItemButton;
     private Button postButton;
     private ImageView backButton;
+    private Date postDate;
     private ExplorePageWaterfallAdapter explorePageWaterfallAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
@@ -209,7 +211,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         sellerPostInstance.setDescriptions(postDescriptionString);
         sellerPostInstance.setPostName(postNameString);
         sellerPostInstance.setItemList(Items);
-        sellerPostInstance.setPostDate(java.util.Date.from( Instant.now() ));
+        sellerPostInstance.setPostDate(postDate);
         currentPosts.add(sellerPostInstance);
 
         //CurrentUser.setSellerPostArray(currentPosts);
@@ -263,9 +265,11 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
         });
 
         postButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 //save post data to the database
+                postDate = java.util.Date.from( Instant.now() );
                 ArrayList<Integer> allUriSize = new ArrayList<>();
                 ArrayList<Uri> allUriSingle = new ArrayList<>();
                 ArrayList<ArrayList<Uri>> resultUri = new ArrayList<>();
@@ -293,6 +297,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
 
                     @Override
                     public void onAllReady(ArrayList<Uri> uris) {
+
                         ArrayList<Uri> tempList0 = uris;
 
                         for(int i=0;i<allUriSize.size();i++){
@@ -309,6 +314,7 @@ public class NewSalePostActivity extends AppCompatActivity implements ItemAddDel
                             ArrayList<Uri> tempList2 = resultUri.get(i);
                             item.setPictureArray(ArrayToString(tempList2));
                             item.setOwner(CurrentUser.getEmail());
+                            item.setPostTime(postDate);
                             tempList.add(item);
                         }
                         itemDatabaseAccessor.addItem(tempList,NewSalePostActivity.this);
