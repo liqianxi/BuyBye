@@ -8,19 +8,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.buybye.R;
+import com.example.buybye.database.ChatDatabaseAccessor;
 import com.example.buybye.database.ItemDatabaseAccessor;
 import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.ActivityCollector;
+import com.example.buybye.entities.ChatRoom;
 import com.example.buybye.entities.Item;
+import com.example.buybye.entities.Message;
 import com.example.buybye.entities.User;
+import com.example.buybye.listeners.ChatRoomListener;
 import com.example.buybye.listeners.GetSingleItemListener;
 import com.example.buybye.listeners.GetSingleUserListener;
+import com.example.buybye.listeners.SingleChatRoomListener;
 import com.example.buybye.listeners.UserProfileStatusListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ItemDetailDisplayActivity extends AppCompatActivity implements GetSingleItemListener, GetSingleUserListener, com.example.buybye.activities.ImageRecyclerAdapter.RecyclerViewClickListener, UserProfileStatusListener {
     private ImageRecyclerAdapter ImageRecyclerAdapter;
@@ -28,6 +36,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     private Item item;
     private User itemOwner;
     private User currentUser;
+    private ChatRoom chatRoom;
     private RecyclerView itemImageDisplayRecyclerView;
     private TextView singleItemDescription;
     private TextView singleItemTitle;
@@ -39,14 +48,33 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     private ImageView sayHiIcon;
     private TextView markTitle;
     private TextView sayHiTitle;
+    private String roomId;
+    private LinearLayout contactOwnerLayout;
 
     private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
     private ItemDatabaseAccessor itemDatabaseAccessor = new ItemDatabaseAccessor();
+    private ChatDatabaseAccessor chatDatabaseAccessor = new ChatDatabaseAccessor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail_display);
-        itemId = getIntent().getExtras().getString("itemId");
+        itemId = Objects.requireNonNull(getIntent().getExtras()).getString("itemId");
+        bindViews();
+        ActivityCollector.addActivity(this);
+
+        backButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCollector.removeActivity(ItemDetailDisplayActivity.this);
+                Intent intent = new Intent(ItemDetailDisplayActivity.this,HomePageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // here goto onGetItemSuccess
+        itemDatabaseAccessor.getSingleItem(itemId,this);
+    }
+    private void bindViews(){
         itemImageDisplayRecyclerView = findViewById(R.id.itemImageDisplayRecyclerView);
         backButton2 = findViewById(R.id.backButton);
         singleItemDescription = findViewById(R.id.singleItemDescription);
@@ -58,13 +86,8 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         sayHiIcon = findViewById(R.id.sayHiIcon);
         markTitle = findViewById(R.id.markTitle);
         sayHiTitle = findViewById(R.id.sayHiTitle);
-
-
-
-        // here goto onGetItemSuccess
-        itemDatabaseAccessor.getSingleItem(itemId,this);
+        contactOwnerLayout = findViewById(R.id.contactOwnerLayout);
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -101,16 +124,16 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         singleItemOwnerName.setText(itemOwner.getUserName());
         ownerImage.setImageResource(R.drawable.ic_launcher_foreground);
 
-        backButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCollector.removeActivity(ItemDetailDisplayActivity.this);
-                Intent intent = new Intent(ItemDetailDisplayActivity.this,HomePageActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     @Override
@@ -141,6 +164,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     @Override
     public void onProfileRetrieveSuccess(User user) {
         this.currentUser = user;
+        roomId = currentUser.getEmail()+itemOwner.getEmail();
 
         if(currentUser.getMarkedItems().contains(itemId)){
             markIcon.setImageResource(R.drawable.unstar);
@@ -210,6 +234,96 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
 
                     @Override
                     public void onDeleteFailure() {
+
+                    }
+                });
+
+            }
+        });
+        contactOwnerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chatDatabaseAccessor.retrieveChatRoom(roomId, new SingleChatRoomListener() {
+                    @Override
+                    public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
+                        Intent intent = new Intent(getApplicationContext(),ChatRoomActivity.class);
+                        ArrayList<String> names = chatRoom.getUserNames();
+                        ArrayList<String> ids = chatRoom.getUsers();
+                        int otherIndex = 0;
+                        for(int i=0;i<ids.size();i++){
+                            if(!ids.get(i).equals(currentUser.getEmail())){
+                                otherIndex = i;
+                            }
+                        }
+                        intent.putExtra("otherName",names.get(otherIndex));
+                        intent.putExtra("roomId",chatRoom.getChatRoomId());
+                        intent.putExtra("userId",currentUser.getEmail());
+
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onRetrieveChatRoomFailure() {
+                        //create new room
+                        ArrayList<String> users = new ArrayList<>();
+                        ArrayList<String> userNames = new ArrayList<>();
+                        users.add(currentUser.getEmail());
+                        users.add(itemOwner.getEmail());
+                        userNames.add(currentUser.getUserName());
+                        userNames.add(itemOwner.getUserName());
+                        ArrayList<Message> messages = new ArrayList<>();
+                        chatRoom = new ChatRoom(users,userNames,currentUser.getEmail()+itemOwner.getEmail(),messages);
+                        // if no previous chatroom between two users, then we add a new one
+                        chatDatabaseAccessor.addChatRoom(chatRoom, new ChatRoomListener() {
+                            @Override
+                            public void OnChatRoomAddSuccess() {
+
+                            }
+
+                            @Override
+                            public void OnChatRoomAddFailure() {
+
+                            }
+
+                            @Override
+                            public void OnSnapShotReceiveSuccess(ArrayList<ChatRoom> chatRooms) {
+
+                            }
+
+                            @Override
+                            public void OnSnapShotReceiveFailure() {
+
+                            }
+
+                            @Override
+                            public void OnRetrieveSuccess(ArrayList<ChatRoom> chatRooms) {
+
+                            }
+
+                            @Override
+                            public void OnRetrieveFailure() {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onUpdateChatRoomSuccess() {
+
+                    }
+
+                    @Override
+                    public void onUpdateChatRoomFailure() {
+
+                    }
+
+                    @Override
+                    public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
+
+                    }
+
+                    @Override
+                    public void onSnapShotRetrieveFailure() {
 
                     }
                 });

@@ -140,6 +140,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/contactOwnerLayout"
             android:layout_width="80dp"
             android:layout_height="45dp"
             android:orientation="vertical">
