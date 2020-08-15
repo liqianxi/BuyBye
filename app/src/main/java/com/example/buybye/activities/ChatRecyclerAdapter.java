@@ -73,10 +73,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.each_chat_recycler_display,parent,false);
 
-
-
-
-
         ChatRecyclerAdapter.MyViewHolder myViewHolder = new ChatRecyclerAdapter.MyViewHolder(view,mListener);
         return myViewHolder;
     }

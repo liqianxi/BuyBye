@@ -1,5 +1,8 @@
 package com.example.buybye.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,6 +24,9 @@ public class ChatRoom {
         this.chatRoomId = chatRoomId;
         this.Messages = Messages;
     }
+
+
+
 
     public String getMessageSummary() {
         return messageSummary;
@@ -77,5 +83,6 @@ public class ChatRoom {
     public void setMessages(ArrayList<Message> messages) {
         Messages = messages;
     }
+
 
 }

@@ -9,4 +9,7 @@ public interface ChatRoomListener {
     void OnChatRoomAddFailure();
     void OnSnapShotReceiveSuccess(ArrayList<ChatRoom> chatRooms);
     void OnSnapShotReceiveFailure();
+    void OnRetrieveSuccess(ArrayList<ChatRoom> chatRooms);
+    void OnRetrieveFailure();
+
 }

@@ -1,25 +1,34 @@
 package com.example.buybye.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable {
     private String text;
-    private Date date;
+    private String date;
     private String sender;
+    private String senderName;
     private ArrayList<String> pictures;
-    public Message(String text, Date date, String sender, ArrayList<String> pictures){
+    public Message(String text, String date, String sender){
         this.text = text;
         this.date = date;
         this.sender = sender;
-        this.pictures = pictures;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public ArrayList<String> getPictures() {
         return pictures;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -31,7 +40,7 @@ public class Message {
         return text;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
