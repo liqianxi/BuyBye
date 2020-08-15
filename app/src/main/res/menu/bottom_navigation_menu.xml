@@ -11,6 +11,11 @@
         android:icon="@drawable/wishtobuy"
         android:title="People Wish to Get"/>
     <item
+        android:id="@+id/chat_page"
+        android:enabled="true"
+        android:icon="@drawable/chat_icon"
+        android:title="Chat"/>
+    <item
         android:id="@+id/my_account"
         android:enabled="true"
         android:icon="@drawable/profile_icon"
