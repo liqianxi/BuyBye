@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.buybye.entities.ChatRoom;
+import com.example.buybye.entities.Item;
 import com.example.buybye.listeners.ChatRoomListener;
 import com.example.buybye.listeners.SingleChatRoomListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -123,16 +124,18 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                 .collection(referenceName)
                 .document(roomId)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        listener.onRetrieveChatRoomSuccess(documentSnapshot.toObject(ChatRoom.class));
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        listener.onRetrieveChatRoomFailure();
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        ChatRoom chatRoom = task.getResult().toObject(ChatRoom.class);
+                        if(task.isSuccessful() && chatRoom!=null){
+                            Log.v("test123",chatRoom.getChatRoomId());
+                            listener.onRetrieveChatRoomSuccess(chatRoom);
+                        }
+
+                        else{
+                            listener.onRetrieveChatRoomFailure();
+                        }
                     }
                 });
 
@@ -172,7 +175,12 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                             return;
                         }
                         ChatRoom chatRoom = value.toObject(ChatRoom.class);
-                        listener.onSnapShotRetrieveSuccess(chatRoom);
+                        Log.v("inside",chatRoom.getChatRoomId());
+                        if(chatRoom != null){
+                            listener.onSnapShotRetrieveSuccess(chatRoom);
+                        }else{
+                            listener.onSnapShotRetrieveFailure();
+                        }
                     }
                 });
     }

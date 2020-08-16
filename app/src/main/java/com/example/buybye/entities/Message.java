@@ -15,6 +15,7 @@ public class Message implements Serializable {
         this.date = date;
         this.sender = sender;
     }
+    public Message(){}
 
     public String getSenderName() {
         return senderName;

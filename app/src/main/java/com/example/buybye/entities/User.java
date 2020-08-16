@@ -17,10 +17,10 @@ public class User implements Parcelable {
     private String userCity;
     private String password;
     private String Gender;
-    private ArrayList<String> markedItems;
+    private ArrayList<String> markedItems = new ArrayList<>();
     private HashMap<Date,ArrayList<String>> browseHistory;
-    private ArrayList<buyerPost> buyerPostArray;
-    private ArrayList<sellerPost> sellerPostArray;
+    private ArrayList<buyerPost> buyerPostArray = new ArrayList<>();
+    private ArrayList<sellerPost> sellerPostArray = new ArrayList<>();
 
 
     public User(String userName, String phoneNumber, String password, String Gender, String userProvince, String userCity){

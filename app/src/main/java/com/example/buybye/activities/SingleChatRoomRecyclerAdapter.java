@@ -2,6 +2,7 @@ package com.example.buybye.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,10 @@ public class SingleChatRoomRecyclerAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private ArrayList<Message> messages;
     private String userId;
+    private Context mContext;
 
-    public SingleChatRoomRecyclerAdapter(String userId, ArrayList<Message> messages){
-
+    public SingleChatRoomRecyclerAdapter(Context context,String userId, ArrayList<Message> messages){
+        mContext = context;
         this.messages = messages;
         this.userId = userId;
 
@@ -100,6 +102,7 @@ public class SingleChatRoomRecyclerAdapter extends RecyclerView.Adapter {
             chatUserText.setText(message.getText());
 
             chatUserTime.setText(checkSameDay(message.getDate()));
+            Log.v("timeInAdapter",checkSameDay(message.getDate()));
 
 
         }
@@ -124,6 +127,6 @@ public class SingleChatRoomRecyclerAdapter extends RecyclerView.Adapter {
     }
     @Override
     public int getItemCount() {
-        return 0;
+        return messages.size();
     }
 }

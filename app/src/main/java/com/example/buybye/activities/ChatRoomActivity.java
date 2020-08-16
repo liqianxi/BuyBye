@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -32,7 +33,7 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
     private String roomId;
     private ChatDatabaseAccessor chatDatabaseAccessor = new ChatDatabaseAccessor();
     private ChatRoom chatroom;
-    private ArrayList<Message> messages;
+    private ArrayList<Message> messages = new ArrayList<>();
     private SingleChatRoomRecyclerAdapter adapter;
     private RecyclerView chatDetailDisplayRecycler;
     private ImageView backButton;
@@ -66,7 +67,11 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
         chatActivityTitle = findViewById(R.id.chatActivityTitle);
         inputMessageBar = findViewById(R.id.inputMessageBar);
         chatActivityTitle.setText(otherName);
-        setRecycler();
+
+        adapter = new SingleChatRoomRecyclerAdapter(this,userId,this.messages);
+        chatDetailDisplayRecycler.setAdapter(adapter);
+        chatDetailDisplayRecycler.setLayoutManager(new LinearLayoutManager(this));
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,8 +80,9 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
                 startActivity(intent);
             }
         });
-        chatDatabaseAccessor.addSingleRoomSnapshotListener(roomId,this);
         chatDatabaseAccessor.retrieveChatRoom(roomId,this);
+        chatDatabaseAccessor.addSingleRoomSnapshotListener(roomId,this);
+
     }
 
     @Override
@@ -85,29 +91,29 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
         ActivityCollector.removeActivity(this);
     }
 
-    private void setRecycler(){
-        adapter = new SingleChatRoomRecyclerAdapter(userId,messages);
-        chatDetailDisplayRecycler.setAdapter(adapter);
-        chatDetailDisplayRecycler.setLayoutManager(new LinearLayoutManager(this));
-    }
 
 
     @Override
     public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
         this.chatroom = chatRoom;
+        this.messages.clear();
+        this.messages.addAll(chatRoom.getMessages());
+
+        adapter.notifyDataSetChanged();
         sendMessageImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // send message out
                 String text = inputMessageBar.getText().toString();
+                inputMessageBar.setText("");
                 if(text.length()>=30){
                     chatRoom.setMessageSummary(text.substring(0,30));
                 }else{
                     chatRoom.setMessageSummary(text);
                 }
-                @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss").format(new Date());
+                @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
                 chatRoom.setRecentMessageDate(timeStamp);
-                Message message = new Message(text,timeStamp,userId);//(String text, String date, String sender, ArrayList<String> pictures)
+                Message message = new Message(text,timeStamp,userId);
                 chatRoom.getMessages().add(message);
                 chatDatabaseAccessor.updateChatRoom(chatRoom, new SingleChatRoomListener() {
                     @Override
@@ -162,13 +168,17 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
 
     @Override
     public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
+        Log.v("SnapShot","retrieve snapshot for room success");
         this.chatroom = chatRoom;
+        this.messages.clear();
+        this.messages.addAll(chatRoom.getMessages());
+        Log.v("size", String.valueOf(messages.size()));
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSnapShotRetrieveFailure() {
-
+        Log.v("SnapShot","retrieve snapshot for room failure");
     }
 
 }

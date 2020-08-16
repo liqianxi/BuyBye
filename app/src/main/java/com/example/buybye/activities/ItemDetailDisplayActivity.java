@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,7 +38,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     private Item item;
     private User itemOwner;
     private User currentUser;
-    private ChatRoom chatRoom;
+    private ChatRoom chatroom;
     private RecyclerView itemImageDisplayRecyclerView;
     private TextView singleItemDescription;
     private TextView singleItemTitle;
@@ -48,6 +50,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     private ImageView sayHiIcon;
     private TextView markTitle;
     private TextView sayHiTitle;
+    private TextView locationInfo;
     private String roomId;
     private LinearLayout contactOwnerLayout;
 
@@ -57,6 +60,16 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
+        View decorView = getWindow().getDecorView();
+        // Hide both the navigation bar and the status bar.
+        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+        // a general rule, you should design your app to hide the status bar whenever you
+        // hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_item_detail_display);
         itemId = Objects.requireNonNull(getIntent().getExtras()).getString("itemId");
         bindViews();
@@ -84,6 +97,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         ownerImage = findViewById(R.id.ownerImage);
         markIcon = findViewById(R.id.markIcon);
         sayHiIcon = findViewById(R.id.sayHiIcon);
+        locationInfo = findViewById(R.id.locationInfo);
         markTitle = findViewById(R.id.markTitle);
         sayHiTitle = findViewById(R.id.sayHiTitle);
         contactOwnerLayout = findViewById(R.id.contactOwnerLayout);
@@ -91,7 +105,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     @Override
     protected void onStart() {
         super.onStart();
-        userDatabaseAccessor.getUserProfile(this);
+
     }
 
     @Override
@@ -105,6 +119,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         this.item = item;
         // success then go to onGetUserSuccess
         userDatabaseAccessor.getSingleUser(item.getOwner(),this);
+
     }
 
     @Override
@@ -122,8 +137,9 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
         singleItemTitle.setText(item.getItemName());
         singleItemPrice.setText(String.format("%s", item.getPrice()));
         singleItemOwnerName.setText(itemOwner.getUserName());
+        locationInfo.setText(String.format("%s, %s", itemOwner.getUserProvince(), itemOwner.getUserCity()));
         ownerImage.setImageResource(R.drawable.ic_launcher_foreground);
-
+        userDatabaseAccessor.getUserProfile(this);
 
 
 
@@ -160,7 +176,22 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
     public void onProfileStoreFailure() {
 
     }
+    private void startChatActivity(ChatRoom chatRoom){
+        Intent intent = new Intent(getApplicationContext(),ChatRoomActivity.class);
+        ArrayList<String> names = chatRoom.getUserNames();
+        ArrayList<String> ids = chatRoom.getUsers();
+        int otherIndex = 0;
+        for(int i=0;i<ids.size();i++){
+            if(!ids.get(i).equals(currentUser.getEmail())){
+                otherIndex = i;
+            }
+        }
+        intent.putExtra("otherName",names.get(otherIndex));
+        intent.putExtra("roomId",chatRoom.getChatRoomId());
+        intent.putExtra("userId",currentUser.getEmail());
 
+        startActivity(intent);
+    }
     @Override
     public void onProfileRetrieveSuccess(User user) {
         this.currentUser = user;
@@ -173,6 +204,7 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
             markIcon.setImageResource(R.drawable.star);
 
         }
+
         markIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -240,26 +272,15 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
 
             }
         });
+
         contactOwnerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("RoomId",roomId);
                 chatDatabaseAccessor.retrieveChatRoom(roomId, new SingleChatRoomListener() {
                     @Override
                     public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
-                        Intent intent = new Intent(getApplicationContext(),ChatRoomActivity.class);
-                        ArrayList<String> names = chatRoom.getUserNames();
-                        ArrayList<String> ids = chatRoom.getUsers();
-                        int otherIndex = 0;
-                        for(int i=0;i<ids.size();i++){
-                            if(!ids.get(i).equals(currentUser.getEmail())){
-                                otherIndex = i;
-                            }
-                        }
-                        intent.putExtra("otherName",names.get(otherIndex));
-                        intent.putExtra("roomId",chatRoom.getChatRoomId());
-                        intent.putExtra("userId",currentUser.getEmail());
-
-                        startActivity(intent);
+                        startChatActivity(chatRoom);
                     }
 
                     @Override
@@ -272,12 +293,12 @@ public class ItemDetailDisplayActivity extends AppCompatActivity implements GetS
                         userNames.add(currentUser.getUserName());
                         userNames.add(itemOwner.getUserName());
                         ArrayList<Message> messages = new ArrayList<>();
-                        chatRoom = new ChatRoom(users,userNames,currentUser.getEmail()+itemOwner.getEmail(),messages);
+                        chatroom = new ChatRoom(users,userNames,currentUser.getEmail()+itemOwner.getEmail(),messages);
                         // if no previous chatroom between two users, then we add a new one
-                        chatDatabaseAccessor.addChatRoom(chatRoom, new ChatRoomListener() {
+                        chatDatabaseAccessor.addChatRoom(chatroom, new ChatRoomListener() {
                             @Override
                             public void OnChatRoomAddSuccess() {
-
+                                startChatActivity(chatroom);
                             }
 
                             @Override

@@ -29,9 +29,11 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
+
+
+        setContentView(R.layout.activity_home_page);
         userDatabaseAccessor = new UserDatabaseAccessor();
         ActivityCollector.addActivity(this);
-        setContentView(R.layout.activity_home_page);
         currentUser = (User) getIntent().getParcelableExtra("UserObject");
 
         switchFragment(R.layout.fragment_explore);

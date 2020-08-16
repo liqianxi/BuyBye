@@ -15,7 +15,9 @@ public class ChatRoom {
     private int unreadMessageCount;
     private String messageSummary;
 
+    public ChatRoom(){
 
+    }
 
 
     public ChatRoom(ArrayList<String> users,ArrayList<String> userNames, String chatRoomId, ArrayList<Message> Messages){
