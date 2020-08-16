@@ -13,6 +13,7 @@ import com.example.buybye.database.UserDatabaseAccessor;
 import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.User;
 import com.example.buybye.fragments.AccountFragment;
+import com.example.buybye.fragments.ChatFragment;
 import com.example.buybye.fragments.ExploreFragment;
 import com.example.buybye.listeners.UserProfileStatusListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -54,6 +55,10 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
                             switchFragment(R.layout.fragment_explore);
 
                             return true;
+                        case R.id.chat_page:
+                            switchFragment(R.layout.fragment_chatroom);
+                            return true;
+
                         case R.id.check_buy_demand:
                             switchFragment(R.layout.fragment_wish_to_get);
                             return true;
@@ -111,7 +116,11 @@ public class HomePageActivity extends AppCompatActivity implements UserProfileSt
                 t.beginTransaction().replace(R.id.frame, accountFragment).commit();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
-            case -1:
+            case R.layout.fragment_chatroom:
+                Fragment chatFragment = new ChatFragment();
+                chatFragment.setArguments(bundle);
+                t.beginTransaction().replace(R.id.frame, chatFragment).commit();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
         }
 

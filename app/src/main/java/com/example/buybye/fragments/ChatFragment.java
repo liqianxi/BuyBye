@@ -42,7 +42,7 @@ public class ChatFragment extends Fragment implements UserProfileStatusListener,
         topBar = view.findViewById(R.id.chatPageTopBarTitle);
         chatDisplayRecyclerView = view.findViewById(R.id.chatDisplayRecyclerView);
         userDatabaseAccessor.getUserProfile(this);
-        chatDatabaseAccessor.addSnapshotListener(currentUser.getEmail(),this);
+
 
 
 
@@ -145,7 +145,8 @@ public class ChatFragment extends Fragment implements UserProfileStatusListener,
 
     @Override
     public void OnSnapShotReceiveSuccess(ArrayList<ChatRoom> chatRooms) {
-        this.chatRooms = chatRooms;
+        this.chatRooms.clear();
+        this.chatRooms.addAll(chatRooms);
         chatRecyclerAdapter.notifyDataSetChanged();
     }
 
@@ -156,8 +157,10 @@ public class ChatFragment extends Fragment implements UserProfileStatusListener,
 
     @Override
     public void OnRetrieveSuccess(ArrayList<ChatRoom> chatRooms) {
-        this.chatRooms = chatRooms;
+        this.chatRooms.clear();
+        this.chatRooms.addAll(chatRooms);
         chatRecyclerAdapter.notifyDataSetChanged();
+        chatDatabaseAccessor.addSnapshotListener(currentUser.getEmail(),this);
     }
 
     @Override
