@@ -1,6 +1,7 @@
 package com.example.buybye.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,17 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
         RecyclerView itemRecyclerView = holder.itemRecyclerView;
 
         ArrayList<Item> items = post.getItemList();
-        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(items);
+        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(items, new ItemRecyclerAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Item item = items.get(position);
+
+                Intent intent = new Intent(view.getContext(), ItemDetailDisplayActivity.class);
+                intent.putExtra("itemId",item.getItemId());
+                view.getContext().startActivity(intent);
+
+            }
+        });
 
         // Attach the adapter to the recyclerview to populate items
         itemRecyclerView.setAdapter(adapter);

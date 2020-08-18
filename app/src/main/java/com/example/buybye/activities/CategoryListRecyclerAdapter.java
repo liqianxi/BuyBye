@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryListRecyclerAdapter.MyViewHolder>  {
     private ArrayList<String> categories;
+
     private CategoryListRecyclerAdapter.RecyclerViewClickListener mListener;
     public interface RecyclerViewClickListener {
 

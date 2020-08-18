@@ -108,7 +108,17 @@ public class UserSellingItemsDisplayActivity extends AppCompatActivity implement
     @Override
     public void onQueryFinish(List<Item> items) {
         unsoldItems = new ArrayList<Item>(items);
-        itemRecyclerAdapter = new ItemRecyclerAdapter(unsoldItems);
+        itemRecyclerAdapter = new ItemRecyclerAdapter(unsoldItems, new ItemRecyclerAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Log.v("clicking","clicking");
+                String itemId = unsoldItems.get(position).getItemId();
+
+                Intent intent = new Intent(view.getContext(), ItemDetailDisplayActivity.class);
+                intent.putExtra("itemId",itemId);
+                startActivity(intent);
+            }
+        });
         unsoldItemDisplayView.setAdapter(itemRecyclerAdapter);
         unsoldItemDisplayView.setLayoutManager(new LinearLayoutManager(this));
         backButton.setOnClickListener(new View.OnClickListener() {

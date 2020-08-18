@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/buybyeicon2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ChatRoomActivity"></activity>
+        <activity android:name=".activities.UserProfileDisplayActivity"></activity>
+        <activity android:name=".activities.ChatRoomActivity" />
         <activity android:name=".activities.ExploreSingleCategoryItemsActivity" />
         <activity android:name=".activities.AllCategoriesDisplayActivity" />
         <activity android:name=".activities.ItemDetailDisplayActivity" />

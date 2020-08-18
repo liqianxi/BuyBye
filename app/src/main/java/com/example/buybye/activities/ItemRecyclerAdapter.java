@@ -16,8 +16,14 @@ import java.util.ArrayList;
 
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.ViewHolder> {
     private ArrayList<Item> items;
+    private ItemRecyclerAdapter.RecyclerViewClickListener mListener;
+    public interface RecyclerViewClickListener {
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+        void onClick(View view, int position);
+    //TODO: fix item click
+
+    }
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView item_recycler_each_num;
         public TextView item_recycler_title_name;
         public TextView item_recycler_each_name;
@@ -30,7 +36,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         public View divider;
         public View divider2;
         public TextView item_recycler_each_price;
-        public ViewHolder(View view){
+        public ViewHolder(View view, ItemRecyclerAdapter.RecyclerViewClickListener listener){
             super(view);
             pickUpTimeTitle = view.findViewById(R.id.pickUpTimeTitle);
             item_each_pickup_time = view.findViewById(R.id.item_each_pickup_time);
@@ -44,10 +50,19 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
             divider = view.findViewById(R.id.divider);
             divider2 = view.findViewById(R.id.divider2);
             item_recycler_each_price = view.findViewById(R.id.item_recycler_each_price);
+            mListener = listener;
+            view.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
-    public ItemRecyclerAdapter(ArrayList<Item> items){
+    public ItemRecyclerAdapter(ArrayList<Item> items, ItemRecyclerAdapter.RecyclerViewClickListener listener){
         this.items = items;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -60,7 +75,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         View contactView = inflater.inflate(R.layout.item_recycler_each, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        ViewHolder viewHolder = new ViewHolder(contactView,mListener);
         return viewHolder;
     }
 

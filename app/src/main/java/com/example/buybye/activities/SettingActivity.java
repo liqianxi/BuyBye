@@ -39,6 +39,13 @@ public class SettingActivity extends AppCompatActivity {
         userDatabaseAccessor = new UserDatabaseAccessor();
         settingsTitle = findViewById(R.id.settingsTitle);
         UserInfoButton = findViewById(R.id.UserInfoButton);
+        UserInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserProfileDisplayActivity.class);
+                startActivity(intent);
+            }
+        });
         SignOutButton = findViewById(R.id.signOutButton);
         SignOutButton.setOnClickListener(view -> {
             //sign out
