@@ -78,7 +78,7 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
         TextView itemListTitle = holder.itemListTitle;
         itemListTitle.setText("title");
         TextView amount = holder.postItemAmount;
-        amount.setText("Total Items Amount"+post.getItemList().size());
+        amount.setText(String.format("Total Items Amount %d", post.getItemList().size()));
         RecyclerView itemRecyclerView = holder.itemRecyclerView;
 
         ArrayList<Item> items = post.getItemList();

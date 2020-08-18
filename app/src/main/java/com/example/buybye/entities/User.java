@@ -51,8 +51,8 @@ public class User implements Parcelable {
         email = in.readString();
         userName = in.readString();
         phoneNumber = in.readString();
-        userProvince = in.readString();
         userCity = in.readString();
+        userProvince = in.readString();
         password = in.readString();
         Gender = in.readString();
     }

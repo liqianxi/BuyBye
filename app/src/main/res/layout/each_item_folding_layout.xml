@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="5dp"
     android:background="#E8E8E8"
     android:clipToPadding="false">
 
@@ -12,13 +15,12 @@
         android:id="@+id/folding_cell"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         app:animationDuration="1000"
-
+        app:additionalFlipsCount="0"
         app:backSideColor="#D5D5D5"
-        app:cameraHeight="20">
+        app:cameraHeight="30">
         ​
 
         <FrameLayout
@@ -81,14 +83,18 @@
                         android:id="@+id/postTitleInList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:text="Pure Honey"
+                        android:textColor="@color/ColorWhite"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/postDateInView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:text="TextView"
+                        android:textColor="@color/ColorWhite"
                         android:textSize="20sp" />
                 </LinearLayout>
 

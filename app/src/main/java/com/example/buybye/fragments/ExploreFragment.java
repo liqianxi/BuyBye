@@ -89,7 +89,7 @@ public class ExploreFragment extends Fragment implements ItemListRequestListener
         });
         // Lookup the recyclerview in activity layout
         RecyclerView cardDisplayRecyclerView = view.findViewById(R.id.cardViewDisplayCatagory);
-
+        cardDisplayRecyclerView.setEnabled(false);
 
         ArrayList<Catagory> categories = new ArrayList<>();
         categories.add(new Catagory("Shoes",R.drawable.shoes_small));

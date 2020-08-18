@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.ItemQueryListener;
@@ -26,6 +29,7 @@ public class UserSellingItemsDisplayActivity extends AppCompatActivity implement
     private ItemRecyclerAdapter itemRecyclerAdapter;
     private RecyclerView unsoldItemDisplayView;
     private boolean itemType = false;
+    private ImageView backButton;
     private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,10 @@ public class UserSellingItemsDisplayActivity extends AppCompatActivity implement
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_user_selling_items_display);
         unsoldItemDisplayView = findViewById(R.id.unsoldItemDisplayView);
+        backButton = findViewById(R.id.backButton);
+
         userDatabaseAccessor.getUserProfile(this);
+
 
     }
 
@@ -104,6 +111,17 @@ public class UserSellingItemsDisplayActivity extends AppCompatActivity implement
         itemRecyclerAdapter = new ItemRecyclerAdapter(unsoldItems);
         unsoldItemDisplayView.setAdapter(itemRecyclerAdapter);
         unsoldItemDisplayView.setLayoutManager(new LinearLayoutManager(this));
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCollector.removeActivity(UserSellingItemsDisplayActivity.this);
+                Intent intent = new Intent(UserSellingItemsDisplayActivity.this,HomePageActivity.class);
+                intent.putExtra("Name",currentUser.getUserName());
+                intent.putExtra("city",currentUser.getUserCity());
+                intent.putExtra("province",currentUser.getUserProvince());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

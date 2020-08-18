@@ -25,11 +25,15 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         public TextView item_recycler_title_sold_status;
         public TextView item_recycler_title_desc;
         public TextView item_recycler_each_description;
+        public TextView item_each_pickup_time;
+        public TextView pickUpTimeTitle;
         public View divider;
         public View divider2;
         public TextView item_recycler_each_price;
         public ViewHolder(View view){
             super(view);
+            pickUpTimeTitle = view.findViewById(R.id.pickUpTimeTitle);
+            item_each_pickup_time = view.findViewById(R.id.item_each_pickup_time);
             item_recycler_each_description = view.findViewById(R.id.item_recycler_each_description);
             item_recycler_title_desc = view.findViewById(R.id.item_recycler_title_desc);
             item_recycler_title_sold_status = view.findViewById(R.id.item_recycler_title_sold_status);
@@ -68,6 +72,9 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         TextView item_recycler_sold_status = holder.item_recycler_sold_status;
         TextView item_recycler_each_description= holder.item_recycler_each_description;
         TextView item_recycler_each_price = holder.item_recycler_each_price;
+        TextView item_each_pickup_time = holder.item_each_pickup_time;
+        TextView pickUpTimeTitle = holder.pickUpTimeTitle;
+        item_each_pickup_time.setText(item.getPickUpTime().toString());
         item_recycler_each_num.setText(String.format("%s", (position+1)));
         item_recycler_each_name.setText(item.getItemName());
         boolean status = item.isSoldOut();

@@ -27,15 +27,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ramotion.foldingcell.FoldingCell;
 
+import java.util.Objects;
 
-public class AccountFragment extends Fragment implements UserProfileStatusListener {
+
+public class AccountFragment extends Fragment {
     private TextView userNameProfile;
     private TextView RegionProfile;
     private ImageView settingImage;
     private ImageView userPhoto;
     private RatingBar ratingBar;
     private User currentUser;
-    private UserDatabaseAccessor userDatabaseAccessor;
+
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -45,7 +47,8 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        userDatabaseAccessor = new UserDatabaseAccessor();
+        currentUser = Objects.requireNonNull(getArguments()).getParcelable("User");
+
         userNameProfile = view.findViewById(R.id.userNameProfile);
         RegionProfile = view.findViewById(R.id.RegionProfile);
         settingImage = view.findViewById(R.id.settingImage);
@@ -53,6 +56,8 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
         userPhoto = view.findViewById(R.id.userPhoto);
         BottomNavigationView menu = view.findViewById(R.id.profileFirstMenu);
         userPhoto.setImageResource(R.drawable.ic_launcher_foreground);
+        RegionProfile.setText(String.format("%s, %s", currentUser.getUserCity(), currentUser.getUserProvince()));
+        userNameProfile.setText(currentUser.getUserName());
         settingImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,58 +100,7 @@ public class AccountFragment extends Fragment implements UserProfileStatusListen
     @Override
     public void onStart() {
         super.onStart();
-        userDatabaseAccessor.getUserProfile(this);
-    }
-
-    @Override
-    public void onProfileStoreSuccess() {
 
     }
 
-    @Override
-    public void onProfileStoreFailure() {
-
-    }
-
-    @Override
-    public void onProfileRetrieveSuccess(User user) {
-        this.currentUser = user;
-        RegionProfile.setText(String.format("%s, %s", currentUser.getUserCity(), currentUser.getUserProvince()));
-        userNameProfile.setText(currentUser.getUserName());
-    }
-
-    @Override
-    public void onProfileRetrieveFailure() {
-
-    }
-
-    @Override
-    public void onProfileUpdateSuccess(User user) {
-
-    }
-
-    @Override
-    public void onProfileUpdateFailure() {
-
-    }
-
-    @Override
-    public void onValidateSuccess() {
-
-    }
-
-    @Override
-    public void onValidateFailure() {
-
-    }
-
-    @Override
-    public void onDeleteSuccess() {
-
-    }
-
-    @Override
-    public void onDeleteFailure() {
-
-    }
 }

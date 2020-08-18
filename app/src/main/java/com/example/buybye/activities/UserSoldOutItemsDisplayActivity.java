@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
+import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.Item;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.ItemQueryListener;
@@ -22,7 +25,7 @@ import java.util.Objects;
 public class UserSoldOutItemsDisplayActivity extends AppCompatActivity implements UserProfileStatusListener, ItemQueryListener {
     private User currentUser;
     private ArrayList<Item> soldItems;
-
+    private ImageView backButton;
     private ItemRecyclerAdapter itemRecyclerAdapter;
     private RecyclerView soldItemDisplayView;
     private boolean itemType = true;
@@ -42,6 +45,8 @@ public class UserSoldOutItemsDisplayActivity extends AppCompatActivity implement
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_user_sold_out_items_display);
         soldItemDisplayView = findViewById(R.id.soldItemDisplayView);
+        backButton = findViewById(R.id.backButton);
+
         userDatabaseAccessor.getUserProfile(this);
 
     }
@@ -104,6 +109,17 @@ public class UserSoldOutItemsDisplayActivity extends AppCompatActivity implement
         itemRecyclerAdapter = new ItemRecyclerAdapter(soldItems);
         soldItemDisplayView.setAdapter(itemRecyclerAdapter);
         soldItemDisplayView.setLayoutManager(new LinearLayoutManager(this));
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCollector.removeActivity(UserSoldOutItemsDisplayActivity.this);
+                Intent intent = new Intent(UserSoldOutItemsDisplayActivity.this,HomePageActivity.class);
+                intent.putExtra("Name",currentUser.getUserName());
+                intent.putExtra("city",currentUser.getUserCity());
+                intent.putExtra("province",currentUser.getUserProvince());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

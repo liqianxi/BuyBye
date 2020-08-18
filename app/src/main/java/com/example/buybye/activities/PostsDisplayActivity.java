@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
     private RecyclerView.LayoutManager layoutManager;
     private UserDatabaseAccessor userDatabaseAccessor;
     private User currentUser;
+    private ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +54,8 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
-        ImageView backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCollector.removeActivity(PostsDisplayActivity.this);
-                Intent intent = new Intent(PostsDisplayActivity.this,HomePageActivity.class);
-                startActivity(intent);
-            }
-        });
+        backButton = findViewById(R.id.backButton);
+
 
 
 
@@ -95,10 +90,21 @@ public class PostsDisplayActivity extends AppCompatActivity implements UserProfi
     @Override
     public void onProfileRetrieveSuccess(User user) {
         this.currentUser = user;
-
+        Log.v("postListSize", String.valueOf(currentUser.getSellerPostArray().size()));
         mAdapter = new PostsProfileDisplayAdapter(currentUser.getSellerPostArray());
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCollector.removeActivity(PostsDisplayActivity.this);
+                Intent intent = new Intent(PostsDisplayActivity.this,HomePageActivity.class);
+                intent.putExtra("Name",currentUser.getUserName());
+                intent.putExtra("city",currentUser.getUserCity());
+                intent.putExtra("province",currentUser.getUserProvince());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
