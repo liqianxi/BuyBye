@@ -10,6 +10,7 @@ public class Message implements Serializable {
     private String sender;
     private String senderName;
     private ArrayList<String> pictures;
+
     public Message(String text, String date, String sender){
         this.text = text;
         this.date = date;
@@ -20,7 +21,6 @@ public class Message implements Serializable {
     public String getSenderName() {
         return senderName;
     }
-
     public void setSenderName(String senderName) {
         this.senderName = senderName;
     }
@@ -28,6 +28,7 @@ public class Message implements Serializable {
     public ArrayList<String> getPictures() {
         return pictures;
     }
+
 
     public String getDate() {
         return date;

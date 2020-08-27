@@ -11,20 +11,35 @@ public class ChatRoom {
     private ArrayList<String> userNames;
     private String chatRoomId;
     private ArrayList<Message> Messages;
+    private ArrayList<Integer> unreadNum = new ArrayList<>();
     private String recentMessageDate;
-    private int unreadMessageCount;
+
     private String messageSummary;
 
     public ChatRoom(){
 
     }
 
+    public void messageNumAdd(int index){
+        int num = unreadNum.get(index);
+        num++;
+        unreadNum.set(index,num);
 
-    public ChatRoom(ArrayList<String> users,ArrayList<String> userNames, String chatRoomId, ArrayList<Message> Messages){
+    }
+    public void messageNumReset(int index){
+        unreadNum.set(index,0);
+    }
+    public ArrayList<Integer> getUnreadNum() {
+        return unreadNum;
+    }
+
+    public ChatRoom(ArrayList<String> users, ArrayList<String> userNames, String chatRoomId, ArrayList<Message> Messages){
         this.users = users;
         this.userNames = userNames;
         this.chatRoomId = chatRoomId;
         this.Messages = Messages;
+        this.unreadNum.add(0);
+        this.unreadNum.add(0);
     }
 
 
@@ -38,9 +53,7 @@ public class ChatRoom {
         this.messageSummary = messageSummary;
     }
 
-    public int getUnreadMessageCount() {
-        return unreadMessageCount;
-    }
+
 
     public String getRecentMessageDate() {
         return recentMessageDate;
@@ -50,9 +63,6 @@ public class ChatRoom {
         this.recentMessageDate = recentMessageDate;
     }
 
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
 
     public ArrayList<String> getUserNames() {
         return userNames;

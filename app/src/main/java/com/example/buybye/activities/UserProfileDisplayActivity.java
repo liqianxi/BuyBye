@@ -2,12 +2,14 @@ package com.example.buybye.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.buybye.R;
 import com.example.buybye.database.UserDatabaseAccessor;
@@ -15,22 +17,27 @@ import com.example.buybye.entities.ActivityCollector;
 import com.example.buybye.entities.User;
 import com.example.buybye.listeners.UserProfileStatusListener;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class UserProfileDisplayActivity extends AppCompatActivity implements UserProfileStatusListener {
-    private TextView nameText;
+    private EditText nameText;
     private TextView nameTitle;
     private TextView regionTitle;
+
     private TextView regionText;
     private TextView phoneTitle;
-    private TextView phoneText;
+    private EditText phoneText;
     private TextView emailTitle;
-    private TextView emailText;
+    private EditText emailText;
     private TextView title;
     private ImageView backButton;
     private ImageView editProfileButton;
     private boolean isEdit = false;
+    private ImageView updateProfileButton;
     private User user;
+    private String name;
+    private String phone;
     private UserDatabaseAccessor userDatabaseAccessor = new UserDatabaseAccessor();
 
 
@@ -50,10 +57,25 @@ public class UserProfileDisplayActivity extends AppCompatActivity implements Use
         decorView.setSystemUiVisibility(uiOptions);
         ActivityCollector.addActivity(this);
         bindViews();
+        updateProfileButton.setVisibility(View.INVISIBLE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),SettingActivity.class);
+                startActivity(intent);
 
+            }
+        });
         userDatabaseAccessor.getUserProfile(this);
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
+
     private void bindViews(){
         nameText = findViewById(R.id.nameText);
         nameTitle = findViewById(R.id.nameTitle);
@@ -65,6 +87,7 @@ public class UserProfileDisplayActivity extends AppCompatActivity implements Use
         emailText = findViewById(R.id.emailText);
         title = findViewById(R.id.title);
         backButton = findViewById(R.id.backButton);
+        updateProfileButton = findViewById(R.id.updateProfileButton);
         editProfileButton = findViewById(R.id.editProfileButton);
     }
 
@@ -81,10 +104,110 @@ public class UserProfileDisplayActivity extends AppCompatActivity implements Use
     @Override
     public void onProfileRetrieveSuccess(User user) {
         this.user = user;
-        nameText.setText(user.getUserName());
-        regionText.setText(String.format("%s-%s",user.getUserProvince(),user.getUserCity()));
-        phoneText.setText(user.getPhoneNumber());
-        emailTitle.setText(user.getEmail());
+        name = user.getUserName();
+        phone = user.getPhoneNumber();
+        nameText.setText(name);
+        regionText.setText(String.format("%s %s",user.getUserProvince(),user.getUserCity()));
+
+        phoneText.setText(phone);
+        emailText.setText(user.getEmail());
+        nameText.setEnabled(false);
+
+
+        phoneText.setEnabled(false);
+        emailText.setEnabled(false);
+        regionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),EditRegionActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("User",user);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nameText.setEnabled(true);
+                phoneText.setEnabled(true);
+
+                updateProfileButton.setVisibility(View.VISIBLE);
+                updateProfileButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        HashMap hashMap = new HashMap();
+                        String newName = nameText.getText().toString();
+                        String newPhone = phoneText.getText().toString();
+                        if(!newName.equals(name)){
+                            hashMap.put("userName",newName);
+                        }
+                        if(!newPhone.equals(phone)){
+                            hashMap.put("phoneNumber",newPhone);
+                        }
+                        userDatabaseAccessor.updateUserProfile(user, hashMap, new UserProfileStatusListener() {
+                            @Override
+                            public void onProfileStoreSuccess() {
+
+                            }
+
+                            @Override
+                            public void onProfileStoreFailure() {
+
+                            }
+
+                            @Override
+                            public void onProfileRetrieveSuccess(User user) {
+
+                            }
+
+                            @Override
+                            public void onProfileRetrieveFailure() {
+
+                            }
+
+                            @Override
+                            public void onProfileUpdateSuccess(User user) {
+                                nameText.setText(newName);
+                                phoneText.setText(newPhone);
+                                nameText.setEnabled(false);
+                                phoneText.setEnabled(false);
+                                Toast.makeText(getApplicationContext(),"Update Success",Toast.LENGTH_SHORT).show();
+                                updateProfileButton.setVisibility(View.INVISIBLE);
+
+                            }
+
+                            @Override
+                            public void onProfileUpdateFailure() {
+
+                            }
+
+                            @Override
+                            public void onValidateSuccess() {
+
+                            }
+
+                            @Override
+                            public void onValidateFailure() {
+
+                            }
+
+                            @Override
+                            public void onDeleteSuccess() {
+
+                            }
+
+                            @Override
+                            public void onDeleteFailure() {
+
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
     }
 
     @Override

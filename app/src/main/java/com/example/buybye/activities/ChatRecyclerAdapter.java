@@ -81,8 +81,11 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     public void onBindViewHolder(@NonNull ChatRecyclerAdapter.MyViewHolder holder, int position) {
         ChatRoom chatRoom = chatRooms.get(position);
         int otherUserIndex = 0;
+        int userIndex = -1;
         for(int i=0;i<chatRoom.getUsers().size();i++){
             if(chatRoom.getUsers().get(i).equals(userId)){
+                userIndex = i;
+            }else{
                 otherUserIndex = i;
             }
         }
@@ -91,11 +94,17 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         TextView recentMessageDate = holder.recentMessageDate;
         TextView messageSummary = holder.messageSummary;
         TextView unreadMessageNum = holder.unreadMessageNum;
+        if(chatRoom.getUnreadNum().get(userIndex) == 0){
+            unreadMessageNum.setVisibility(View.INVISIBLE);
+        }else{
+            unreadMessageNum.setText(String.format("%s", chatRoom.getUnreadNum().get(userIndex)));
+        }
+
         messageImage.setImageResource(R.drawable.ic_launcher_foreground);
         contactName.setText(chatRoom.getUserNames().get(otherUserIndex));
         recentMessageDate.setText(chatRoom.getRecentMessageDate());
         messageSummary.setText(chatRoom.getMessageSummary());
-        unreadMessageNum.setText(String.format("%s", chatRoom.getUnreadMessageCount()));
+
 
 
     }

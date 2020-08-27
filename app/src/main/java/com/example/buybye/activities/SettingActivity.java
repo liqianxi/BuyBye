@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class SettingActivity extends AppCompatActivity {
     private TextView UserInfoButton;
     private Button SignOutButton;
     private UserDatabaseAccessor userDatabaseAccessor;
+    private ImageView backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,16 @@ public class SettingActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
         ActivityCollector.addActivity(this);
         userDatabaseAccessor = new UserDatabaseAccessor();
-        settingsTitle = findViewById(R.id.settingsTitle);
+        settingsTitle = findViewById(R.id.titleText);
         UserInfoButton = findViewById(R.id.UserInfoButton);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),HomePageActivity.class);
+                startActivity(intent);
+            }
+        });
         UserInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
