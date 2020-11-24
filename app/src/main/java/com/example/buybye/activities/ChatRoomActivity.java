@@ -40,8 +40,6 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
     private ImageView sendMessageImage;
     private TextView chatActivityTitle;
     private EditText inputMessageBar;
-    private int userIndex = 0;
-    private int otherIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +81,7 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
             }
         });
         chatDatabaseAccessor.retrieveChatRoom(roomId,this);
-
+        chatDatabaseAccessor.addSingleRoomSnapshotListener(roomId,this);
 
     }
 
@@ -98,140 +96,59 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
     @Override
     public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
         this.chatroom = chatRoom;
-        chatDatabaseAccessor.addSingleRoomSnapshotListener(roomId, new SingleChatRoomListener() {
+        this.messages.clear();
+        this.messages.addAll(chatRoom.getMessages());
+
+        adapter.notifyDataSetChanged();
+        sendMessageImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
-
-            }
-
-            @Override
-            public void onRetrieveChatRoomFailure() {
-
-            }
-
-            @Override
-            public void onUpdateChatRoomSuccess() {
-
-            }
-
-            @Override
-            public void onUpdateChatRoomFailure() {
-
-            }
-
-            @Override
-            public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
-                Log.v("SnapShot","retrieve snapshot for room success");
-                chatroom = chatRoom;
-                Log.v("origin message", String.valueOf(messages.size()));
-                messages.clear();
-                messages.addAll(chatRoom.getMessages());
-                Log.v("size", String.valueOf(messages.size()));
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onSnapShotRetrieveFailure() {
-                Log.v("SnapShot","retrieve snapshot for room failure");
-            }
-        });
-        for(int i=0;i<this.chatroom.getUsers().size();i++){
-            if(this.chatroom.getUsers().get(i).equals(userId)){
-                userIndex = i;
-                Log.v("userIndex", String.valueOf(userIndex));
-            }else{
-                otherIndex = i;
-                Log.v("otherIndex", String.valueOf(otherIndex));
-            }
-        }
-        //this.messages.clear();
-        //this.messages.addAll(chatRoom.getMessages());
-
-        //adapter.notifyDataSetChanged();
-        this.chatroom.messageNumReset(userIndex);
-        chatDatabaseAccessor.updateChatRoom(this.chatroom, new SingleChatRoomListener() {
-            @Override
-            public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
-
-            }
-
-            @Override
-            public void onRetrieveChatRoomFailure() {
-
-            }
-
-            @Override
-            public void onUpdateChatRoomSuccess() {
-                sendMessageImage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // send message out
+                String text = inputMessageBar.getText().toString();
+                inputMessageBar.setText("");
+                if(text.length()>=30){
+                    chatRoom.setMessageSummary(text.substring(0,30));
+                }else{
+                    chatRoom.setMessageSummary(text);
+                }
+                @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
+                chatRoom.setRecentMessageDate(timeStamp);
+                Message message = new Message(text,timeStamp,userId);
+                chatRoom.getMessages().add(message);
+                chatDatabaseAccessor.updateChatRoom(chatRoom, new SingleChatRoomListener() {
                     @Override
-                    public void onClick(View view) {
-                        // send message out
-                        String text = inputMessageBar.getText().toString();
-                        inputMessageBar.setText("");
-                        if(text.length()>=30){
-                            chatroom.setMessageSummary(text.substring(0,30));
-                        }else{
-                            chatroom.setMessageSummary(text);
-                        }
-                        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
-                        chatroom.setRecentMessageDate(timeStamp);
-                        Message message = new Message(text,timeStamp,userId);
-                        chatroom.getMessages().add(message);
-                        chatroom.messageNumAdd(otherIndex);//every time other guy send a message, you will for sure get one unread message.
-                        Log.v("other unread num", String.valueOf(chatroom.getUnreadNum().get(otherIndex)));
-                        chatDatabaseAccessor.updateChatRoom(chatroom, new SingleChatRoomListener() {
-                            @Override
-                            public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
+                    public void onRetrieveChatRoomSuccess(ChatRoom chatRoom) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onRetrieveChatRoomFailure() {
+                    @Override
+                    public void onRetrieveChatRoomFailure() {
 
-                            }
+                    }
 
-                            @Override
-                            public void onUpdateChatRoomSuccess() {
+                    @Override
+                    public void onUpdateChatRoomSuccess() {
 
-                            }
+                    }
 
-                            @Override
-                            public void onUpdateChatRoomFailure() {
+                    @Override
+                    public void onUpdateChatRoomFailure() {
 
-                            }
+                    }
 
-                            @Override
-                            public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
+                    @Override
+                    public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onSnapShotRetrieveFailure() {
-
-                            }
-                        });
+                    @Override
+                    public void onSnapShotRetrieveFailure() {
 
                     }
                 });
-            }
-
-            @Override
-            public void onUpdateChatRoomFailure() {
-
-            }
-
-            @Override
-            public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
-
-            }
-
-            @Override
-            public void onSnapShotRetrieveFailure() {
 
             }
         });
-
-
     }
 
     @Override
@@ -251,12 +168,17 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
 
     @Override
     public void onSnapShotRetrieveSuccess(ChatRoom chatRoom) {
-
+        Log.v("SnapShot","retrieve snapshot for room success");
+        this.chatroom = chatRoom;
+        this.messages.clear();
+        this.messages.addAll(chatRoom.getMessages());
+        Log.v("size", String.valueOf(messages.size()));
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSnapShotRetrieveFailure() {
-
+        Log.v("SnapShot","retrieve snapshot for room failure");
     }
 
 }

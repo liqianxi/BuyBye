@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.example.buybye.entities.ChatRoom;
 import com.example.buybye.entities.Item;
-import com.example.buybye.entities.Message;
 import com.example.buybye.listeners.ChatRoomListener;
 import com.example.buybye.listeners.SingleChatRoomListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,23 +80,23 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                 .whereArrayContains("users",userId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            ArrayList<ChatRoom> chatRooms = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : requireNonNull(task.getResult())) {
-                                ChatRoom chatRoom = document.toObject(ChatRoom.class);
-                                chatRooms.add(chatRoom);
-                            }
-                            listener.OnRetrieveSuccess(chatRooms);
+                                           @Override
+                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                               if(task.isSuccessful()){
+                                                   ArrayList<ChatRoom> chatRooms = new ArrayList<>();
+                                                   for (QueryDocumentSnapshot document : requireNonNull(task.getResult())) {
+                                                       ChatRoom chatRoom = document.toObject(ChatRoom.class);
+                                                       chatRooms.add(chatRoom);
+                                                   }
+                                                   listener.OnRetrieveSuccess(chatRooms);
 
-                        }
+                                               }
 
-                        else{
-                           listener.OnRetrieveFailure();
-                        }
-                    }
-                    }
+                                               else{
+                                                   listener.OnRetrieveFailure();
+                                               }
+                                           }
+                                       }
                 );
     }
     public void addSnapshotListener(String userId, ChatRoomListener listener){
@@ -115,7 +114,6 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                         for (QueryDocumentSnapshot doc : value) {
                             chatRooms.add(doc.toObject(ChatRoom.class));
                         }
-
                         listener.OnSnapShotReceiveSuccess(chatRooms);
 
                     }
@@ -143,13 +141,13 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
 
     }
     public void updateChatRoom(ChatRoom chatRoom, SingleChatRoomListener listener){
+
         this.firestore
                 .collection(referenceName)
                 .document(chatRoom.getChatRoomId())
                 .update("Messages",chatRoom.getMessages()
                         ,"recentMessageDate",chatRoom.getRecentMessageDate()
                         ,"messageSummary",chatRoom.getMessageSummary()
-                        , "unreadNum",chatRoom.getUnreadNum()
                 ).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -176,10 +174,8 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                             Log.w(TAG, "Listen failed.", error);
                             return;
                         }
-                        ArrayList<Message> messages = (ArrayList<Message>) value.get("Messages");
-
-                        Log.v("inside", String.valueOf(messages.size()));
-                        ChatRoom chatRoom = (ChatRoom) value.get("Messages");
+                        ChatRoom chatRoom = value.toObject(ChatRoom.class);
+                        Log.v("inside",chatRoom.getChatRoomId());
                         if(chatRoom != null){
                             listener.onSnapShotRetrieveSuccess(chatRoom);
                         }else{
