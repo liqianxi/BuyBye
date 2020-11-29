@@ -4,7 +4,7 @@
     <string name="login_password_title">Password</string>
     <string name="login_user_title">User</string>
     <string name="login_warning">Please fill in both text fields</string>
-
+    <string name="fragment_account_get_wish_button">Post what you want to get</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="Categories">
         <item>Automotive</item>

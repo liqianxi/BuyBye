@@ -42,11 +42,6 @@ public class ChatFragment extends Fragment implements UserProfileStatusListener,
         topBar = view.findViewById(R.id.chatPageTopBarTitle);
         chatDisplayRecyclerView = view.findViewById(R.id.chatDisplayRecyclerView);
         userDatabaseAccessor.getUserProfile(this);
-
-
-
-
-
         return view;
 
     }

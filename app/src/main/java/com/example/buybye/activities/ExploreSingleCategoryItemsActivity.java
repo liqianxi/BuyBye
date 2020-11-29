@@ -117,6 +117,14 @@ public class ExploreSingleCategoryItemsActivity extends AppCompatActivity implem
                 return false;
             }
         });
+        backButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCollector.removeActivity(ExploreSingleCategoryItemsActivity.this);
+                Intent intent = new Intent(ExploreSingleCategoryItemsActivity.this,AllCategoriesDisplayActivity.class);
+                startActivity(intent);
+            }
+        });
         itemsCategoryRecyclerExplorePage.setAdapter(adapter);
         // Set layout manager to position the items
         itemsCategoryRecyclerExplorePage.setLayoutManager(gridLayoutManager);

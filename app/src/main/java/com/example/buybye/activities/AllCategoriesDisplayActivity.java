@@ -42,13 +42,10 @@ public class AllCategoriesDisplayActivity extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setImageResource(R.drawable.back_icon);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCollector.removeActivity(AllCategoriesDisplayActivity.this);
-                Intent intent = new Intent(AllCategoriesDisplayActivity.this,HomePageActivity.class);
-                startActivity(intent);
-            }
+        backButton.setOnClickListener(view -> {
+            ActivityCollector.removeActivity(AllCategoriesDisplayActivity.this);
+            Intent intent = new Intent(AllCategoriesDisplayActivity.this,HomePageActivity.class);
+            startActivity(intent);
         });
 
     }

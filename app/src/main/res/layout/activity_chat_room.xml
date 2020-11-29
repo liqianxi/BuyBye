@@ -10,7 +10,8 @@
         android:id="@+id/chatDetailDisplayRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="40dp"
+        android:background="#F1F1F1" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
+        android:background="#95FFFFFF"
         android:elevation="30dp">
 
         <EditText

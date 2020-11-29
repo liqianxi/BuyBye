@@ -8,6 +8,7 @@
     android:layout_marginEnd="15dp"
     android:layout_marginBottom="5dp"
     android:background="#E8E8E8"
+    android:clipChildren="false"
     android:clipToPadding="false">
 
     <com.ramotion.foldingcell.FoldingCell
@@ -17,9 +18,9 @@
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
+        app:additionalFlipsCount="1"
         app:animationDuration="1000"
-        app:additionalFlipsCount="0"
-        app:backSideColor="#D5D5D5"
+        app:backSideColor="#E8E7E7"
         app:cameraHeight="30">
         ​
 
@@ -75,7 +76,7 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
-                    android:background="#E4673AB7"
+                    android:background="#BC3AB7AD"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -86,7 +87,7 @@
                         android:layout_margin="5dp"
                         android:text="Pure Honey"
                         android:textColor="@color/ColorWhite"
-                        android:textSize="20sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/postDateInView"
@@ -95,7 +96,7 @@
                         android:layout_margin="5dp"
                         android:text="TextView"
                         android:textColor="@color/ColorWhite"
-                        android:textSize="20sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout

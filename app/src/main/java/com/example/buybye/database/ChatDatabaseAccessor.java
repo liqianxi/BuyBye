@@ -245,7 +245,6 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                                 usersArray = (ArrayList<String>)users;
                             }
 
-                            //Log.v(TAG,"message"+MessagesArray);
                             ChatRoom chatRoom = new ChatRoom(summaryString,recentMessageDateString,chatroomIdString,userNamesArray,MessagesArray,unreadNumArray,usersArray);
 
                             listener.onSnapShotRetrieveSuccess(chatRoom);
