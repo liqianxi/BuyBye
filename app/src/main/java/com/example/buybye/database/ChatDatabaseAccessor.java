@@ -131,7 +131,10 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        ArrayList<Message> temp = new ArrayList<>();
+                        temp = (ArrayList<Message>)task.getResult().get("Messages");
                         ChatRoom chatRoom = task.getResult().toObject(ChatRoom.class);
+                        chatRoom.setMessages(temp);
                         if(task.isSuccessful() && chatRoom!=null){
                             Log.v("test123",chatRoom.getChatRoomId());
                             listener.onRetrieveChatRoomSuccess(chatRoom);
