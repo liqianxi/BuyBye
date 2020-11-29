@@ -21,8 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -176,11 +178,73 @@ public class ChatDatabaseAccessor extends DatabaseAccessor {
                             Log.w(TAG, "Listen failed.", error);
                             return;
                         }
-                        ArrayList<Message> messages = (ArrayList<Message>) value.get("Messages");
+                        //ChatRoom(String messageSummary,String recentMessageDate,String chatRoomId,ArrayList<String> userNames,ArrayList<Message> Messages,ArrayList<Integer> unreadNum,ArrayList<String> users)
+                        //ChatRoom chatRoom = (ChatRoom) value.getData();
+                        //ArrayList<Message> messages = (ArrayList<Message>) value.get("Messages");
 
-                        Log.v("inside", String.valueOf(messages.size()));
-                        ChatRoom chatRoom = (ChatRoom) value.get("Messages");
-                        if(chatRoom != null){
+                        //Log.v(TAG,"getsummary"+value.get("chatRoomId"));
+                        //Log.v(TAG,"getsummary2"+value.getData().get("chatRoomId"));
+                        if(value != null  && value.exists()){
+                            Map<String,Object> newMap = value.getData();
+                            //ChatRoom chatRoom = null;
+                            Object summary = newMap.get("messageSummary");
+                            String summaryString = null;
+                            if (summary!=null){
+                                summaryString = summary.toString();
+                            }
+                            Object recentMessageDate = newMap.get("recentMessageDate");
+                            String recentMessageDateString = null;
+                            if (recentMessageDate != null){
+                                recentMessageDateString = recentMessageDate.toString();
+                            }
+                            Object chatroomId = newMap.get("chatRoomId");
+                            String chatroomIdString = null;
+                            if (chatroomId !=null){
+                                chatroomIdString = chatroomId.toString();
+                            }
+                            Object userNames = newMap.get("userNames");
+                            ArrayList<String> userNamesArray = new ArrayList<>();
+                            if (userNames != null){
+                                userNamesArray = (ArrayList<String>)userNames;
+                            }
+                            Object MessagesMap = newMap.get("Messages");
+                            ArrayList<Message> MessagesArray = new ArrayList<>();
+                            if(MessagesMap!=null){
+                                ArrayList<HashMap> mapList = new ArrayList<>();
+                                mapList = ( ArrayList<HashMap>)MessagesMap;
+                                for(int i=0;i<mapList.size();i++){
+                                    String text = (String) mapList.get(i).get("text");
+                                    String date = (String) mapList.get(i).get("date");
+                                    String sender = (String) mapList.get(i).get("sender");
+                                    String senderName = (String) mapList.get(i).get("senderName");
+                                    ArrayList<String> pictures = (ArrayList<String>) mapList.get(i).get("pictures");
+                                    Message message = new Message(text,date,sender,senderName,pictures);
+                                    MessagesArray.add(message);
+                                }
+                                //Message(String text, String date, String sender,String senderName,ArrayList<String> pictures)
+                            }
+
+
+
+
+
+
+                            Object unreadNum = newMap.get("unreadNum");
+                            ArrayList<Integer> unreadNumArray = new ArrayList<>();
+                            unreadNumArray.add(0);
+                            unreadNumArray.add(0);
+                            if(unreadNum !=null){
+                                unreadNumArray = (ArrayList<Integer>)unreadNum;
+                            }
+                            Object users = newMap.get("users");
+                            ArrayList<String> usersArray =new ArrayList<>();
+                            if(users !=null){
+                                usersArray = (ArrayList<String>)users;
+                            }
+
+                            //Log.v(TAG,"message"+MessagesArray);
+                            ChatRoom chatRoom = new ChatRoom(summaryString,recentMessageDateString,chatroomIdString,userNamesArray,MessagesArray,unreadNumArray,usersArray);
+
                             listener.onSnapShotRetrieveSuccess(chatRoom);
                         }else{
                             listener.onSnapShotRetrieveFailure();

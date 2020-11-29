@@ -177,7 +177,7 @@ public class ChatRoomActivity extends AppCompatActivity implements SingleChatRoo
                         chatroom.setRecentMessageDate(timeStamp);
                         Message message = new Message(text,timeStamp,userId);
                         chatroom.getMessages().add(message);
-                        chatroom.messageNumAdd(otherIndex);//every time other guy send a message, you will for sure get one unread message.
+                        chatroom.messageNumAdd((int)otherIndex);//every time other guy send a message, you will for sure get one unread message.
                         Log.v("other unread num", String.valueOf(chatroom.getUnreadNum().get(otherIndex)));
                         chatDatabaseAccessor.updateChatRoom(chatroom, new SingleChatRoomListener() {
                             @Override

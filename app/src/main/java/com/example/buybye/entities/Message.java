@@ -11,6 +11,14 @@ public class Message implements Serializable {
     private String senderName;
     private ArrayList<String> pictures;
 
+    public Message(String text, String date, String sender,String senderName,ArrayList<String> pictures){
+        this.text = text;
+        this.date = date;
+        this.sender = sender;
+        this.senderName = senderName;
+        this.pictures = pictures;
+    }
+
     public Message(String text, String date, String sender){
         this.text = text;
         this.date = date;

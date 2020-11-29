@@ -2,6 +2,7 @@ package com.example.buybye.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +22,9 @@ public class ChatRoom {
     }
 
     public void messageNumAdd(int index){
-        int num = unreadNum.get(index);
+        //Log.v("ChatRoom",""+unreadNum.get(index).getClass().getName());
+        Log.v("ChatRoom",""+index+" "+unreadNum.get(index));
+        int num = ((Number)unreadNum.get(index)).intValue();
         num++;
         unreadNum.set(index,num);
 
@@ -41,7 +44,15 @@ public class ChatRoom {
         this.unreadNum.add(0);
         this.unreadNum.add(0);
     }
-
+    public ChatRoom(String messageSummary,String recentMessageDate,String chatRoomId,ArrayList<String> userNames,ArrayList<Message> Messages,ArrayList<Integer> unreadNum,ArrayList<String> users){
+        this.users = users;
+        this.userNames = userNames;
+        this.chatRoomId = chatRoomId;
+        this.Messages = Messages;
+        this.messageSummary=messageSummary;
+        this.recentMessageDate = recentMessageDate;
+        this.unreadNum =unreadNum;
+    }
 
 
 

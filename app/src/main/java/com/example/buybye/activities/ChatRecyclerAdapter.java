@@ -94,11 +94,20 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         TextView recentMessageDate = holder.recentMessageDate;
         TextView messageSummary = holder.messageSummary;
         TextView unreadMessageNum = holder.unreadMessageNum;
-        if(chatRoom.getUnreadNum().get(userIndex) == 0){
-            unreadMessageNum.setVisibility(View.INVISIBLE);
-        }else{
-            unreadMessageNum.setText(String.format("%s", chatRoom.getUnreadNum().get(userIndex)));
+        /*
+        *
+        * note: the unread num array size is different from the actual value of each unread message num in each chat
+        *
+        * 
+        * */
+        if (chatRoom.getUnreadNum().size() !=0){
+            if(chatRoom.getUnreadNum().get(userIndex) == 0){
+                unreadMessageNum.setVisibility(View.INVISIBLE);
+            }else{
+                unreadMessageNum.setText(String.format("%s", chatRoom.getUnreadNum().get(userIndex)));
+            }
         }
+
 
         messageImage.setImageResource(R.drawable.ic_launcher_foreground);
         contactName.setText(chatRoom.getUserNames().get(otherUserIndex));
