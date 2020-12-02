@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,22 +31,26 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView postTitleInList;
-        public TextView postItemAmount;
 
-        public TextView postDateInView;
-        public TextView itemListTitle;
-        public FoldingCell fc;
+        public TextView postName;
+        public TextView postDate;
+        public TextView postDescription;
+        public Button detailButton;
         public RecyclerView itemRecyclerView;
 
         public MyViewHolder(View view){
             super(view);
-            postTitleInList = view.findViewById(R.id.postTitleInList);
-            postDateInView = view.findViewById(R.id.postDateInView);
-            itemListTitle = view.findViewById(R.id.itemListTitle);
-            postItemAmount = view.findViewById(R.id.ItemAmountText);
-            fc = view.findViewById(R.id.folding_cell);
+            postName = view.findViewById(R.id.postName);
+            postDate = view.findViewById(R.id.postDate);
+            postDescription = view.findViewById(R.id.postDescription);
+            detailButton = view.findViewById(R.id.detailsButton);
             itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
+            detailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
 
 
         }
@@ -63,7 +68,7 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
         //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.each_item_folding_layout, parent, false);
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.each_item_folding_layout,parent,false);
+        View view = inflater.inflate(R.layout.each_post_normal,parent,false);
 
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
@@ -72,42 +77,14 @@ public class PostsProfileDisplayAdapter extends RecyclerView.Adapter<PostsProfil
     @Override
     public void onBindViewHolder(@NonNull PostsProfileDisplayAdapter.MyViewHolder holder, int position) {
         sellerPost post = posts.get(position);
-        TextView postTitleInList = holder.postTitleInList;
-        postTitleInList.setText(post.getPostName());
-        TextView postDateInView = holder.postDateInView;
-        postDateInView.setText(post.getPostDate().toString());
-        TextView itemListTitle = holder.itemListTitle;
-        itemListTitle.setText("title");
-        TextView amount = holder.postItemAmount;
-        amount.setText(String.format("Total Items Amount %d", post.getItemList().size()));
-        RecyclerView itemRecyclerView = holder.itemRecyclerView;
+        TextView postName = holder.postName;
+        postName.setText(post.getPostName());
+        TextView postDate = holder.postDate;
+        postDate.setText(post.getPostDate().toString());
+        TextView postDescription = holder.postDescription;
+        postDescription.setText(post.getDescriptions());
 
-        ArrayList<Item> items = post.getItemList();
-        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(items, new ItemRecyclerAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Item item = items.get(position);
 
-                Intent intent = new Intent(view.getContext(), ItemDetailDisplayActivity.class);
-                intent.putExtra("itemId",item.getItemId());
-                view.getContext().startActivity(intent);
-
-            }
-        });
-
-        // Attach the adapter to the recyclerview to populate items
-        itemRecyclerView.setAdapter(adapter);
-        // Set layout manager to position the items
-        itemRecyclerView.setLayoutManager(new LinearLayoutManager(holder.postTitleInList.getContext()));
-        itemRecyclerView.addItemDecoration(new DividerItemDecoration(itemRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
-        FoldingCell fc = holder.fc;
-        fc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fc.toggle(false);
-            }
-        });
     }
 
     @Override
