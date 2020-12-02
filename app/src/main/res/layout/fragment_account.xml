@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".fragments.AccountFragment"
-    >
+    tools:context=".fragments.AccountFragment">
 
     <ImageView
         android:id="@+id/settingImage"
@@ -101,16 +100,94 @@
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"
 
-                android:elevation="4dp"
+                android:elevation="8dp"
                 app:menu="@menu/profile_menu" />
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/button"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:text="@string/fragment_account_get_wish_button" />
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/fragment_account_post_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="@string/fragment_account_get_wish_button" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/fragment_account_input_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5dp"
+                        android:text="Post your wish to get"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/descriptionInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:ems="10"
+                        android:hint="@string/fragment_account_input_description"
+                        android:inputType="textMultiLine" />
+
+                    <EditText
+                        android:id="@+id/contactInfoInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:ems="10"
+                        android:hint="@string/fragment_account_input_contact"
+                        android:inputType="textLongMessage|textMultiLine|textPersonName|phone" />
+
+                    <EditText
+                        android:id="@+id/regionInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:ems="10"
+                        android:hint="@string/fragment_account_input_region"
+                        android:inputType="textLongMessage|textMultiLine|textPersonName|phone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/fragment_account_cancel_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="cancel" />
+
+                        <Button
+                            android:id="@+id/fragment_account_confirm_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Confirm" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
 
 
     </LinearLayout>

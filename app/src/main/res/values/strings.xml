@@ -6,6 +6,9 @@
     <string name="login_warning">Please fill in both text fields</string>
     <string name="fragment_account_get_wish_button">Post what you want to get</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_account_input_description">Description</string>
+    <string name="fragment_account_input_contact">Contact Information</string>
+    <string name="fragment_account_input_region">Region</string>
     <string-array name="Categories">
         <item>Automotive</item>
         <item>Baby &amp; Toddler</item>
